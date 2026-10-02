@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   
+  <!-- Firebase Cloud SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
   <style>
     :root {
       --primary: #4338ca;
@@ -1241,6 +1245,45 @@
     [dir="ltr"] .custom-toast.toast-error { border-left-color: var(--danger); }
     [dir="ltr"] .custom-toast.toast-info { border-left-color: var(--secondary); }
     [dir="ltr"] .custom-toast.toast-warning { border-left-color: var(--warning); }
+
+    /* Cloud Sync Indicator */
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+    }
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .sync-dot.pulse {
+      animation: pulseDot 2s infinite;
+    }
+    .sync-dot.syncing {
+      background: #3b82f6;
+      box-shadow: 0 0 6px #3b82f6;
+    }
+    .sync-dot.offline {
+      background: #f59e0b;
+      box-shadow: 0 0 6px #f59e0b;
+    }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.8); opacity: 0.4; }
+    }
   </style>
 </head>
 <body>
@@ -1360,6 +1403,12 @@
       </div>
 
       <div class="header-actions">
+        <!-- Realtime Cloud Sync Status Badge -->
+        <div id="cloudSyncBadge" class="sync-badge" title="حالة الاتصال السحابي المباشر">
+          <span id="cloudSyncDot" class="sync-dot pulse"></span>
+          <span id="cloudSyncText">☁️ متصل بالسحابة</span>
+        </div>
+
         <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تبديل اللغة">
           <span>🌐</span>
           <span id="langToggleBtnText">English</span>
@@ -3540,7 +3589,141 @@
       }
     }
 
+    /* =========================================================================
+       CLOUD REALTIME DATABASE ENGINE (FIREBASE SYNC)
+       ========================================================================= */
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxXU5MePdVP1OcOyzitl0Jy5jMGrWtTSE",
+      authDomain: "salesproapp-ba56b.firebaseapp.com",
+      projectId: "salesproapp-ba56b",
+      storageBucket: "salesproapp-ba56b.firebasestorage.app",
+      messagingSenderId: "954558106678",
+      appId: "1:954558106678:web:666ce1e645b3c9bbe01c97"
+    };
+
+    let _cloudDb = null;
+    let _isCloudConnected = false;
+    let _cloudPushTimeout = null;
+
+    function updateSyncUI(status, text) {
+      const dot = document.getElementById('cloudSyncDot');
+      const textElem = document.getElementById('cloudSyncText');
+      if (!dot || !textElem) return;
+
+      dot.className = 'sync-dot';
+      if (status === 'connected') {
+        dot.classList.add('pulse');
+        textElem.textContent = text || (AppState.lang === 'en' ? 'Cloud Synced ✅' : 'متصل بالسحابة (مباشر) ✅');
+      } else if (status === 'syncing') {
+        dot.classList.add('syncing');
+        textElem.textContent = text || (AppState.lang === 'en' ? 'Syncing...' : 'جاري المزامنة...');
+      } else {
+        dot.classList.add('offline');
+        textElem.textContent = text || (AppState.lang === 'en' ? 'Offline (Local)' : 'تخزين محلي (أوفلاين)');
+      }
+    }
+
+    function initCloudSync() {
+      try {
+        if (typeof firebase === 'undefined') {
+          console.warn('Firebase SDK not loaded, working in offline mode.');
+          updateSyncUI('offline');
+          return;
+        }
+
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        _cloudDb = firebase.firestore();
+        _cloudDb.settings({ experimentalForceLongPolling: true });
+
+        updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري المزامنة...');
+
+        // Real-time synchronization listener
+        const stateDoc = _cloudDb.collection('giza_upper_egypt_sales').doc('master_state');
+        stateDoc.onSnapshot(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            if (data && data.updatedAt) {
+              const localTime = window._lastLocalSaveTimestamp || 0;
+              // If remote is newer, sync down
+              if (data.updatedAt > localTime) {
+                if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
+                if (Array.isArray(data.branches)) AppState.branches = data.branches;
+                if (Array.isArray(data.sales)) AppState.sales = data.sales;
+                if (Array.isArray(data.visits)) AppState.visits = data.visits;
+                if (Array.isArray(data.directives)) AppState.directives = data.directives;
+                if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
+                if (data.areaManager) AppState.areaManager = data.areaManager;
+
+                saveStateLocalOnly();
+                renderAll();
+                _isCloudConnected = true;
+                updateSyncUI('connected');
+                if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
+                  showToast(AppState.lang === 'en' 
+                    ? `Live update from: ${data.lastModifiedBy}` 
+                    : `تحديث مباشر وصل من: ${data.lastModifiedBy}`, 'info', 2500);
+                }
+              }
+            }
+          } else {
+            // First time seeding to cloud
+            pushStateToCloud();
+          }
+          _isCloudConnected = true;
+          updateSyncUI('connected');
+        }, err => {
+          console.warn('Cloud listener note:', err);
+          updateSyncUI('offline');
+        });
+      } catch (err) {
+        console.warn('Cloud init note:', err);
+        updateSyncUI('offline');
+      }
+    }
+
+    function pushStateToCloud() {
+      if (!_cloudDb) return;
+      clearTimeout(_cloudPushTimeout);
+      _cloudPushTimeout = setTimeout(() => {
+        try {
+          updateSyncUI('syncing', AppState.lang === 'en' ? 'Saving to Cloud...' : 'جاري الحفظ في السحابة...');
+          window._lastLocalSaveTimestamp = Date.now();
+          const payload = {
+            supervisors: AppState.supervisors,
+            branches: AppState.branches,
+            sales: AppState.sales,
+            visits: AppState.visits,
+            directives: AppState.directives,
+            promoters: AppState.promoters,
+            areaManager: AppState.areaManager,
+            updatedAt: window._lastLocalSaveTimestamp,
+            lastModifiedBy: AppState.currentUser ? AppState.currentUser.name : 'Unknown User'
+          };
+
+          _cloudDb.collection('giza_upper_egypt_sales').doc('master_state').set(payload, { merge: true })
+            .then(() => {
+              _isCloudConnected = true;
+              updateSyncUI('connected');
+            })
+            .catch(err => {
+              console.warn('Cloud push error:', err);
+              updateSyncUI('offline');
+            });
+        } catch (e) {
+          console.warn('Push error:', e);
+          updateSyncUI('offline');
+        }
+      }, 500);
+    }
+
     function saveState() {
+      saveStateLocalOnly();
+      pushStateToCloud();
+    }
+
+    function saveStateLocalOnly() {
       try {
         localStorage.setItem('giza_saeed_lang', AppState.lang || 'ar');
         localStorage.setItem('giza_saeed_manager', JSON.stringify(AppState.areaManager));
@@ -6765,6 +6948,7 @@
       applyLanguage();
       applySupervisorPortalMode();
       renderAll();
+      initCloudSync();
 
       if (!AppState.currentUser) {
         showLoginModal();
