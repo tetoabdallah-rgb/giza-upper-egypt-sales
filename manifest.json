@@ -1,0 +1,21 @@
+{
+  "name": "نظام متابعة مبيعات الجيزة والصعيد",
+  "short_name": "مبيعات الجيزة والصعيد",
+  "description": "لوحة تحكم ذكية لمتابعة مبيعات المشرفين، التارجت، الفروع والمروجين والزيارات الميدانية",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070d1e",
+  "theme_color": "#4338ca",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
