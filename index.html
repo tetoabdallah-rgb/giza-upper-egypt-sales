@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -1673,7 +1673,7 @@ html[dir="ltr"] .login-input-icon {
     </div>
 
     <ul class="nav-menu">
-      <li class="nav-section-label">لوحات المتابعة والقيادة</li>
+      <li class="nav-section-label" id="navSecLeadership">لوحات المتابعة والقيادة</li>
       <li class="nav-item active" onclick="switchTab('dashboard')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         <span id="navDashTitle">لوحة مدير الآريتين</span>
@@ -1685,7 +1685,7 @@ html[dir="ltr"] .login-input-icon {
         <span class="nav-badge" id="supCountBadge">3</span>
       </li>
 
-      <li class="nav-section-label">العمليات الميدانية والمبيعات</li>
+      <li class="nav-section-label" id="navSecOperations">العمليات الميدانية والمبيعات</li>
       <li class="nav-item" onclick="switchTab('sales')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span id="navSalesTitle">سجل المبيعات</span>
@@ -1701,7 +1701,7 @@ html[dir="ltr"] .login-input-icon {
         <span id="navVisitsTitle">الزيارات الميدانية</span>
       </li>
 
-      <li class="nav-section-label">التقارير ومركز البيانات</li>
+      <li class="nav-section-label" id="navSecReports">التقارير ومركز البيانات</li>
       <li class="nav-item" onclick="switchTab('reports')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         <span id="navReportsTitle">تصدير الداتا والتقارير</span>
@@ -1736,7 +1736,7 @@ html[dir="ltr"] .login-input-icon {
         </button>
         <div class="page-title-wrap">
           <div class="breadcrumbs">
-            <span>المنظومة التنفيذية</span>
+            <span id="breadcrumbRoot">المنظومة التنفيذية</span>
             <span style="opacity:0.35;">/</span>
             <span class="active" id="headerBreadcrumbsActive">لوحة القيادة والمتابعة</span>
           </div>
@@ -1758,19 +1758,19 @@ html[dir="ltr"] .login-input-icon {
         </button>
         <button class="btn btn-primary" id="btnHeaderAddSale" onclick="openSaleModal()">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-          <span>تسجيل بيع</span>
+          <span id="btnHeaderAddSaleText">تسجيل بيع</span>
         </button>
         <button class="btn btn-success" id="btnHeaderAddVisit" onclick="openVisitModal()">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0zm-8-3h4m3 0a2 2 0 002-2V9a2 2 0 00-2-2h-3l-2-3H8L6 7H4a2 2 0 00-2 2v3a2 2 0 002 2h2"/></svg>
-          <span>تقرير زيارة</span>
+          <span id="btnHeaderAddVisitText">تقرير زيارة</span>
         </button>
         <button class="btn btn-outline btn-sm" id="btnHeaderExport" onclick="exportMasterDataCSV()" title="تصدير كل داتا المنظومة بملف إكسيل شامل">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span>تصدير</span>
+          <span id="btnHeaderExportText">تصدير</span>
         </button>
         <div class="user-session-badge" id="userSessionBadge">
           <div class="session-user-avatar-chip" id="sessionUserAvatar">👨‍💼</div>
-          <div style="display:flex; flex-direction:column; line-height:1.2; text-align:right;">
+          <div style="display:flex; flex-direction:column; line-height:1.2; text-align:start;">
             <strong id="sessionUserName" style="font-size:12px; font-weight:800;">أ / أحمد فؤاد</strong>
             <span id="sessionUserRoleBadge" style="font-size:10px; color:var(--primary); font-weight:700;">مدير الإدارة</span>
           </div>
@@ -1812,19 +1812,19 @@ html[dir="ltr"] .login-input-icon {
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <button class="btn btn-purple btn-sm" onclick="openPermissionsModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                <span>حسابات وصلاحيات المشرفين</span>
+                <span id="btnMgrPermsText">حسابات وصلاحيات المشرفين</span>
               </button>
               <button class="btn btn-purple btn-sm" onclick="openDirectiveModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
-                <span>إرسال توجيه</span>
+                <span id="btnMgrDirectiveText">إرسال توجيه</span>
               </button>
               <button class="btn btn-outline btn-sm" onclick="openEditTargetsModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                <span>تعديل تارجت المشرفين</span>
+                <span id="btnMgrTargetsText">تعديل تارجت المشرفين</span>
               </button>
               <button class="btn btn-outline btn-sm" onclick="openEditManagerModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                <span>تعديل بياناتي</span>
+                <span id="btnMgrProfileText">تعديل بياناتي</span>
               </button>
             </div>
           </div>
@@ -1832,19 +1832,19 @@ html[dir="ltr"] .login-input-icon {
           <!-- Hierarchy Flow Preview -->
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:12px; font-weight:700; padding:10px 14px; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--border-color);">
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="badge badge-purple" style="padding:4px 10px; font-size:11.5px;">القيادة: مدير الآريتين</span>
+              <span class="badge badge-purple" id="flowPillManager" style="padding:4px 10px; font-size:11.5px;">القيادة: مدير الآريتين</span>
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--text-muted);"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
-              <span class="badge badge-primary" style="padding:4px 10px; font-size:11.5px;">مشرف الجيزة 1 (الهرم وفيصل)</span>
+              <span class="badge badge-primary" id="flowPillGiza1" style="padding:4px 10px; font-size:11.5px;">مشرف الجيزة 1 (الهرم وفيصل)</span>
             </div>
             <span style="color:var(--text-muted); opacity:0.6;">•</span>
             <div style="display:flex; align-items:center; gap:6px;">
-              <span class="badge badge-warning" style="padding:4px 10px; font-size:11.5px;">مشرف الجيزة 2 (أكتوبر والشيخ زايد)</span>
+              <span class="badge badge-warning" id="flowPillGiza2" style="padding:4px 10px; font-size:11.5px;">مشرف الجيزة 2 (أكتوبر والشيخ زايد)</span>
             </div>
             <span style="color:var(--text-muted); opacity:0.6;">•</span>
             <div style="display:flex; align-items:center; gap:6px;">
-              <span class="badge badge-success" style="padding:4px 10px; font-size:11.5px;">مشرف الصعيد (محافظات الصعيد)</span>
+              <span class="badge badge-success" id="flowPillSaeed" style="padding:4px 10px; font-size:11.5px;">مشرف الصعيد (محافظات الصعيد)</span>
             </div>
           </div>
         </div>
@@ -1856,11 +1856,11 @@ html[dir="ltr"] .login-input-icon {
               <div style="width:28px; height:28px; border-radius:8px; background:var(--purple-light); color:var(--secondary); display:flex; align-items:center; justify-content:center;">
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
               </div>
-              <span>التوجيهات والتعليمات الميدانية الصادرة للمشرفين</span>
+              <span id="directivesTitleText">التوجيهات والتعليمات الميدانية الصادرة للمشرفين</span>
             </div>
             <button class="btn btn-outline btn-sm" onclick="openDirectiveModal()">
               <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-              <span>إضافة توجيه جديد</span>
+              <span id="btnDirectiveAddText">إضافة توجيه جديد</span>
             </button>
           </div>
           <div id="directivesListContainer" style="display:flex; flex-direction:column; gap:8px;">
@@ -1877,13 +1877,13 @@ html[dir="ltr"] .login-input-icon {
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
               <div>
-                <div class="kpi-value"><span id="kpiTotalSales">0</span> <span class="kpi-unit">ج.م</span></div>
+                <div class="kpi-value"><span id="kpiTotalSales">0</span> <span class="kpi-unit" id="kpiSalesUnit">ج.م</span></div>
                 <div class="kpi-sub">
-                  <span>نسبة تحقيق التارجت: </span>
+                  <span id="kpiSalesPctLabel">نسبة تحقيق التارجت: </span>
                   <strong id="kpiTotalPct" style="color:var(--primary)">0%</strong>
                 </div>
               </div>
-              <div class="radial-progress-wrap" title="نسبة الإنجاز العامة">
+              <div class="radial-progress-wrap" id="kpiSalesRadialWrap" title="نسبة الإنجاز العامة">
                 <svg class="radial-svg" viewBox="0 0 36 36">
                   <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
                   <path id="kpiSalesRadialFill" class="radial-fill" stroke="var(--primary)" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
@@ -1898,9 +1898,9 @@ html[dir="ltr"] .login-input-icon {
               <span class="kpi-title" id="kpiTargetTitle">تارجت الآريتين الإجمالي المطلوب</span>
               <div class="kpi-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             </div>
-            <div class="kpi-value"><span id="kpiTotalTarget">0</span> <span class="kpi-unit">ج.م</span></div>
+            <div class="kpi-value"><span id="kpiTotalTarget">0</span> <span class="kpi-unit" id="kpiTargetUnit">ج.م</span></div>
             <div class="kpi-sub">
-              <span>المتبقي للهدف: </span>
+              <span id="kpiTargetRemainLabel">المتبقي للهدف: </span>
               <strong id="kpiTotalRemain">0 ج.م</strong>
             </div>
           </div>
@@ -1919,7 +1919,7 @@ html[dir="ltr"] .login-input-icon {
               <span class="kpi-title" id="kpiOperationsTitle">حركة العمليات والزيارات بالمنطقة</span>
               <div class="kpi-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
             </div>
-            <div class="kpi-value"><span id="kpiSalesCount">0</span> <span class="kpi-unit">فاتورة</span></div>
+            <div class="kpi-value"><span id="kpiSalesCount">0</span> <span class="kpi-unit" id="kpiInvoicesUnit">فاتورة</span></div>
             <div class="kpi-sub">
               <span id="kpiVisitsCount">0 زيارة ميدانية مسجلة</span>
             </div>
@@ -1933,7 +1933,7 @@ html[dir="ltr"] .login-input-icon {
               <span class="section-title-icon">👥</span>
               <span id="supervisorsSectionTitle">أداء المشرفين الثلاثة تحت إدارة مدير الآريتين (Target vs Actual)</span>
             </div>
-            <button class="btn btn-outline btn-sm" onclick="openEditTargetsModal()">⚙️ تعديل التارجت والمشرفين</button>
+            <button class="btn btn-outline btn-sm" id="btnSupervisorsEditTargets" onclick="openEditTargetsModal()">⚙️ تعديل التارجت والمشرفين</button>
           </div>
 
           <div class="supervisors-grid" id="supervisorsCardsContainer">
@@ -3730,7 +3730,7 @@ html[dir="ltr"] .login-input-icon {
       document.documentElement.lang = isEn ? 'en' : 'ar';
       document.documentElement.dir = isEn ? 'ltr' : 'rtl';
 
-      // Switcher buttons
+      // Language Switcher Buttons
       const btnHeader = document.getElementById('langToggleBtn');
       const langHeaderSpan = document.getElementById('langToggleBtnText');
       if (langHeaderSpan) langHeaderSpan.textContent = isEn ? 'عربي' : 'English';
@@ -3739,33 +3739,127 @@ html[dir="ltr"] .login-input-icon {
       const sidebarLangSpan = document.getElementById('sidebarLangText');
       if (sidebarLangSpan) sidebarLangSpan.textContent = isEn ? 'عربي' : 'English';
 
-      // Sidebar Brand & Static Labels
-      const bTitle = document.getElementById('brandTitle');
-      if (bTitle) bTitle.textContent = t('brandTitle');
-      const bSub = document.getElementById('brandSub');
-      if (bSub) bSub.textContent = t('brandSub');
-      const vLbl = document.getElementById('viewSwitcherLabelText');
-      if (vLbl) vLbl.textContent = t('viewSwitcherLabel');
-      const nSup = document.getElementById('navSupervisorsTitle');
-      if (nSup) nSup.textContent = t('navSupervisorsTitle');
-      const nRep = document.getElementById('navReportsTitle');
-      if (nRep) nRep.textContent = t('navReportsTitle');
-      const sNotice = document.getElementById('sidebarHierarchyNotice');
-      if (sNotice) sNotice.textContent = t('sidebarHierarchyNotice');
+      // Top Header Elements
+      const bCrumbRoot = document.getElementById('breadcrumbRoot');
+      if (bCrumbRoot) bCrumbRoot.textContent = isEn ? 'Operations Management' : 'المنظومة التنفيذية';
+      
+      const syncText = document.getElementById('cloudSyncText');
+      if (syncText) syncText.textContent = isEn ? 'Live Cloud Sync' : 'مزامنة سحابية لحظية';
 
-      // Header Buttons
-      const btnExp = document.getElementById('btnHeaderExport');
-      if (btnExp) btnExp.textContent = t('headerExport');
-      const btnSale = document.getElementById('btnHeaderAddSale');
-      if (btnSale) btnSale.textContent = t('headerAddSale');
-      const btnVisit = document.getElementById('btnHeaderAddVisit');
-      if (btnVisit) btnVisit.textContent = t('headerAddVisit');
+      const btnSaleText = document.getElementById('btnHeaderAddSaleText');
+      if (btnSaleText) btnSaleText.textContent = isEn ? 'Add Sale' : 'تسجيل بيع';
+      const btnVisitText = document.getElementById('btnHeaderAddVisitText');
+      if (btnVisitText) btnVisitText.textContent = isEn ? 'Add Visit' : 'تقرير زيارة';
+      const btnExpText = document.getElementById('btnHeaderExportText');
+      if (btnExpText) btnExpText.textContent = isEn ? 'Export Data' : 'تصدير';
+
+      const roleBadge = document.getElementById('sessionUserRoleBadge');
+      if (roleBadge) roleBadge.textContent = isEn ? 'Area Manager' : 'مدير الإدارة';
+
+      const btnEditProfile = document.getElementById('btnEditProfileHeader');
+      if (btnEditProfile) btnEditProfile.title = isEn ? 'Edit Profile & Password' : 'تعديل البيانات الشخصية وكلمة المرور';
       const btnLogout = document.getElementById('btnLogoutBtn');
-      if (btnLogout) btnLogout.textContent = t('headerLogout');
-      const btnPerm = document.getElementById('btnHeaderPermissions');
-      if (btnPerm) btnPerm.textContent = t('headerPermissions');
-      const btnDir = document.getElementById('btnHeaderDirective');
-      if (btnDir) btnDir.textContent = t('headerDirective');
+      if (btnLogout) btnLogout.title = isEn ? 'Logout' : 'تسجيل الخروج';
+
+      // Sidebar Brand & Navigation
+      const bTitle = document.getElementById('brandTitle');
+      if (bTitle) bTitle.textContent = isEn ? 'Giza & Upper Egypt Sales System' : 'مبيعات الجيزة والصعيد';
+      const bSub = document.getElementById('brandSub');
+      if (bSub) bSub.textContent = isEn ? 'Integrated Sales & Field Operations' : 'المنظومة التنفيذية للإدارة والمشرفين';
+
+      const vLbl = document.getElementById('viewSwitcherLabelText');
+      if (vLbl) vLbl.textContent = isEn ? '👤 Current View / Portal:' : '👤 وضع العرض الحالي:';
+
+      const navSec1 = document.getElementById('navSecLeadership');
+      if (navSec1) navSec1.textContent = isEn ? 'Leadership & Dashboards' : 'لوحات المتابعة والقيادة';
+      const navSec2 = document.getElementById('navSecOperations');
+      if (navSec2) navSec2.textContent = isEn ? 'Field Operations & Sales' : 'العمليات الميدانية والمبيعات';
+      const navSec3 = document.getElementById('navSecReports');
+      if (navSec3) navSec3.textContent = isEn ? 'Reports & Data Center' : 'التقارير ومركز البيانات';
+
+      const nDash = document.getElementById('navDashTitle');
+      if (nDash) nDash.textContent = isEn ? 'Area Manager Dashboard' : 'لوحة مدير الآريتين';
+      const nSup = document.getElementById('navSupervisorsTitle');
+      if (nSup) nSup.textContent = isEn ? 'Supervisors & Targets' : 'المشرفين والتارجت';
+      const nSale = document.getElementById('navSalesTitle');
+      if (nSale) nSale.textContent = isEn ? 'Sales Log' : 'سجل المبيعات';
+      const nBranch = document.getElementById('navBranchesTitle');
+      if (nBranch) nBranch.textContent = isEn ? 'Clients & Branches' : 'العملاء والفروع';
+      const nVisit = document.getElementById('navVisitsTitle');
+      if (nVisit) nVisit.textContent = isEn ? 'Field Visits' : 'الزيارات الميدانية';
+      const nRep = document.getElementById('navReportsTitle');
+      if (nRep) nRep.textContent = isEn ? 'Data Export & Reports' : 'تصدير الداتا والتقارير';
+
+      const sNotice = document.getElementById('sidebarHierarchyNotice');
+      if (sNotice) sNotice.textContent = isEn ? 'Hierarchy: Area Manager ⬅️ 3 Supervisors' : 'الهيكل الإداري: مدير الآريتين ⬅️ 3 مشرفين';
+
+      // Sidebar Theme Button
+      const themeTextEl = document.getElementById('themeText');
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (themeTextEl) themeTextEl.textContent = isDark ? (isEn ? 'Light Mode' : 'الوضع النهاري') : (isEn ? 'Dark Mode' : 'الوضع الليلي');
+
+      // Manager Card Buttons & Flow Pills
+      const bPermText = document.getElementById('btnMgrPermsText');
+      if (bPermText) bPermText.textContent = isEn ? 'Accounts & Permissions' : 'حسابات وصلاحيات المشرفين';
+      const bDirText = document.getElementById('btnMgrDirectiveText');
+      if (bDirText) bDirText.textContent = isEn ? 'Post Directive' : 'إرسال توجيه';
+      const bTgtText = document.getElementById('btnMgrTargetsText');
+      if (bTgtText) bTgtText.textContent = isEn ? 'Edit Targets' : 'تعديل تارجت المشرفين';
+      const bProfText = document.getElementById('btnMgrProfileText');
+      if (bProfText) bProfText.textContent = isEn ? 'Edit Profile' : 'تعديل بياناتي';
+
+      const fMgr = document.getElementById('flowPillManager');
+      if (fMgr) fMgr.textContent = isEn ? 'Leadership: Area Manager' : 'القيادة: مدير الآريتين';
+      const fG1 = document.getElementById('flowPillGiza1');
+      if (fG1) fG1.textContent = isEn ? 'Supervisor Giza 1 (Faisal & Haram)' : 'مشرف الجيزة 1 (الهرم وفيصل)';
+      const fG2 = document.getElementById('flowPillGiza2');
+      if (fG2) fG2.textContent = isEn ? 'Supervisor Giza 2 (October & Zayed)' : 'مشرف الجيزة 2 (أكتوبر والشيخ زايد)';
+      const fSaeed = document.getElementById('flowPillSaeed');
+      if (fSaeed) fSaeed.textContent = isEn ? 'Supervisor Upper Egypt (All Upper Egypt)' : 'مشرف الصعيد (محافظات الصعيد)';
+
+      // Directives Banner
+      const dTitle = document.getElementById('directivesTitleText');
+      if (dTitle) dTitle.textContent = isEn ? 'Field Directives & Instructions for Supervisors' : 'التوجيهات والتعليمات الميدانية الصادرة للمشرفين';
+      const dBtn = document.getElementById('btnDirectiveAddText');
+      if (dBtn) dBtn.textContent = isEn ? '+ Add Directive' : 'إضافة توجيه جديد';
+
+      // KPI Sub Labels
+      const kpiSalesPctLbl = document.getElementById('kpiSalesPctLabel');
+      if (kpiSalesPctLbl) kpiSalesPctLbl.textContent = isEn ? 'Achievement: ' : 'نسبة تحقيق التارجت: ';
+      const kpiTgtRemainLbl = document.getElementById('kpiTargetRemainLabel');
+      if (kpiTgtRemainLbl) kpiTgtRemainLbl.textContent = isEn ? 'Remaining to Target: ' : 'المتبقي للهدف: ';
+      const kpiTopSupTitle = document.getElementById('kpiTopSupTitle');
+      if (kpiTopSupTitle) kpiTopSupTitle.textContent = isEn ? 'Top Performing Supervisor' : 'المشرف الأعلى إنجازاً تحت إدارتك';
+
+      // Supervisors Tab 1 Section
+      const sSupSecT = document.getElementById('supervisorsSectionTitle');
+      if (sSupSecT) sSupSecT.textContent = isEn ? 'Supervisors Performance under Area Manager (Target vs Actual)' : 'أداء المشرفين الثلاثة تحت إدارة مدير الآريتين (Target vs Actual)';
+      const bSupEditTgt = document.getElementById('btnSupervisorsEditTargets');
+      if (bSupEditTgt) bSupEditTgt.textContent = isEn ? '⚙️ Edit Targets & Supervisors' : '⚙️ تعديل التارجت والمشرفين';
+
+      // Page Title & Breadcrumbs based on current active tab
+      const curTab = document.querySelector('.tab-content.active');
+      const tabId = curTab ? curTab.id.replace('tab-', '') : 'dashboard';
+      const tabTitles = {
+        'dashboard': isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين',
+        'supervisors': isEn ? 'Supervisors & Targets' : 'المشرفين والتارجت',
+        'sales': isEn ? 'Area Sales Transactions Log' : 'سجل المبيعات',
+        'branches': isEn ? 'Clients & Branches Directory' : 'العملاء والفروع',
+        'visits': isEn ? 'Field Visit Audit Reports' : 'الزيارات الميدانية',
+        'reports': isEn ? 'Master Data Export & System Reports' : 'تصدير الداتا والتقارير'
+      };
+      const breadcrumbs = {
+        'dashboard': isEn ? 'Executive Dashboard' : 'لوحة القيادة والمتابعة',
+        'supervisors': isEn ? 'Supervisors & Target Management' : 'إدارة المشرفين والمستهدفات',
+        'sales': isEn ? 'Sales Operations' : 'حركات وعمليات البيع',
+        'branches': isEn ? 'Clients & Retailers' : 'قاعدة بيانات العملاء والتجار',
+        'visits': isEn ? 'Field Audits & Visits' : 'التقارير الميدانية والزيارات',
+        'reports': isEn ? 'Reports & Data Center' : 'مركز التقارير وتصدير البيانات'
+      };
+      const pTitle = document.getElementById('pageTitleText');
+      if (pTitle) pTitle.textContent = tabTitles[tabId] || (isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين');
+      const bActive = document.getElementById('headerBreadcrumbsActive');
+      if (bActive) bActive.textContent = breadcrumbs[tabId] || '';
 
       // Section action buttons
       const btnVAll = document.getElementById('btnViewAllSales');
@@ -3783,7 +3877,17 @@ html[dir="ltr"] .login-input-icon {
       const btnAddVs = document.getElementById('btnAddVisitBtn');
       if (btnAddVs) btnAddVs.textContent = t('btnAddVisit');
       const promHead = document.getElementById('promotersHeadingText');
-      if (promHead) promHead.textContent = t('promotersHeading');
+      // Filters and Search Placeholders
+      const sInp = document.getElementById('salesSearchInput');
+      if (sInp) sInp.placeholder = isEn ? "Search by client, branch, promoter, category..." : "اسم العميل، الفرع، المروج، الصنف...";
+      const bInp = document.getElementById('branchesSearchInput');
+      if (bInp) bInp.placeholder = isEn ? "Search client name, city, promoter..." : "اسم العميل، المدينة، المروج...";
+      const vInp = document.getElementById('visitsSearchInput');
+      if (vInp) vInp.placeholder = isEn ? "Search store, notes, purpose..." : "اسم المحل، الملاحظات، الهدف...";
+      const lSup = document.getElementById('lblFilterSupervisor');
+      if (lSup) lSup.textContent = isEn ? "Supervisor:" : "المشرف:";
+      const lCat = document.getElementById('lblFilterCategory');
+      if (lCat) lCat.textContent = isEn ? "Category:" : "الفئة:";
 
       // Tab 4 & Bulk Import Buttons
       const btnBulkImp = document.getElementById('btnBulkImportClients');
@@ -3912,6 +4016,8 @@ html[dir="ltr"] .login-input-icon {
       if (lSubBtn) lSubBtn.textContent = isEn ? "🚀 Secure Login" : "🚀 تسجيل الدخول الآمن";
 
       updateTableHeaders();
+      updateSupervisorPortalSelectOptions();
+      applySupervisorPortalMode();
     }
 
     /* =========================================================================
@@ -4647,7 +4753,12 @@ html[dir="ltr"] .login-input-icon {
       // Update Area Manager Info text in card
       const mgr = AppState.areaManager || DEFAULT_MANAGER;
       document.getElementById('displayManagerName').textContent = `${mgr.name} - ${isEn ? 'General Area Manager' : 'مدير عام الآريتين'}`;
-      document.getElementById('displayManagerTitle').textContent = mgr.title;
+      
+      const defaultArTitle = "مدير قطاع الجيزة الكبرى وأكتوبر ومحافظات الصعيد";
+      const enTitle = (mgr.title === defaultArTitle || !mgr.title || mgr.title.includes('الجيزة')) 
+        ? "General Area Manager (Giza & Upper Egypt Sectors)" 
+        : mgr.title;
+      document.getElementById('displayManagerTitle').textContent = isEn ? enTitle : mgr.title;
       document.getElementById('displayManagerPhone').textContent = mgr.phone || '-';
       document.getElementById('displayManagerEmail').textContent = mgr.email || '-';
 
@@ -4910,8 +5021,7 @@ html[dir="ltr"] .login-input-icon {
         award: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>',
         chart: '<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'
       };
-      const path = icons[name] || '';
-      return <svg class="icon-svg \" width="\" height="\" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">\</svg>;
+      return '<svg class="icon-svg ' + (className || '') + '" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">' + path + '</svg>';
     }
 
     function formatEGP(val) {
@@ -4960,12 +5070,24 @@ html[dir="ltr"] .login-input-icon {
       const totalPct = targetVal > 0 ? ((totalSales / targetVal) * 100).toFixed(1) : 0;
       const totalRemain = Math.max(0, targetVal - totalSales);
 
+      const c = currencyLabel();
       document.getElementById('kpiTotalSales').textContent = formatEGP(totalSales);
       document.getElementById('kpiTotalTarget').textContent = formatEGP(targetVal);
       document.getElementById('kpiTotalPct').textContent = `${totalPct}%`;
       document.getElementById('kpiTotalRemain').textContent = formatCurrency(totalRemain);
       document.getElementById('kpiSalesCount').textContent = salesSet.length;
       document.getElementById('kpiVisitsCount').textContent = t('kpiVisitsCountText', { count: visitsSet.length });
+
+      const sUnit = document.getElementById('kpiSalesUnit');
+      if (sUnit) sUnit.textContent = c;
+      const tUnit = document.getElementById('kpiTargetUnit');
+      if (tUnit) tUnit.textContent = c;
+      const invUnit = document.getElementById('kpiInvoicesUnit');
+      if (invUnit) invUnit.textContent = isEn ? 'Invoices' : 'فاتورة';
+      const sPctLbl = document.getElementById('kpiSalesPctLabel');
+      if (sPctLbl) sPctLbl.textContent = isEn ? 'Achievement: ' : 'نسبة تحقيق التارجت: ';
+      const tRemLbl = document.getElementById('kpiTargetRemainLabel');
+      if (tRemLbl) tRemLbl.textContent = isEn ? 'Remaining to Target: ' : 'المتبقي للهدف: ';
 
       // Update circular radial gauge for total sales
       const radFill = document.getElementById('kpiSalesRadialFill');
@@ -5925,12 +6047,15 @@ html[dir="ltr"] .login-input-icon {
         const mgr = AppState.areaManager || DEFAULT_MANAGER;
 
         sel.innerHTML = `
-          <option value="MANAGER">${isEn ? '🎖️ Area Manager (' + mgr.name + ' - Full Admin)' : '🎖️ مدير الآريتين (' + mgr.name + ')'}</option>
+          <option value="MANAGER">${isEn ? '🎖️ Area Manager (Giza & Upper Egypt Sectors)' : '🎖️ مدير الآريتين (' + mgr.name + ')'}</option>
           <option value="ALL">${isEn ? '👑 Executive Overview (All Sectors)' : '👑 لوحة الإدارة العامة (الكل)'}</option>
         `;
 
         AppState.supervisors.forEach(s => {
-          sel.innerHTML += `<option value="${s.id}">👔 ${getSupervisorName(s)} (${getSupervisorZone(s).split(/[,،]/)[0]})</option>`;
+          const zoneShort = isEn 
+            ? (s.name.includes('1') ? 'Faisal & Haram' : s.name.includes('2') ? 'October & Zayed' : 'Upper Egypt')
+            : getSupervisorZone(s).split(/[,،]/)[0];
+          sel.innerHTML += `<option value="${s.id}">👔 ${getSupervisorName(s)} (${zoneShort})</option>`;
         });
 
         sel.value = currentVal;
@@ -5942,7 +6067,10 @@ html[dir="ltr"] .login-input-icon {
         const cur = filterSup.value || 'ALL';
         filterSup.innerHTML = `<option value="ALL">${isEn ? 'All Supervisors (Giza & Upper Egypt)' : 'جميع المشرفين (الجيزة والصعيد)'}</option>`;
         AppState.supervisors.forEach(s => {
-          filterSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${getSupervisorZone(s).split(/[,،]/)[0]})</option>`;
+          const zoneShort = isEn 
+            ? (s.name.includes('1') ? 'Faisal & Haram' : s.name.includes('2') ? 'October & Zayed' : 'Upper Egypt')
+            : getSupervisorZone(s).split(/[,،]/)[0];
+          filterSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${zoneShort})</option>`;
         });
         filterSup.value = cur;
       }
@@ -5953,7 +6081,10 @@ html[dir="ltr"] .login-input-icon {
         const cur = dirSup.value || 'ALL';
         dirSup.innerHTML = `<option value="ALL">${isEn ? 'All Supervisors (Giza 1 + Giza 2 + Upper Egypt)' : 'جميع المشرفين (الجيزة 1 + الجيزة 2 + الصعيد)'}</option>`;
         AppState.supervisors.forEach(s => {
-          dirSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${getSupervisorTitle(s)})</option>`;
+          const zoneShort = isEn 
+            ? (s.name.includes('1') ? 'Faisal & Haram' : s.name.includes('2') ? 'October & Zayed' : 'Upper Egypt')
+            : getSupervisorTitle(s);
+          dirSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${zoneShort})</option>`;
         });
         dirSup.value = cur;
       }
@@ -6433,15 +6564,27 @@ html[dir="ltr"] .login-input-icon {
       const sName = getSupervisorName(activeSup);
 
       const titles = {
-        'dashboard': isManager ? t('pageTitleDashboardManager') : (isAll ? t('pageTitleDashboardAll') : t('pageTitleDashboardSup', { name: sName })),
-        'supervisors': t('pageTitleSupervisors'),
-        'sales': isManager ? t('pageTitleSalesManager') : (isAll ? t('pageTitleSalesAll') : t('pageTitleSalesSup', { name: sName })),
-        'branches': isManager ? t('pageTitleBranchesManager') : (isAll ? t('pageTitleBranchesAll') : t('pageTitleBranchesSup', { name: sName })),
-        'visits': isManager ? t('pageTitleVisitsManager') : (isAll ? t('pageTitleVisitsAll') : t('pageTitleVisitsSup', { name: sName })),
-        'reports': t('pageTitleReports')
+        'dashboard': isManager ? (isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين') : (isAll ? (isEn ? 'General Executive Dashboard' : 'لوحة التحكم العامة') : (isEn ? `${sName} Dashboard` : `لوحة متابعة ${sName}`)),
+        'supervisors': isEn ? 'Supervisors & Target Management' : 'متابعة المشرفين والتارجت (الجيزة والصعيد)',
+        'sales': isEn ? 'Area Sales Transactions Log' : 'سجل مبيعات الآريتين',
+        'branches': isEn ? 'Clients & Retailers Directory' : 'العملاء والفروع بالمنطقة',
+        'visits': isEn ? 'Field Visit Audit Reports' : 'تقارير وزيارات المشرفين الميدانية',
+        'reports': isEn ? 'Master Data Export & System Reports' : 'تصدير كافة بيانات المنظومة والتقارير الشاملة'
       };
 
-      document.getElementById('pageTitleText').textContent = titles[tabName] || (isEn ? 'Giza & Upper Egypt Sales' : 'مبيعات الجيزة والصعيد');
+      const breadcrumbs = {
+        'dashboard': isEn ? 'Executive Dashboard' : 'لوحة القيادة والمتابعة',
+        'supervisors': isEn ? 'Supervisors & Targets' : 'إدارة المشرفين والمستهدفات',
+        'sales': isEn ? 'Sales Operations' : 'حركات وعمليات البيع',
+        'branches': isEn ? 'Clients & Retailers' : 'قاعدة بيانات العملاء والتجار',
+        'visits': isEn ? 'Field Audits & Visits' : 'التقارير الميدانية والزيارات',
+        'reports': isEn ? 'Reports & Data Center' : 'مركز التقارير وتصدير البيانات'
+      };
+
+      const pTitle = document.getElementById('pageTitleText');
+      if (pTitle) pTitle.textContent = titles[tabName] || (isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين');
+      const bActive = document.getElementById('headerBreadcrumbsActive');
+      if (bActive) bActive.textContent = breadcrumbs[tabName] || '';
 
       const navItems = document.querySelectorAll('.nav-menu .nav-item');
       const map = {
