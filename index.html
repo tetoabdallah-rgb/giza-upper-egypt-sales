@@ -1432,7 +1432,8 @@
           <span id="sessionUserAvatar">🎖️</span>
           <strong id="sessionUserName">أ / أحمد فؤاد</strong>
           <span id="sessionUserRoleBadge" class="badge badge-purple" style="font-size:10px;">مدير الإدارة</span>
-          <button class="btn btn-outline btn-sm" id="btnLogoutBtn" style="padding:2px 8px; font-size:11px; margin-inline-start:4px;" onclick="handleLogout()" title="تسجيل الخروج">🚪 خروج</button>
+          <button class="btn btn-outline btn-sm" id="btnEditProfileHeader" style="padding:2px 8px; font-size:11px; margin-inline-start:4px;" onclick="openEditManagerModal()" title="تعديل البيانات الشخصية وكلمة المرور">✏️ تعديل بياناتي</button>
+          <button class="btn btn-outline btn-sm" id="btnLogoutBtn" style="padding:2px 8px; font-size:11px;" onclick="handleLogout()" title="تسجيل الخروج">🚪 خروج</button>
         </div>
       </div>
     </header>
@@ -2038,37 +2039,57 @@
 
   <!-- ================= MODALS ================= -->
 
-  <!-- Modal: Edit Area Manager Profile -->
+  <!-- Modal: Edit Area Manager Profile & Personal Data -->
   <div class="modal-overlay" id="managerModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width:520px;">
       <div class="modal-header">
-        <div class="modal-title">تعديل بيانات مدير الآريتين (Area Manager) 🎖️</div>
+        <div class="modal-title" id="managerModalTitle">✏️ تعديل البيانات الشخصية لمدير الإدارة (Admin Profile)</div>
         <button class="modal-close" onclick="closeModal('managerModal')">&times;</button>
       </div>
       <form id="managerForm" onsubmit="handleSaveManager(event)">
         <div class="modal-body">
+          <div style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+            <span>👤 البيانات الشخصية والوظيفية:</span>
+          </div>
           <div class="form-grid">
             <div class="form-group col-full">
-              <label>اسم مدير الآريتين بالكامل *</label>
-              <input type="text" id="modalMgrName" class="form-control" required placeholder="مثال: أ / أحمد فؤاد">
+              <label id="lblMgrName">اسم المدير بالكامل *</label>
+              <input type="text" id="modalMgrName" class="form-control" required placeholder="مثال: عبدالله أحمد">
             </div>
             <div class="form-group col-full">
-              <label>المسمى الوظيفي والمسؤولية *</label>
-              <input type="text" id="modalMgrTitle" class="form-control" required placeholder="مثال: مدير قطاع الجيزة والصعيد (Area Sales Manager)">
+              <label id="lblMgrTitle">المسمى الوظيفي والمسؤولية *</label>
+              <input type="text" id="modalMgrTitle" class="form-control" required placeholder="مثال: مدير عام قطاع الجيزة والصعيد">
             </div>
             <div class="form-group">
-              <label>رقم هاتف المدير</label>
+              <label id="lblMgrPhone">رقم هاتف المدير</label>
               <input type="text" id="modalMgrPhone" class="form-control" placeholder="01xxxxxxxxx">
             </div>
             <div class="form-group">
-              <label>البريد الإلكتروني الرسمي</label>
+              <label id="lblMgrEmail">البريد الإلكتروني الرسمي</label>
               <input type="email" id="modalMgrEmail" class="form-control" placeholder="manager@company.com">
+            </div>
+          </div>
+
+          <div style="font-size:12px; font-weight:800; color:var(--purple); margin:16px 0 10px; padding-top:12px; border-top:1px solid var(--border-color); display:flex; align-items:center; gap:6px;">
+            <span>🔐 بيانات تسجيل الدخول للوحة الإدارة (Admin Login):</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label id="lblMgrUser">اسم المستخدم للدخول (Username) *</label>
+              <input type="text" id="modalMgrUsername" class="form-control" required placeholder="مثال: manager أو اسمك" autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label id="lblMgrPass">كلمة المرور (Password) *</label>
+              <div style="position:relative;">
+                <input type="password" id="modalMgrPassword" class="form-control" required placeholder="كلمة المرور" autocomplete="new-password" style="padding-left:36px;">
+                <button type="button" onclick="togglePasswordVisibility('modalMgrPassword')" style="position:absolute; left:8px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:15px; color:var(--text-muted);" title="إظهار / إخفاء">👁️</button>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline" onclick="closeModal('managerModal')">إلغاء</button>
-          <button type="submit" class="btn btn-purple">حفظ بيانات المدير</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('managerModal')" id="btnCancelMgr">إلغاء</button>
+          <button type="submit" class="btn btn-purple" id="btnSaveMgrSubmit">💾 حفظ وتطبيق البيانات الشخصية</button>
         </div>
       </form>
     </div>
@@ -4416,24 +4437,49 @@
 
     function openEditManagerModal() {
       const mgr = AppState.areaManager || DEFAULT_MANAGER;
-      document.getElementById('modalMgrName').value = mgr.name;
-      document.getElementById('modalMgrTitle').value = mgr.title;
+      document.getElementById('modalMgrName').value = mgr.name || '';
+      document.getElementById('modalMgrTitle').value = mgr.title || '';
       document.getElementById('modalMgrPhone').value = mgr.phone || '';
       document.getElementById('modalMgrEmail').value = mgr.email || '';
+      document.getElementById('modalMgrUsername').value = mgr.username || 'manager';
+      document.getElementById('modalMgrPassword').value = mgr.password || '123';
       document.getElementById('managerModal').classList.add('open');
     }
 
     function handleSaveManager(e) {
       e.preventDefault();
-      AppState.areaManager.name = document.getElementById('modalMgrName').value.trim();
-      AppState.areaManager.title = document.getElementById('modalMgrTitle').value.trim();
-      AppState.areaManager.phone = document.getElementById('modalMgrPhone').value.trim();
-      AppState.areaManager.email = document.getElementById('modalMgrEmail').value.trim();
+      const newName = document.getElementById('modalMgrName').value.trim();
+      const newTitle = document.getElementById('modalMgrTitle').value.trim();
+      const newPhone = document.getElementById('modalMgrPhone').value.trim();
+      const newEmail = document.getElementById('modalMgrEmail').value.trim();
+      const newUsername = document.getElementById('modalMgrUsername').value.trim();
+      const newPassword = document.getElementById('modalMgrPassword').value.trim();
+
+      AppState.areaManager.name = newName;
+      AppState.areaManager.title = newTitle;
+      AppState.areaManager.phone = newPhone;
+      AppState.areaManager.email = newEmail;
+      if (newUsername) AppState.areaManager.username = newUsername;
+      if (newPassword) AppState.areaManager.password = newPassword;
+
+      if (AppState.currentUser && AppState.currentUser.role === 'manager') {
+        AppState.currentUser.name = newName;
+        AppState.currentUser.title = newTitle;
+        if (newUsername) AppState.currentUser.username = newUsername;
+      }
 
       saveState();
       applySupervisorPortalMode();
+      renderAll();
       closeModal('managerModal');
-      alert('تم تحديث بيانات مدير الآريتين بنجاح!');
+
+      const isEn = AppState.lang === 'en';
+      const msg = isEn ? 'Personal profile & login credentials updated successfully!' : 'تم حفظ وتحديث بياناتك الشخصية وبيانات الدخول بنجاح!';
+      if (window.showToast) {
+        showToast(msg, 'success');
+      } else {
+        alert(msg);
+      }
     }
 
     /* =========================================================================
