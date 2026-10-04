@@ -1961,7 +1961,7 @@ html[dir="ltr"] .notif-dropdown-menu {
 
       <div class="header-actions">
         <!-- Realtime Cloud Sync Status Badge -->
-        <div id="cloudSyncBadge" class="sync-badge" title="حالة الاتصال السحابي المباشر - Google Firebase Firestore">
+        <div id="cloudSyncBadge" class="sync-badge" onclick="openCloudDiagnosticsModal()" style="cursor:pointer;" title="حالة الاتصال السحابي المباشر - اضغط هنا لتفاصيل الاتصال">
           <span id="cloudSyncDot" class="sync-dot pulse"></span>
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
           <span id="cloudSyncText">مزامنة سحابية لحظية</span>
@@ -3400,6 +3400,33 @@ html[dir="ltr"] .notif-dropdown-menu {
         <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ طباعة الفاتورة (Print / PDF)</button>
       </div>
     </div>
+  <!-- Modal: Cloud Sync Diagnostics & Setup -->
+  <div class="modal-overlay" id="cloudDiagnosticsModal">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title" id="cloudDiagModalTitle">مركز المزامنة السحابية وقاعدة البيانات ☁️</div>
+        <button class="modal-close" onclick="closeModal('cloudDiagnosticsModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 20px;">
+        <div id="cloudDiagStatusBox" style="padding: 16px; border-radius: 12px; margin-bottom: 16px; background: var(--bg-subtle); border: 1px solid var(--border-color);">
+          <!-- Dynamic status -->
+        </div>
+
+        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+          <strong style="color: var(--text-main);">📌 كيفية عمل المزامنة التلقائية بين المشرفين والمدير:</strong><br>
+          يقوم التطبيق بربط جميع المشرفين تلقائياً بقاعدة بيانات سحابية لحظية (Google Firebase Firestore).
+          عند قيام أي مشرف بتسجيل بيع أو زيارة أو إتمام مهمة، تصل فوراً لمدير الآريتين وجميع المشرفين دون الحاجة لإرسال ملفات يدوياً.
+        </div>
+
+        <div id="cloudDiagActionArea">
+          <!-- Direct action button to open Firebase console if not created -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('cloudDiagnosticsModal')">إغلاق</button>
+        <button type="button" class="btn btn-primary" onclick="retryCloudConnection()">🔄 إعادة فحص الاتصال السحابي الآن</button>
+      </div>
+    </div>
   </div>
 
   <!-- Application Logic -->
@@ -4478,6 +4505,8 @@ html[dir="ltr"] .notif-dropdown-menu {
       if (addTskModalT) addTskModalT.textContent = isEn ? 'Assign Field Task to Supervisor 📋' : 'إسناد مهمة ميدانية جديدة لمشرف 📋';
       const invModalT = document.getElementById('invoiceModalTitle');
       if (invModalT) invModalT.textContent = isEn ? 'Official Sales Invoice & Receipt 🧾' : 'فاتورة بيع وإيصال استلام رسمي 🧾';
+      const cloudDiagT = document.getElementById('cloudDiagModalTitle');
+      if (cloudDiagT) cloudDiagT.textContent = isEn ? 'Cloud Database & Synchronization Center ☁️' : 'مركز المزامنة السحابية وقاعدة البيانات ☁️';
 
       updateTableHeaders();
       updateSupervisorPortalSelectOptions();
@@ -4569,7 +4598,7 @@ html[dir="ltr"] .notif-dropdown-menu {
     /* =========================================================================
        CLOUD REALTIME DATABASE ENGINE (FIREBASE SYNC)
        ========================================================================= */
-    const firebaseConfig = {
+    const DEFAULT_FIREBASE_CONFIG = {
       apiKey: "AIzaSyAxXU5MePdVP1OcOyzitl0Jy5jMGrWtTSE",
       authDomain: "salesproapp-ba56b.firebaseapp.com",
       projectId: "salesproapp-ba56b",
@@ -4578,25 +4607,35 @@ html[dir="ltr"] .notif-dropdown-menu {
       appId: "1:954558106678:web:666ce1e645b3c9bbe01c97"
     };
 
+    let firebaseConfig = DEFAULT_FIREBASE_CONFIG;
+    try {
+      const customConf = localStorage.getItem('giza_saeed_custom_firebase_config');
+      if (customConf) firebaseConfig = JSON.parse(customConf);
+    } catch(e) {}
+
     let _cloudDb = null;
     let _isCloudConnected = false;
     let _cloudPushTimeout = null;
+    window._cloudLastError = null;
 
     function updateSyncUI(status, text) {
       const dot = document.getElementById('cloudSyncDot');
       const textElem = document.getElementById('cloudSyncText');
+      const badge = document.getElementById('cloudSyncBadge');
       if (!dot || !textElem) return;
 
       dot.className = 'sync-dot';
       if (status === 'connected') {
         dot.classList.add('pulse');
         textElem.textContent = text || (AppState.lang === 'en' ? 'Cloud Synced ✅' : 'متصل بالسحابة (مباشر) ✅');
+        if (badge) badge.title = AppState.lang === 'en' ? 'Live Cloud Sync Connected - Click for details' : 'المزامنة السحابية تعمل بنجاح - اضغط لعرض التفاصيل';
       } else if (status === 'syncing') {
         dot.classList.add('syncing');
         textElem.textContent = text || (AppState.lang === 'en' ? 'Syncing...' : 'جاري المزامنة...');
       } else {
         dot.classList.add('offline');
         textElem.textContent = text || (AppState.lang === 'en' ? 'Offline (Local)' : 'تخزين محلي (أوفلاين)');
+        if (badge) badge.title = AppState.lang === 'en' ? 'Cloud Not Active (Click for diagnostics & activation)' : 'قاعدة البيانات غير مفعلة (اضغط هنا للتشخيص والتفعيل)';
       }
     }
 
@@ -4604,7 +4643,8 @@ html[dir="ltr"] .notif-dropdown-menu {
       try {
         if (typeof firebase === 'undefined') {
           console.warn('Firebase SDK not loaded, working in offline mode.');
-          updateSyncUI('offline');
+          window._cloudLastError = { message: 'Firebase SDK scripts failed to load' };
+          updateSyncUI('offline', AppState.lang === 'en' ? 'Offline' : 'أوفلاين (SDK غير محمل)');
           return;
         }
 
@@ -4614,25 +4654,38 @@ html[dir="ltr"] .notif-dropdown-menu {
         _cloudDb = firebase.firestore();
         _cloudDb.settings({ experimentalForceLongPolling: true });
 
-        updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري المزامنة...');
+        updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري فحص الاتصال...');
 
         // Real-time synchronization listener
         const stateDoc = _cloudDb.collection('giza_upper_egypt_sales').doc('master_state');
         stateDoc.onSnapshot(doc => {
+          window._cloudLastError = null;
           if (doc.exists) {
             const data = doc.data();
             if (data && data.updatedAt) {
               const localTime = window._lastLocalSaveTimestamp || 0;
-              // If remote is newer, sync down
+              // If remote is newer, smart merge down
               if (data.updatedAt > localTime) {
                 if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
                 if (Array.isArray(data.branches)) AppState.branches = data.branches;
-                if (Array.isArray(data.sales)) AppState.sales = data.sales;
-                if (Array.isArray(data.visits)) AppState.visits = data.visits;
                 if (Array.isArray(data.directives)) AppState.directives = data.directives;
                 if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
                 if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
                 if (data.areaManager) AppState.areaManager = data.areaManager;
+
+                // Smart merge sales so unsaved local sales aren't overwritten
+                if (Array.isArray(data.sales)) {
+                  const remoteIds = new Set(data.sales.map(s => Number(s.id)));
+                  const localOnly = AppState.sales.filter(s => !remoteIds.has(Number(s.id)));
+                  AppState.sales = [...data.sales, ...localOnly];
+                }
+
+                // Smart merge visits
+                if (Array.isArray(data.visits)) {
+                  const remoteVIds = new Set(data.visits.map(v => Number(v.id)));
+                  const localOnlyV = AppState.visits.filter(v => !remoteVIds.has(Number(v.id)));
+                  AppState.visits = [...data.visits, ...localOnlyV];
+                }
 
                 saveStateLocalOnly();
                 renderAll();
@@ -4653,11 +4706,15 @@ html[dir="ltr"] .notif-dropdown-menu {
           updateSyncUI('connected');
         }, err => {
           console.warn('Cloud listener note:', err);
-          updateSyncUI('offline');
+          window._cloudLastError = err;
+          _isCloudConnected = false;
+          updateSyncUI('offline', AppState.lang === 'en' ? 'Database Not Enabled' : 'السحابة غير مفعلة');
         });
       } catch (err) {
         console.warn('Cloud init note:', err);
-        updateSyncUI('offline');
+        window._cloudLastError = err;
+        _isCloudConnected = false;
+        updateSyncUI('offline', AppState.lang === 'en' ? 'Offline' : 'تخزين محلي (أوفلاين)');
       }
     }
 
@@ -4684,17 +4741,104 @@ html[dir="ltr"] .notif-dropdown-menu {
           _cloudDb.collection('giza_upper_egypt_sales').doc('master_state').set(payload, { merge: true })
             .then(() => {
               _isCloudConnected = true;
+              window._cloudLastError = null;
               updateSyncUI('connected');
             })
             .catch(err => {
               console.warn('Cloud push error:', err);
-              updateSyncUI('offline');
+              window._cloudLastError = err;
+              _isCloudConnected = false;
+              updateSyncUI('offline', AppState.lang === 'en' ? 'Database Not Enabled' : 'فشل الحفظ بالسحابة');
             });
         } catch (e) {
           console.warn('Push error:', e);
+          window._cloudLastError = e;
+          _isCloudConnected = false;
           updateSyncUI('offline');
         }
       }, 500);
+    }
+
+    function openCloudDiagnosticsModal() {
+      const isEn = AppState.lang === 'en';
+      const statusBox = document.getElementById('cloudDiagStatusBox');
+      const actionArea = document.getElementById('cloudDiagActionArea');
+      
+      let statusHtml = '';
+      let actionHtml = '';
+
+      if (_isCloudConnected) {
+        statusHtml = `
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="font-size:32px;">🟢</div>
+            <div>
+              <div style="font-weight:800; font-size:15px; color:var(--success);">${isEn ? 'Cloud Sync is Active & Connected!' : 'المزامنة السحابية متصلة وشغالة بنجاح!'}</div>
+              <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">${isEn ? 'All sales and visits are syncing instantly across all devices.' : 'جميع المبيعات والزيارات تُسمّع فورياً ولحظياً عند جميع المشرفين والمدير.'}</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Project ID: <code>${firebaseConfig.projectId}</code></div>
+            </div>
+          </div>
+        `;
+        actionHtml = `
+          <div style="text-align:center; padding:10px;">
+            <button class="btn btn-outline btn-sm" onclick="pushStateToCloud(); showToast(AppState.lang === 'en' ? 'State pushed to cloud!' : 'تم دفع الداتا للسحابة بنجاح!', 'success');">
+              ☁️ ${isEn ? 'Force Re-sync Current Data to Cloud' : 'إعادة رفع ومزامنة كافة البيانات الحالية فوراً'}
+            </button>
+          </div>
+        `;
+      } else {
+        const errObj = window._cloudLastError;
+        const errStr = errObj ? (errObj.message || errObj.code || JSON.stringify(errObj)) : '';
+        const isDbMissing = errStr.includes('does not exist') || errStr.includes('unavailable') || errStr.includes('offline') || !errStr;
+
+        statusHtml = `
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <div style="font-size:32px;">⚠️</div>
+            <div>
+              <div style="font-weight:800; font-size:15px; color:var(--danger);">${isEn ? 'Cloud Database Not Active (Local Mode Only)' : 'السحابة غير مفعلة (البيانات تُحفظ محلياً على جهازك فقط)'}</div>
+              <div style="font-size:12.5px; color:var(--text-muted); margin-top:4px; line-height:1.5;">
+                ${isEn 
+                  ? 'The app is unable to sync with Firebase. Sales recorded will only stay on each person\'s device until the database is enabled in Firebase Console.' 
+                  : 'التطبيق غير قادر على المزامنة السحابية حالياً. أي مبيعات أو زيارات يسجلها المشرفون تظل محفوظة على هواتفهم فقط ولا تظهر للمدير، والسبب أن قاعدة بيانات Firestore لم تُفعّل بعد داخل حساب Firebase.'}
+              </div>
+              <div style="font-size:11.5px; color:var(--danger); margin-top:8px; background:rgba(239,68,68,0.08); padding:8px 12px; border-radius:6px; border:1px solid rgba(239,68,68,0.2);">
+                <strong>سبب عدم التسميع:</strong> قاعدة بيانات Firestore غير مفعلة في مشروع <code>${firebaseConfig.projectId}</code> على سيرفرات Google Cloud.
+              </div>
+            </div>
+          </div>
+        `;
+
+        actionHtml = `
+          <div style="background:linear-gradient(135deg, rgba(79,70,229,0.08), rgba(2,132,199,0.06)); border:1px solid rgba(79,70,229,0.2); border-radius:10px; padding:16px; margin-top:10px;">
+            <div style="font-weight:800; font-size:13.5px; color:var(--primary); margin-bottom:8px;">
+              🚀 حل المشكلة في 60 ثانية (تفعيل قاعدة البيانات):
+            </div>
+            <ol style="font-size:12.5px; color:var(--text-main); margin:0; padding-inline-start:20px; line-height:1.8;">
+              <li>اضغط على الزر أدناه لفتح مشروعك في <strong>Firebase Console</strong>.</li>
+              <li>اضغط على الزر الأزرق <strong>Create database</strong> (إنشاء قاعدة بيانات).</li>
+              <li>اختر أي سيرفر واضغط التالي، ثم اختر <strong>Start in test mode</strong> (وضع الاختبار).</li>
+              <li>اضغط <strong>Enable</strong> (تمكين) - وستعمل المزامنة فوراً ولحظياً للجميع!</li>
+            </ol>
+            <div style="margin-top:14px; text-align:center;">
+              <a href="https://console.firebase.google.com/project/${firebaseConfig.projectId}/firestore" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; font-weight:700; text-decoration:none; padding:8px 16px;">
+                <span>🔗</span> ${isEn ? 'Open Firebase Console to Create Database' : 'فتح كونسول Firebase لإنشاء قاعدة البيانات'}
+              </a>
+            </div>
+          </div>
+        `;
+      }
+
+      if (statusBox) statusBox.innerHTML = statusHtml;
+      if (actionArea) actionArea.innerHTML = actionHtml;
+
+      document.getElementById('cloudDiagnosticsModal').classList.add('open');
+    }
+
+    function retryCloudConnection() {
+      showToast(AppState.lang === 'en' ? 'Checking cloud connection...' : 'جاري فحص الاتصال السحابي...', 'info');
+      initCloudSync();
+      setTimeout(() => {
+        openCloudDiagnosticsModal();
+      }, 1200);
     }
 
     function saveState() {
