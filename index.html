@@ -3423,7 +3423,10 @@ html[dir="ltr"] .notif-dropdown-menu {
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <button type="button" class="btn btn-outline" onclick="closeModal('cloudDiagnosticsModal')">إغلاق</button>
-        <button type="button" class="btn btn-primary" onclick="retryCloudConnection()">🔄 إعادة فحص وتنشيط المزامنة الآن</button>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="forceAppUpdateAndClearCache()" title="تحديث ملفات التطبيق ومسح الكاش من المتصفح">⚡ تحديث النسخة ومسح الكاش</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="retryCloudConnection()">🔄 إعادة فحص المزامنة الآن</button>
+        </div>
       </div>
     </div>
   </div>
@@ -9281,10 +9284,31 @@ function doPost(e) {
         renderCharts();
       });
 
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW note:', err));
+    window.forceAppUpdateAndClearCache = function() {
+      if ('caches' in window) {
+        caches.keys().then(keys => {
+          keys.forEach(k => caches.delete(k));
+        });
       }
-    });
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(r => r.unregister());
+        });
+      }
+      if (window.showToast) {
+        showToast(AppState.lang === 'en' ? 'Purging cache & reloading fresh version...' : 'جاري مسح الكاش وتحميل أحدث نسخة حية من السيرفر...', 'info', 2000);
+      }
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 500);
+    };
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js?v=20261004v3').then(reg => {
+        reg.update();
+      }).catch(err => console.log('SW note:', err));
+    }
+  });
   </script>
   <div id="toastContainer"></div>
 </body>
