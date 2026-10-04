@@ -3402,29 +3402,28 @@ html[dir="ltr"] .notif-dropdown-menu {
     </div>
   <!-- Modal: Cloud Sync Diagnostics & Setup -->
   <div class="modal-overlay" id="cloudDiagnosticsModal">
-    <div class="modal-dialog" style="max-width: 580px;">
+    <div class="modal-dialog" style="max-width: 660px; max-height: 90vh; display: flex; flex-direction: column;">
       <div class="modal-header">
         <div class="modal-title" id="cloudDiagModalTitle">مركز المزامنة السحابية وقاعدة البيانات ☁️</div>
         <button class="modal-close" onclick="closeModal('cloudDiagnosticsModal')">&times;</button>
       </div>
-      <div class="modal-body" style="padding: 20px;">
+      <div class="modal-body" style="padding: 20px; overflow-y: auto;">
         <div id="cloudDiagStatusBox" style="padding: 16px; border-radius: 12px; margin-bottom: 16px; background: var(--bg-subtle); border: 1px solid var(--border-color);">
           <!-- Dynamic status -->
         </div>
 
-        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
-          <strong style="color: var(--text-main);">📌 كيفية عمل المزامنة التلقائية بين المشرفين والمدير:</strong><br>
-          يقوم التطبيق بربط جميع المشرفين تلقائياً بقاعدة بيانات سحابية لحظية (Google Firebase Firestore).
-          عند قيام أي مشرف بتسجيل بيع أو زيارة أو إتمام مهمة، تصل فوراً لمدير الآريتين وجميع المشرفين دون الحاجة لإرسال ملفات يدوياً.
+        <div style="font-size: 12.5px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; background: rgba(79,70,229,0.05); padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(79,70,229,0.15);">
+          <strong style="color: var(--text-main);">📌 كيف تعمل المزامنة اللحظية بين المشرفين والمدير:</strong><br>
+          عند تسجيل أي مبيعات أو زيارات أو تعديل أهداف وتوجيهات، تُحفظ العمليات تلقائياً في السحابة لتظهر فوراً على شاشات الجميع. يدعم التطبيق مزامنة <strong>Firebase Firestore اللحظية</strong>، ومزامنة <strong>Google Sheets (إكسيل أونلاين)</strong>.
         </div>
 
         <div id="cloudDiagActionArea">
-          <!-- Direct action button to open Firebase console if not created -->
+          <!-- Dynamic options and engines -->
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <button type="button" class="btn btn-outline" onclick="closeModal('cloudDiagnosticsModal')">إغلاق</button>
-        <button type="button" class="btn btn-primary" onclick="retryCloudConnection()">🔄 إعادة فحص الاتصال السحابي الآن</button>
+        <button type="button" class="btn btn-primary" onclick="retryCloudConnection()">🔄 إعادة فحص وتنشيط المزامنة الآن</button>
       </div>
     </div>
   </div>
@@ -4618,6 +4617,11 @@ html[dir="ltr"] .notif-dropdown-menu {
     let _cloudPushTimeout = null;
     window._cloudLastError = null;
 
+    let _isSheetsConnected = false;
+    let _sheetsPushTimeout = null;
+    let _sheetsPollingInterval = null;
+    window._sheetsLastError = null;
+
     function updateSyncUI(status, text) {
       const dot = document.getElementById('cloudSyncDot');
       const textElem = document.getElementById('cloudSyncText');
@@ -4625,97 +4629,347 @@ html[dir="ltr"] .notif-dropdown-menu {
       if (!dot || !textElem) return;
 
       dot.className = 'sync-dot';
-      if (status === 'connected') {
+      const isEn = AppState.lang === 'en';
+
+      if (_isCloudConnected && _isSheetsConnected) {
         dot.classList.add('pulse');
-        textElem.textContent = text || (AppState.lang === 'en' ? 'Cloud Synced ✅' : 'متصل بالسحابة (مباشر) ✅');
-        if (badge) badge.title = AppState.lang === 'en' ? 'Live Cloud Sync Connected - Click for details' : 'المزامنة السحابية تعمل بنجاح - اضغط لعرض التفاصيل';
+        textElem.textContent = isEn ? 'Synced (Cloud + Sheets) 🚀' : 'متصل (سحابي + شيت) 🚀';
+        if (badge) badge.title = isEn ? 'Live sync active with Firebase & Google Sheets' : 'المزامنة متصلة بنجاح بسيرفر Firebase وشيت Google Sheets معاً';
+      } else if (_isCloudConnected) {
+        dot.classList.add('pulse');
+        textElem.textContent = text || (isEn ? 'Firebase Synced ✅' : 'متصل بالسحابة (Firebase) ✅');
+        if (badge) badge.title = isEn ? 'Live Firebase Sync Connected - Click for details' : 'المزامنة السحابية اللحظية تعمل بنجاح عبر Firebase - اضغط للتفاصيل';
+      } else if (_isSheetsConnected) {
+        dot.classList.add('pulse');
+        textElem.textContent = text || (isEn ? 'Sheets Synced ✅' : 'متصل بالسحابة (Google Sheets) ✅');
+        if (badge) badge.title = isEn ? 'Live Google Sheets Connected - Click for details' : 'مزامنة Google Sheets تعمل بنجاح - اضغط للتفاصيل';
       } else if (status === 'syncing') {
         dot.classList.add('syncing');
-        textElem.textContent = text || (AppState.lang === 'en' ? 'Syncing...' : 'جاري المزامنة...');
+        textElem.textContent = text || (isEn ? 'Syncing...' : 'جاري المزامنة...');
       } else {
         dot.classList.add('offline');
-        textElem.textContent = text || (AppState.lang === 'en' ? 'Offline (Local)' : 'تخزين محلي (أوفلاين)');
-        if (badge) badge.title = AppState.lang === 'en' ? 'Cloud Not Active (Click for diagnostics & activation)' : 'قاعدة البيانات غير مفعلة (اضغط هنا للتشخيص والتفعيل)';
+        textElem.textContent = text || (isEn ? 'Offline (Local)' : 'تخزين محلي (أوفلاين)');
+        if (badge) badge.title = isEn ? 'Cloud Not Active (Click for diagnostics & activation)' : 'قاعدة البيانات غير مفعلة (اضغط هنا للتشخيص والتفعيل)';
       }
     }
 
     function initCloudSync() {
+      // 1. Check URL parameters for one-click setup from WhatsApp link
       try {
-        if (typeof firebase === 'undefined') {
-          console.warn('Firebase SDK not loaded, working in offline mode.');
-          window._cloudLastError = { message: 'Firebase SDK scripts failed to load' };
-          updateSyncUI('offline', AppState.lang === 'en' ? 'Offline' : 'أوفلاين (SDK غير محمل)');
-          return;
+        const urlParams = new URLSearchParams(window.location.search);
+        const sheetsParam = urlParams.get('sheets');
+        if (sheetsParam && sheetsParam.startsWith('http')) {
+          localStorage.setItem('giza_saeed_sheets_url', decodeURIComponent(sheetsParam));
+          const cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
+          window.history.replaceState({}, document.title, cleanUrl);
+          setTimeout(() => {
+            if (window.showToast) {
+              showToast(AppState.lang === 'en' 
+                ? 'Google Sheets cloud database connected from link! 🚀' 
+                : 'تم تفعيل ربط Google Sheets السحابي تلقائياً عبر الرابط! 🚀', 'success', 3500);
+            }
+          }, 1000);
         }
+      } catch(e) {}
 
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        _cloudDb = firebase.firestore();
-        _cloudDb.settings({ experimentalForceLongPolling: true });
+      // 2. Initialize Firebase Firestore (Realtime)
+      try {
+        if (typeof firebase !== 'undefined') {
+          if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+          }
+          _cloudDb = firebase.firestore();
+          _cloudDb.settings({ experimentalForceLongPolling: true });
 
-        updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري فحص الاتصال...');
+          updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري فحص الاتصال...');
 
-        // Real-time synchronization listener
-        const stateDoc = _cloudDb.collection('giza_upper_egypt_sales').doc('master_state');
-        stateDoc.onSnapshot(doc => {
-          window._cloudLastError = null;
-          if (doc.exists) {
-            const data = doc.data();
-            if (data && data.updatedAt) {
-              const localTime = window._lastLocalSaveTimestamp || 0;
-              // If remote is newer, smart merge down
-              if (data.updatedAt > localTime) {
-                if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
-                if (Array.isArray(data.branches)) AppState.branches = data.branches;
-                if (Array.isArray(data.directives)) AppState.directives = data.directives;
-                if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
-                if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
-                if (data.areaManager) AppState.areaManager = data.areaManager;
+          const stateDoc = _cloudDb.collection('giza_upper_egypt_sales').doc('master_state');
+          stateDoc.onSnapshot(doc => {
+            window._cloudLastError = null;
+            if (doc.exists) {
+              const data = doc.data();
+              if (data && data.updatedAt) {
+                const localTime = window._lastLocalSaveTimestamp || 0;
+                if (data.updatedAt > localTime) {
+                  if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
+                  if (Array.isArray(data.branches)) AppState.branches = data.branches;
+                  if (Array.isArray(data.directives)) AppState.directives = data.directives;
+                  if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
+                  if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
+                  if (data.areaManager) AppState.areaManager = data.areaManager;
 
-                // Smart merge sales so unsaved local sales aren't overwritten
-                if (Array.isArray(data.sales)) {
-                  const remoteIds = new Set(data.sales.map(s => Number(s.id)));
-                  const localOnly = AppState.sales.filter(s => !remoteIds.has(Number(s.id)));
-                  AppState.sales = [...data.sales, ...localOnly];
-                }
+                  if (Array.isArray(data.sales)) {
+                    const remoteIds = new Set(data.sales.map(s => Number(s.id)));
+                    const localOnly = AppState.sales.filter(s => !remoteIds.has(Number(s.id)));
+                    AppState.sales = [...data.sales, ...localOnly];
+                  }
 
-                // Smart merge visits
-                if (Array.isArray(data.visits)) {
-                  const remoteVIds = new Set(data.visits.map(v => Number(v.id)));
-                  const localOnlyV = AppState.visits.filter(v => !remoteVIds.has(Number(v.id)));
-                  AppState.visits = [...data.visits, ...localOnlyV];
-                }
+                  if (Array.isArray(data.visits)) {
+                    const remoteVIds = new Set(data.visits.map(v => Number(v.id)));
+                    const localOnlyV = AppState.visits.filter(v => !remoteVIds.has(Number(v.id)));
+                    AppState.visits = [...data.visits, ...localOnlyV];
+                  }
 
-                saveStateLocalOnly();
-                renderAll();
-                _isCloudConnected = true;
-                updateSyncUI('connected');
-                if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
-                  showToast(AppState.lang === 'en' 
-                    ? `Live update from: ${data.lastModifiedBy}` 
-                    : `تحديث مباشر وصل من: ${data.lastModifiedBy}`, 'info', 2500);
+                  saveStateLocalOnly();
+                  renderAll();
+                  _isCloudConnected = true;
+                  updateSyncUI();
+                  if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
+                    showToast(AppState.lang === 'en' 
+                      ? `Live update from: ${data.lastModifiedBy}` 
+                      : `تحديث مباشر وصل من: ${data.lastModifiedBy}`, 'info', 2500);
+                  }
                 }
               }
+            } else {
+              pushStateToCloud();
             }
-          } else {
-            // First time seeding to cloud
-            pushStateToCloud();
-          }
-          _isCloudConnected = true;
-          updateSyncUI('connected');
-        }, err => {
-          console.warn('Cloud listener note:', err);
-          window._cloudLastError = err;
-          _isCloudConnected = false;
-          updateSyncUI('offline', AppState.lang === 'en' ? 'Database Not Enabled' : 'السحابة غير مفعلة');
-        });
-      } catch (err) {
-        console.warn('Cloud init note:', err);
+            _isCloudConnected = true;
+            updateSyncUI();
+          }, err => {
+            console.warn('Firebase sync note:', err);
+            window._cloudLastError = err;
+            _isCloudConnected = false;
+            updateSyncUI();
+          });
+        } else {
+          window._cloudLastError = { message: 'Firebase SDK not loaded' };
+        }
+      } catch(err) {
+        console.warn('Firebase init error:', err);
         window._cloudLastError = err;
         _isCloudConnected = false;
-        updateSyncUI('offline', AppState.lang === 'en' ? 'Offline' : 'تخزين محلي (أوفلاين)');
       }
+
+      // 3. Initialize Google Sheets Sync (Polling + Sync)
+      initGoogleSheetsSync();
+    }
+
+    function initGoogleSheetsSync() {
+      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
+      if (sheetsUrl && sheetsUrl.trim().startsWith('http')) {
+        pullStateFromGoogleSheets();
+        if (!_sheetsPollingInterval) {
+          _sheetsPollingInterval = setInterval(() => {
+            pullStateFromGoogleSheets();
+          }, 15000);
+        }
+      }
+    }
+
+    async function pullStateFromGoogleSheets(isManual) {
+      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
+      if (!sheetsUrl || !sheetsUrl.trim().startsWith('http')) return;
+
+      try {
+        const fetchUrl = sheetsUrl.trim() + (sheetsUrl.includes('?') ? '&' : '?') + 'action=load&nocache=' + Date.now();
+        const res = await fetch(fetchUrl);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (data && typeof data === 'object') {
+          _isSheetsConnected = true;
+          window._sheetsLastError = null;
+          updateSyncUI();
+
+          if (data.updatedAt) {
+            const localTime = window._lastLocalSaveTimestamp || 0;
+            if (data.updatedAt > localTime) {
+              if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
+              if (Array.isArray(data.branches)) AppState.branches = data.branches;
+              if (Array.isArray(data.directives)) AppState.directives = data.directives;
+              if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
+              if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
+              if (data.areaManager) AppState.areaManager = data.areaManager;
+
+              if (Array.isArray(data.sales)) {
+                const remoteIds = new Set(data.sales.map(s => Number(s.id)));
+                const localOnly = AppState.sales.filter(s => !remoteIds.has(Number(s.id)));
+                AppState.sales = [...data.sales, ...localOnly];
+              }
+
+              if (Array.isArray(data.visits)) {
+                const remoteVIds = new Set(data.visits.map(v => Number(v.id)));
+                const localOnlyV = AppState.visits.filter(v => !remoteVIds.has(Number(v.id)));
+                AppState.visits = [...data.visits, ...localOnlyV];
+              }
+
+              saveStateLocalOnly();
+              renderAll();
+              if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
+                showToast(AppState.lang === 'en' 
+                  ? `Google Sheets sync: Updated by ${data.lastModifiedBy}` 
+                  : `تحديث عبر Google Sheets وصل من: ${data.lastModifiedBy}`, 'info', 2500);
+              }
+            }
+          }
+          if (isManual) {
+            showToast(AppState.lang === 'en' ? 'Connected & synced with Google Sheets successfully! ✅' : 'تم الاتصال والمزامنة مع Google Sheets بنجاح! ✅', 'success');
+          }
+        }
+      } catch(err) {
+        console.warn('Sheets pull note:', err);
+        window._sheetsLastError = err;
+        if (isManual) {
+          showToast(AppState.lang === 'en' ? 'Could not connect to Google Sheets URL' : 'تعذر الاتصال برابط Google Sheets، يرجى التأكد من نشر تطبيق الويب', 'error');
+        }
+      }
+    }
+
+    function pushStateToGoogleSheets() {
+      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
+      if (!sheetsUrl || !sheetsUrl.trim().startsWith('http')) return;
+
+      clearTimeout(_sheetsPushTimeout);
+      _sheetsPushTimeout = setTimeout(() => {
+        try {
+          const payload = {
+            supervisors: AppState.supervisors,
+            branches: AppState.branches,
+            sales: AppState.sales,
+            visits: AppState.visits,
+            directives: AppState.directives,
+            promoters: AppState.promoters,
+            tasks: AppState.tasks || [],
+            areaManager: AppState.areaManager,
+            updatedAt: window._lastLocalSaveTimestamp || Date.now(),
+            lastModifiedBy: AppState.currentUser ? AppState.currentUser.name : 'Unknown User'
+          };
+
+          fetch(sheetsUrl.trim(), {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          }).then(() => {
+            _isSheetsConnected = true;
+            window._sheetsLastError = null;
+            updateSyncUI();
+          }).catch(err => {
+            console.warn('Sheets push error:', err);
+            window._sheetsLastError = err;
+          });
+        } catch(e) {
+          console.warn('Sheets push exception:', e);
+        }
+      }, 1000);
+    }
+
+    function saveGoogleSheetsUrl() {
+      const input = document.getElementById('inputGoogleSheetsUrl');
+      if (!input) return;
+      const url = input.value.trim();
+      if (!url) {
+        localStorage.removeItem('giza_saeed_sheets_url');
+        _isSheetsConnected = false;
+        if (_sheetsPollingInterval) {
+          clearInterval(_sheetsPollingInterval);
+          _sheetsPollingInterval = null;
+        }
+        updateSyncUI();
+        showToast(AppState.lang === 'en' ? 'Google Sheets sync disabled' : 'تم إلغاء ربط Google Sheets', 'info');
+        openCloudDiagnosticsModal();
+        return;
+      }
+
+      if (!url.startsWith('https://script.google.com/macros/s/')) {
+        showToast(AppState.lang === 'en' ? 'Please enter a valid Google Apps Script Web App URL' : 'يرجى إدخال رابط تطبيق ويب صحيح يبدأ بـ https://script.google.com/macros/s/', 'warning');
+        return;
+      }
+
+      localStorage.setItem('giza_saeed_sheets_url', url);
+      showToast(AppState.lang === 'en' ? 'Testing connection with Google Sheets...' : 'جاري اختبار الاتصال مع Google Sheets...', 'info');
+      pullStateFromGoogleSheets(true);
+      pushStateToGoogleSheets();
+      setTimeout(openCloudDiagnosticsModal, 1500);
+    }
+
+    function copySupervisorsShareLink() {
+      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
+      if (!sheetsUrl) {
+        showToast(AppState.lang === 'en' ? 'Please set and save a Google Sheets URL first!' : 'يرجى حفظ رابط Google Sheets أولاً!', 'warning');
+        return;
+      }
+      const baseUrl = window.location.origin + window.location.pathname;
+      const shareUrl = `${baseUrl}?sheets=${encodeURIComponent(sheetsUrl)}`;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        showToast(AppState.lang === 'en' ? 'Share link copied! Send it to supervisors on WhatsApp 📋' : 'تم نسخ رابط المشرفين! أرسله للمشرفين في جروب الواتساب 📋', 'success', 4000);
+      }).catch(() => {
+        prompt('انسخ الرابط التالي:', shareUrl);
+      });
+    }
+
+    function copyFirebaseRulesCode() {
+      const rules = `rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if true;\n    }\n  }\n}`;
+      navigator.clipboard.writeText(rules).then(() => {
+        showToast(AppState.lang === 'en' ? 'Rules code copied to clipboard!' : 'تم نسخ كود القواعد للحافظة بنجاح! 📋', 'success');
+      }).catch(() => {
+        prompt('انسخ كود القواعد:', rules);
+      });
+    }
+
+    function copyGoogleAppsScriptCode() {
+      const scriptCode = `function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("master_state");
+  if (!sheet) {
+    sheet = ss.insertSheet("master_state");
+    sheet.getRange(1, 1).setValue("{}");
+  }
+  var json = sheet.getRange(1, 1).getValue() || "{}";
+  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var raw = e.postData.contents;
+    var data = JSON.parse(raw);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    var stateSheet = ss.getSheetByName("master_state");
+    if (!stateSheet) stateSheet = ss.insertSheet("master_state");
+    stateSheet.getRange(1, 1).setValue(raw);
+
+    if (data.sales && Array.isArray(data.sales)) {
+      var salesSheet = ss.getSheetByName("المبيعات");
+      if (!salesSheet) {
+        salesSheet = ss.insertSheet("المبيعات");
+        salesSheet.appendRow(["المعرف", "التاريخ", "المشرف", "الفرع/المنطقة", "اسم العميل", "الصنف", "الكمية", "سعر الوحدة", "الإجمالي", "طريقة الدفع", "المسجل"]);
+        salesSheet.setFrozenRows(1);
+      }
+      var lastRow = salesSheet.getLastRow();
+      if (lastRow > 1) salesSheet.getRange(2, 1, lastRow - 1, 11).clearContent();
+      var rows = data.sales.map(function(s) {
+        return [s.id || '', s.date || '', s.supervisor || '', s.branch || '', s.client || '', s.item || '', Number(s.qty) || 1, Number(s.unitPrice) || 0, Number(s.total) || 0, s.payment || '', s.recordedBy || ''];
+      });
+      if (rows.length > 0) salesSheet.getRange(2, 1, rows.length, 11).setValues(rows);
+    }
+
+    if (data.visits && Array.isArray(data.visits)) {
+      var visitsSheet = ss.getSheetByName("الزيارات_الميدانية");
+      if (!visitsSheet) {
+        visitsSheet = ss.insertSheet("الزيارات_الميدانية");
+        visitsSheet.appendRow(["المعرف", "التاريخ", "الوقت", "المشرف", "الفرع/المنطقة", "اسم العميل", "نوع الزيارة", "النتيجة", "ملاحظات"]);
+        visitsSheet.setFrozenRows(1);
+      }
+      var lastVRow = visitsSheet.getLastRow();
+      if (lastVRow > 1) visitsSheet.getRange(2, 1, lastVRow - 1, 9).clearContent();
+      var vRows = data.visits.map(function(v) {
+        return [v.id || '', v.date || '', v.time || '', v.supervisor || '', v.branch || '', v.client || '', v.type || '', v.result || '', v.notes || ''];
+      });
+      if (vRows.length > 0) visitsSheet.getRange(2, 1, vRows.length, 9).setValues(vRows);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", error: err.toString() })).setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+      navigator.clipboard.writeText(scriptCode).then(() => {
+        showToast(AppState.lang === 'en' ? 'Google Apps Script code copied! 📋' : 'تم نسخ كود Apps Script بالكامل! 📋', 'success');
+      }).catch(() => {
+        prompt('انسخ الكود:', scriptCode);
+      });
     }
 
     function pushStateToCloud() {
@@ -4742,13 +4996,13 @@ html[dir="ltr"] .notif-dropdown-menu {
             .then(() => {
               _isCloudConnected = true;
               window._cloudLastError = null;
-              updateSyncUI('connected');
+              updateSyncUI();
             })
             .catch(err => {
               console.warn('Cloud push error:', err);
               window._cloudLastError = err;
               _isCloudConnected = false;
-              updateSyncUI('offline', AppState.lang === 'en' ? 'Database Not Enabled' : 'فشل الحفظ بالسحابة');
+              updateSyncUI();
             });
         } catch (e) {
           console.warn('Push error:', e);
@@ -4763,69 +5017,172 @@ html[dir="ltr"] .notif-dropdown-menu {
       const isEn = AppState.lang === 'en';
       const statusBox = document.getElementById('cloudDiagStatusBox');
       const actionArea = document.getElementById('cloudDiagActionArea');
+      const savedSheetsUrl = localStorage.getItem('giza_saeed_sheets_url') || '';
       
       let statusHtml = '';
       let actionHtml = '';
 
-      if (_isCloudConnected) {
+      const isAnyActive = _isCloudConnected || _isSheetsConnected;
+
+      if (isAnyActive) {
         statusHtml = `
           <div style="display:flex; align-items:center; gap:12px;">
             <div style="font-size:32px;">🟢</div>
             <div>
-              <div style="font-weight:800; font-size:15px; color:var(--success);">${isEn ? 'Cloud Sync is Active & Connected!' : 'المزامنة السحابية متصلة وشغالة بنجاح!'}</div>
-              <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">${isEn ? 'All sales and visits are syncing instantly across all devices.' : 'جميع المبيعات والزيارات تُسمّع فورياً ولحظياً عند جميع المشرفين والمدير.'}</div>
-              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Project ID: <code>${firebaseConfig.projectId}</code></div>
+              <div style="font-weight:800; font-size:15px; color:var(--success);">
+                ${isEn ? 'Cloud Database Active & Synced!' : 'المزامنة السحابية متصلة وشغالة بنجاح!'}
+              </div>
+              <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">
+                ${isEn 
+                  ? 'All sales, visits, and directives are updating in real-time across devices.' 
+                  : 'أي بيع أو زيارة يسجلها أي مشرف أو المدير تُسمّع فورياً عند الجميع.'}
+              </div>
+              <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+                <span class="badge ${ _isCloudConnected ? 'badge-success' : 'badge-neutral' }">
+                  Firebase: ${_isCloudConnected ? 'متصل لحظياً ⚡' : 'غير متصل'}
+                </span>
+                <span class="badge ${ _isSheetsConnected ? 'badge-success' : 'badge-neutral' }">
+                  Google Sheets: ${_isSheetsConnected ? 'متصل (إكسيل لايف) 📊' : 'غير متصل'}
+                </span>
+              </div>
             </div>
-          </div>
-        `;
-        actionHtml = `
-          <div style="text-align:center; padding:10px;">
-            <button class="btn btn-outline btn-sm" onclick="pushStateToCloud(); showToast(AppState.lang === 'en' ? 'State pushed to cloud!' : 'تم دفع الداتا للسحابة بنجاح!', 'success');">
-              ☁️ ${isEn ? 'Force Re-sync Current Data to Cloud' : 'إعادة رفع ومزامنة كافة البيانات الحالية فوراً'}
-            </button>
           </div>
         `;
       } else {
         const errObj = window._cloudLastError;
         const errStr = errObj ? (errObj.message || errObj.code || JSON.stringify(errObj)) : '';
-        const isDbMissing = errStr.includes('does not exist') || errStr.includes('unavailable') || errStr.includes('offline') || !errStr;
+        const isPermissionDenied = errStr.includes('permission-denied') || errStr.includes('Missing or insufficient permissions') || errStr.includes('PERMISSION_DENIED');
 
         statusHtml = `
           <div style="display:flex; align-items:flex-start; gap:12px;">
             <div style="font-size:32px;">⚠️</div>
             <div>
-              <div style="font-weight:800; font-size:15px; color:var(--danger);">${isEn ? 'Cloud Database Not Active (Local Mode Only)' : 'السحابة غير مفعلة (البيانات تُحفظ محلياً على جهازك فقط)'}</div>
+              <div style="font-weight:800; font-size:15px; color:var(--danger);">
+                ${isEn ? 'Cloud Sync Inactive (Local Storage Mode)' : 'المزامنة السحابية غير نشطة (البيانات محفوظة على هذا الجهاز فقط)'}
+              </div>
               <div style="font-size:12.5px; color:var(--text-muted); margin-top:4px; line-height:1.5;">
-                ${isEn 
-                  ? 'The app is unable to sync with Firebase. Sales recorded will only stay on each person\'s device until the database is enabled in Firebase Console.' 
-                  : 'التطبيق غير قادر على المزامنة السحابية حالياً. أي مبيعات أو زيارات يسجلها المشرفون تظل محفوظة على هواتفهم فقط ولا تظهر للمدير، والسبب أن قاعدة بيانات Firestore لم تُفعّل بعد داخل حساب Firebase.'}
+                ${isPermissionDenied 
+                  ? '🎉 <strong>تم إنشاء قاعدة البيانات بنجاح!</strong> متبقي فقط تفعيل صلاحيات القراءة والكتابة في كونسول Firebase (خطوة 10 ثوانٍ)، أو ربط Google Sheets بالأسفل.' 
+                  : (isEn ? 'The app cannot sync across devices until you enable Firebase Rules or connect Google Sheets.' : 'التطبيق لا يشارك البيانات مع بقية الأجهزة حالياً. اختر أحد الحلين بالأسفل لتفعيل التسميع الفوري.')}
               </div>
-              <div style="font-size:11.5px; color:var(--danger); margin-top:8px; background:rgba(239,68,68,0.08); padding:8px 12px; border-radius:6px; border:1px solid rgba(239,68,68,0.2);">
-                <strong>سبب عدم التسميع:</strong> قاعدة بيانات Firestore غير مفعلة في مشروع <code>${firebaseConfig.projectId}</code> على سيرفرات Google Cloud.
-              </div>
-            </div>
-          </div>
-        `;
-
-        actionHtml = `
-          <div style="background:linear-gradient(135deg, rgba(79,70,229,0.08), rgba(2,132,199,0.06)); border:1px solid rgba(79,70,229,0.2); border-radius:10px; padding:16px; margin-top:10px;">
-            <div style="font-weight:800; font-size:13.5px; color:var(--primary); margin-bottom:8px;">
-              🚀 حل المشكلة في 60 ثانية (تفعيل قاعدة البيانات):
-            </div>
-            <ol style="font-size:12.5px; color:var(--text-main); margin:0; padding-inline-start:20px; line-height:1.8;">
-              <li>اضغط على الزر أدناه لفتح مشروعك في <strong>Firebase Console</strong>.</li>
-              <li>اضغط على الزر الأزرق <strong>Create database</strong> (إنشاء قاعدة بيانات).</li>
-              <li>اختر أي سيرفر واضغط التالي، ثم اختر <strong>Start in test mode</strong> (وضع الاختبار).</li>
-              <li>اضغط <strong>Enable</strong> (تمكين) - وستعمل المزامنة فوراً ولحظياً للجميع!</li>
-            </ol>
-            <div style="margin-top:14px; text-align:center;">
-              <a href="https://console.firebase.google.com/project/${firebaseConfig.projectId}/firestore" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; font-weight:700; text-decoration:none; padding:8px 16px;">
-                <span>🔗</span> ${isEn ? 'Open Firebase Console to Create Database' : 'فتح كونسول Firebase لإنشاء قاعدة البيانات'}
-              </a>
             </div>
           </div>
         `;
       }
+
+      // Action Area: Card 1 (Firebase) and Card 2 (Google Sheets)
+      const errObj = window._cloudLastError;
+      const errStr = errObj ? (errObj.message || errObj.code || JSON.stringify(errObj)) : '';
+      const isPermissionDenied = errStr.includes('permission-denied') || errStr.includes('Missing or insufficient permissions') || errStr.includes('PERMISSION_DENIED');
+
+      actionHtml = `
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <!-- Card 1: Firebase Realtime -->
+          <div style="border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; background: var(--bg-card);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-weight:800; font-size:14px; color:var(--primary); display:flex; align-items:center; gap:6px;">
+                <span>⚡</span> <span>الخيار الأول: سيرفر Firebase Firestore (تزامن لحظي بالمللي ثانية)</span>
+              </div>
+              <span class="badge ${_isCloudConnected ? 'badge-success' : 'badge-warning'}">
+                ${_isCloudConnected ? 'متصل ✅' : 'يحتاج تفعيل الصلاحية'}
+              </span>
+            </div>
+            
+            ${_isCloudConnected ? `
+              <div style="font-size:12.5px; color:var(--success); margin-bottom:8px;">
+                السيرفر يعمل بكفاءة تامة. مشروعك السحابي: <code>${firebaseConfig.projectId}</code>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="pushStateToCloud(); showToast(AppState.lang === 'en' ? 'State pushed to Firebase!' : 'تم إرسال كامل البيانات لسيرفر Firebase!', 'success');">
+                ☁️ إعادة رفع ومزامنة كافة البيانات الحالية فوراً
+              </button>
+            ` : `
+              <div style="font-size:12.5px; color:var(--text-main); line-height:1.6; margin-bottom:10px;">
+                ${isPermissionDenied ? `
+                  <div style="background:rgba(245,158,11,0.08); padding:10px; border-radius:8px; border:1px solid rgba(245,158,11,0.25); margin-bottom:10px;">
+                    <strong>قاعدة البيانات موجودة بنجاح على سيرفر جوجل!</strong> الخطوة الوحيدة المتبقية لفتح الصلاحيات:
+                    <ol style="margin:6px 0 0; padding-inline-start:20px; font-size:12px; line-height:1.7;">
+                      <li>اضغط على زر <strong>فتح صفحة القواعد (Firebase Rules)</strong> أدناه.</li>
+                      <li>اضغط زر <strong>نسخ كود القواعد</strong>، والصقه في المحرر واستبدل الكود الموجود.</li>
+                      <li>اضغط زر <strong>Publish (نشر)</strong> بالأعلى - وستعمل المزامنة فوراً للجميع!</li>
+                    </ol>
+                  </div>
+                ` : `
+                  قاعدة البيانات تحتاج إلى تفعيل وضع الاختبار أو الصلاحيات في كونسول Firebase.
+                `}
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <a href="https://console.firebase.google.com/project/${firebaseConfig.projectId}/firestore/rules" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;">
+                  🔗 فتح صفحة القواعد (Rules) في كونسول Firebase
+                </a>
+                <button type="button" class="btn btn-outline btn-sm" onclick="copyFirebaseRulesCode()">
+                  📋 نسخ كود القواعد الجاهز
+                </button>
+              </div>
+            `}
+          </div>
+
+          <!-- Card 2: Google Sheets Live Sync -->
+          <div style="border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; background: var(--bg-card);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-weight:800; font-size:14px; color:#059669; display:flex; align-items:center; gap:6px;">
+                <span>📊</span> <span>الخيار الثاني: الربط المباشر مع Google Sheets (إكسيل أونلاين مجاني 100%)</span>
+              </div>
+              <span class="badge ${_isSheetsConnected ? 'badge-success' : 'badge-neutral'}">
+                ${_isSheetsConnected ? 'متصل وشغال ✅' : (savedSheetsUrl ? 'جاري الفحص' : 'غير مفعل')}
+              </span>
+            </div>
+
+            <p style="font-size:12.5px; color:var(--text-muted); margin:0 0 10px; line-height:1.5;">
+              يسمح للمدير بفتح شيت إكسيل على جوجل درايف يظهر فيه كل بيع وكل زيارة كصفوف منظمة، مع مزامنة تلقائية لجميع المشرفين دون أي تعقيد.
+            </p>
+
+            <div style="margin-bottom:10px;">
+              <label style="font-size:11.5px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">
+                رابط تطبيق الويب الخاص بـ Google Sheets (Web App URL):
+              </label>
+              <div style="display:flex; gap:8px;">
+                <input id="inputGoogleSheetsUrl" type="url" value="${savedSheetsUrl}" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-main); font-size:12px; direction:ltr;" />
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveGoogleSheetsUrl()">
+                  💾 حفظ واختبار
+                </button>
+              </div>
+            </div>
+
+            ${savedSheetsUrl ? `
+              <div style="background:rgba(5,150,105,0.08); border:1px solid rgba(5,150,105,0.25); border-radius:8px; padding:10px 12px; margin-bottom:10px;">
+                <div style="font-weight:700; font-size:12px; color:#059669; margin-bottom:4px;">
+                  📲 رابط المشاركة السريع للمشرفين (WhatsApp):
+                </div>
+                <div style="font-size:11.5px; color:var(--text-main); margin-bottom:8px;">
+                  أرسل هذا الرابط لجميع المشرفين. بمجرد أن يفتح أي مشرف الرابط على هاتفه، سيتصل تلقائياً بقاعدة البيانات وتبدأ المزامنة دون الحاجة لأي إعدادات!
+                </div>
+                <button type="button" class="btn btn-success btn-sm" onclick="copySupervisorsShareLink()">
+                  📋 نسخ رابط المشرفين لإرساله على واتساب
+                </button>
+              </div>
+            ` : ''}
+
+            <!-- Collapsible Guide -->
+            <details style="margin-top:8px; background:var(--bg-subtle); border-radius:8px; padding:8px 12px; font-size:12px;">
+              <summary style="cursor:pointer; font-weight:700; color:var(--primary);">
+                📖 طريقة إعداد Google Sheet في دقيقة واحدة مع كود Apps Script الجاهز
+              </summary>
+              <div style="margin-top:10px; line-height:1.7;">
+                <ol style="padding-inline-start:20px; margin:0 0 10px;">
+                  <li>افتح صفحة جديدة في جوجل شيت: <a href="https://sheets.new" target="_blank" rel="noopener" style="color:var(--primary); font-weight:700;">sheets.new ↗</a></li>
+                  <li>من القائمة اضغط على: <strong>ملحقات (Extensions) > Apps Script</strong>.</li>
+                  <li>احذف الكود الموجود، والصق الكود الجاهز، واضغط <strong>Save (حفظ)</strong>.</li>
+                  <li>اضغط <strong>Deploy (نشر) > New deployment (نشر جديد)</strong>، واختر نوع <strong>Web app</strong>.</li>
+                  <li>اجعل من لديه حق الوصول: <strong>Anyone (أي شخص)</strong> ثم اضغط Deploy وانسخ الرابط والصقه هنا.</li>
+                </ol>
+                <button type="button" class="btn btn-outline btn-sm" onclick="copyGoogleAppsScriptCode()">
+                  📋 نسخ كود Google Apps Script بالكامل
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+      `;
 
       if (statusBox) statusBox.innerHTML = statusHtml;
       if (actionArea) actionArea.innerHTML = actionHtml;
@@ -4834,7 +5191,7 @@ html[dir="ltr"] .notif-dropdown-menu {
     }
 
     function retryCloudConnection() {
-      showToast(AppState.lang === 'en' ? 'Checking cloud connection...' : 'جاري فحص الاتصال السحابي...', 'info');
+      showToast(AppState.lang === 'en' ? 'Checking connections...' : 'جاري فحص الاتصال السحابي...', 'info');
       initCloudSync();
       setTimeout(() => {
         openCloudDiagnosticsModal();
@@ -4844,6 +5201,7 @@ html[dir="ltr"] .notif-dropdown-menu {
     function saveState() {
       saveStateLocalOnly();
       pushStateToCloud();
+      pushStateToGoogleSheets();
     }
 
     function saveStateLocalOnly() {
