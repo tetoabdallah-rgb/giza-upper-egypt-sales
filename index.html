@@ -4748,24 +4748,32 @@ html[dir="ltr"] .notif-dropdown-menu {
       initGoogleSheetsSync();
     }
 
+    const DEFAULT_GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwWL-TR2D5WEaqwXct5MPZjUiOEIWhnkI647eQ3gVzP56GD4LpVanY0A1QQll-360Of/exec";
+
+    function getActiveSheetsUrl() {
+      const custom = localStorage.getItem('giza_saeed_sheets_url');
+      if (custom && custom.trim().startsWith('http')) return custom.trim();
+      return DEFAULT_GOOGLE_SHEETS_URL;
+    }
+
     function initGoogleSheetsSync() {
-      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
-      if (sheetsUrl && sheetsUrl.trim().startsWith('http')) {
+      const sheetsUrl = getActiveSheetsUrl();
+      if (sheetsUrl) {
         pullStateFromGoogleSheets();
         if (!_sheetsPollingInterval) {
           _sheetsPollingInterval = setInterval(() => {
             pullStateFromGoogleSheets();
-          }, 15000);
+          }, 12000);
         }
       }
     }
 
     async function pullStateFromGoogleSheets(isManual) {
-      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
-      if (!sheetsUrl || !sheetsUrl.trim().startsWith('http')) return;
+      const sheetsUrl = getActiveSheetsUrl();
+      if (!sheetsUrl) return;
 
       try {
-        const fetchUrl = sheetsUrl.trim() + (sheetsUrl.includes('?') ? '&' : '?') + 'action=load&nocache=' + Date.now();
+        const fetchUrl = sheetsUrl + (sheetsUrl.includes('?') ? '&' : '?') + 'action=load&nocache=' + Date.now();
         const res = await fetch(fetchUrl);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
@@ -4801,27 +4809,27 @@ html[dir="ltr"] .notif-dropdown-menu {
               renderAll();
               if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
                 showToast(AppState.lang === 'en' 
-                  ? `Google Sheets sync: Updated by ${data.lastModifiedBy}` 
-                  : `تحديث عبر Google Sheets وصل من: ${data.lastModifiedBy}`, 'info', 2500);
+                  ? `Live cloud sync: Updated by ${data.lastModifiedBy}` 
+                  : `تحديث سحابي مباشر وصل من: ${data.lastModifiedBy}`, 'info', 2500);
               }
             }
           }
           if (isManual) {
-            showToast(AppState.lang === 'en' ? 'Connected & synced with Google Sheets successfully! ✅' : 'تم الاتصال والمزامنة مع Google Sheets بنجاح! ✅', 'success');
+            showToast(AppState.lang === 'en' ? 'Connected & synced with Google Sheets successfully! ✅' : 'تم الاتصال والمزامنة السحابية بنجاح! ✅', 'success');
           }
         }
       } catch(err) {
         console.warn('Sheets pull note:', err);
         window._sheetsLastError = err;
         if (isManual) {
-          showToast(AppState.lang === 'en' ? 'Could not connect to Google Sheets URL' : 'تعذر الاتصال برابط Google Sheets، يرجى التأكد من نشر تطبيق الويب', 'error');
+          showToast(AppState.lang === 'en' ? 'Could not connect to Google Sheets URL' : 'تعذر الاتصال بسحابة Google Sheets', 'error');
         }
       }
     }
 
     function pushStateToGoogleSheets() {
-      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
-      if (!sheetsUrl || !sheetsUrl.trim().startsWith('http')) return;
+      const sheetsUrl = getActiveSheetsUrl();
+      if (!sheetsUrl) return;
 
       clearTimeout(_sheetsPushTimeout);
       _sheetsPushTimeout = setTimeout(() => {
@@ -4839,7 +4847,7 @@ html[dir="ltr"] .notif-dropdown-menu {
             lastModifiedBy: AppState.currentUser ? AppState.currentUser.name : 'Unknown User'
           };
 
-          fetch(sheetsUrl.trim(), {
+          fetch(sheetsUrl, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -4888,7 +4896,7 @@ html[dir="ltr"] .notif-dropdown-menu {
     }
 
     function copySupervisorsShareLink() {
-      const sheetsUrl = localStorage.getItem('giza_saeed_sheets_url');
+      const sheetsUrl = getActiveSheetsUrl();
       if (!sheetsUrl) {
         showToast(AppState.lang === 'en' ? 'Please set and save a Google Sheets URL first!' : 'يرجى حفظ رابط Google Sheets أولاً!', 'warning');
         return;
@@ -5020,7 +5028,7 @@ function doPost(e) {
       const isEn = AppState.lang === 'en';
       const statusBox = document.getElementById('cloudDiagStatusBox');
       const actionArea = document.getElementById('cloudDiagActionArea');
-      const savedSheetsUrl = localStorage.getItem('giza_saeed_sheets_url') || '';
+      const savedSheetsUrl = getActiveSheetsUrl();
       
       let statusHtml = '';
       let actionHtml = '';
