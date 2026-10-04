@@ -1616,6 +1616,221 @@ html[dir="ltr"] .login-input-icon {
 .rank-2 { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
 .rank-3 { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
 
+/* =========================================================================
+   NEW ENTERPRISE SUITE CSS (FEATURES 1 TO 6)
+   ========================================================================= */
+/* 1. Notifications Dropdown & Badge */
+.notif-dropdown-wrapper {
+  position: relative;
+}
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-card);
+  box-shadow: 0 2px 4px rgba(239,68,68,0.4);
+}
+html[dir="ltr"] .notif-badge {
+  right: auto;
+  left: -4px;
+}
+.notif-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 360px;
+  max-width: 90vw;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 15px 35px -5px rgba(15,23,42,0.25);
+  z-index: 999;
+  overflow: hidden;
+  display: none;
+  animation: fadeInDown 0.2s ease-out;
+}
+html[dir="ltr"] .notif-dropdown-menu {
+  right: auto;
+  left: 0;
+}
+.notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
+}
+.notif-list {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+.notif-item {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: background 0.15s ease;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.notif-item:last-child {
+  border-bottom: none;
+}
+.notif-item:hover {
+  background: var(--bg-subtle);
+}
+.notif-item.unread {
+  background: rgba(79, 70, 229, 0.05);
+}
+.notif-icon-chip {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+/* 2. Run-Rate & Forecasting Card */
+.run-rate-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.run-rate-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 3. Daily Field Tasks Component */
+.tasks-card {
+  border-radius: 14px;
+}
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-subtle);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  gap: 12px;
+}
+.task-item:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+}
+.task-item.done {
+  opacity: 0.65;
+  background: var(--bg-body);
+}
+.task-item.done .task-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.task-checkbox-custom {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* 4. Invoice & Receipt Modal / Print Preview */
+.invoice-paper {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+  line-height: 1.5;
+}
+[data-theme="dark"] .invoice-paper {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+.invoice-table th, .invoice-table td {
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  text-align: start;
+}
+.invoice-table th {
+  background: #f1f5f9;
+  font-weight: 800;
+  color: #334155;
+}
+.invoice-stamp-box {
+  width: 110px;
+  height: 110px;
+  border: 2px dashed #94a3b8;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #64748b;
+  text-align: center;
+  transform: rotate(-8deg);
+}
+
+/* Print CSS */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #invoiceModal, #invoiceModal * {
+    visibility: visible;
+  }
+  #invoiceModal {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 99999 !important;
+  }
+  #invoiceModal .modal-dialog {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #invoiceModal .modal-header, #invoiceModal .modal-footer {
+    display: none !important;
+  }
+  #invoiceModal .invoice-paper {
+    border: none !important;
+    padding: 15px !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -1755,6 +1970,29 @@ html[dir="ltr"] .login-input-icon {
         <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تبديل اللغة">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           <span id="langToggleBtnText">English</span>
+        </button>
+
+        <!-- Smart Notifications Bell -->
+        <div class="notif-dropdown-wrapper">
+          <button class="header-icon-btn" id="btnHeaderNotif" onclick="toggleNotifDropdown(event)" title="التنبيهات والإشعارات الذكية">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span id="notifBadge" class="notif-badge" style="display:none;">0</span>
+          </button>
+          <div id="notifDropdownMenu" class="notif-dropdown-menu">
+            <div class="notif-header">
+              <span style="font-weight:800; font-size:13px;" id="notifHeaderTitle">🔔 التنبيهات الميدانية والعمليات</span>
+              <button onclick="markAllNotifsRead()" style="font-size:11px; color:var(--primary); background:none; border:none; cursor:pointer; font-weight:700;" id="notifMarkReadBtn">تحديد الكل كمقروء</button>
+            </div>
+            <div class="notif-list" id="notifListContainer">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- PWA Mobile App Install Button -->
+        <button class="btn btn-outline btn-sm" id="btnPwaInstall" onclick="triggerPwaInstall()" style="display:none;" title="تثبيت التطبيق على جهازك">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          <span id="btnPwaInstallText">تثبيت التطبيق 📲</span>
         </button>
         <button class="btn btn-primary" id="btnHeaderAddSale" onclick="openSaleModal()">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -1926,6 +2164,40 @@ html[dir="ltr"] .login-input-icon {
           </div>
         </div>
 
+        <!-- Feature 2: Executive Run-Rate & Projections Banner -->
+        <div class="card-section run-rate-card" id="runRateAnalyticsCard" style="margin-bottom:18px; padding:16px 20px; border-radius:14px; background:linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(2,132,199,0.06) 100%); border:1px solid rgba(79,70,229,0.18);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:42px; height:42px; border-radius:10px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 12px rgba(79,70,229,0.3);">
+                🔮
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-weight:800; font-size:14px; color:var(--text-main);" id="lblRunRateTitle">التنبؤ الذكي بنهاية الشهر (Run-Rate Forecast)</span>
+                  <span id="badgeRunRateStatus" class="badge badge-success">في المسار الصحيح 🟢</span>
+                </div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;" id="lblRunRateSubtitle">
+                  بناءً على وتيرة المبيعات في الأيام المنقضية ومقارنتها بالأيام المتبقية في الشهر
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:18px; align-items:center; flex-wrap:wrap;">
+              <div style="text-align:center;">
+                <div style="font-size:11px; color:var(--text-muted);" id="lblProjectedSales">المبيعات المتوقعة لنهاية الشهر</div>
+                <div style="font-size:16px; font-weight:800; color:var(--primary);" id="valProjectedSales">0 ج.م</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:11px; color:var(--text-muted);" id="lblProjectedPct">نسبة الإنجاز المتوقعة</div>
+                <div style="font-size:16px; font-weight:800; color:var(--success);" id="valProjectedPct">0%</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:11px; color:var(--text-muted);" id="lblRequiredDailyPace">المعدل اليومي المطلوب لتحقيق 100%</div>
+                <div style="font-size:16px; font-weight:800; color:var(--warning);" id="valRequiredDailyPace">0 ج.م / يوم</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Supervisors Target vs Actual Status Cards -->
         <div class="card-section" id="supervisorsOverviewSection">
           <div class="section-header">
@@ -1937,6 +2209,29 @@ html[dir="ltr"] .login-input-icon {
           </div>
 
           <div class="supervisors-grid" id="supervisorsCardsContainer">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Feature 5: Daily Field Tasks & Checklist -->
+        <div class="card-section tasks-card" id="fieldTasksSection" style="margin-bottom:18px;">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-title-icon">✅</span>
+              <span id="tasksSectionTitle">المهام الميدانية والمتابعات اليومية للمشرفين</span>
+              <span id="tasksCompletionBadge" class="badge badge-primary" style="margin-inline-start:8px; font-size:11px;">0/0 مكتملة</span>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btnAddNewTask" onclick="openAddTaskModal()">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              <span id="btnAddNewTaskText">+ إضافة مهمة لمشرف</span>
+            </button>
+          </div>
+          <!-- Progress bar -->
+          <div style="width:100%; height:6px; background:var(--border-color); border-radius:3px; overflow:hidden; margin-bottom:14px;">
+            <div id="tasksProgressBar" style="height:100%; width:0%; background:linear-gradient(90deg, var(--primary), var(--success)); transition:width 0.3s ease;"></div>
+          </div>
+          <!-- Tasks List Container -->
+          <div id="tasksListContainer" style="display:flex; flex-direction:column; gap:8px;">
             <!-- Rendered dynamically -->
           </div>
         </div>
@@ -2013,6 +2308,37 @@ html[dir="ltr"] .login-input-icon {
             <div class="chart-canvas-wrap">
               <canvas id="chartCategories"></canvas>
             </div>
+          </div>
+        </div>
+
+        <!-- Feature 2: Top VIP Wholesalers / Pareto 80/20 Analysis -->
+        <div class="card-section" id="vipWholesalersSection" style="margin-bottom:18px;">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-title-icon">👑</span>
+              <span id="vipWholesalersTitle">كبار العملاء والتجار الأكثر سحباً ومبيعات (تحليل باريتو 80/20)</span>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('branches')">
+              <span id="btnViewAllClientsText">دليل العملاء والفروع ⬅</span>
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead id="vipWholesalersTableHead">
+                <tr>
+                  <th>#</th>
+                  <th>اسم العميل / التاجر</th>
+                  <th>المدينة والقطاع</th>
+                  <th>المشرف المسؤول</th>
+                  <th>إجمالي المسحوبات (ج.م)</th>
+                  <th>نسبة المساهمة بالقطاع</th>
+                  <th>تواصل سريع</th>
+                </tr>
+              </thead>
+              <tbody id="vipWholesalersTableBody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -2624,6 +2950,20 @@ html[dir="ltr"] .login-input-icon {
               <input type="number" id="modalVisitSales" class="form-control" min="0" value="0">
             </div>
 
+            <div class="form-group col-full" style="background:var(--bg-subtle); padding:10px 14px; border-radius:8px; border:1px dashed var(--border-color);">
+              <label style="font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <span>📍 إثبات التواجد الجغرافي الميداني (GPS Verification)</span>
+              </label>
+              <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline btn-sm" id="btnCaptureGps" onclick="captureVisitGps()">
+                  📡 التقاط موقعي الحالي
+                </button>
+                <span id="gpsStatusText" style="font-size:12px; color:var(--text-muted);">لم يتم التقاط الموقع (اختياري)</span>
+                <input type="hidden" id="modalVisitLat" value="">
+                <input type="hidden" id="modalVisitLng" value="">
+              </div>
+            </div>
+
             <div class="form-group col-full">
               <label>ملاحظات المشرف وتوصياته</label>
               <textarea id="modalVisitNotes" class="form-control" rows="3" placeholder="اكتب الملاحظات والتوصيات والإجراءات المطلوبة..."></textarea>
@@ -2999,6 +3339,67 @@ html[dir="ltr"] .login-input-icon {
         </div>
       </form>
     </div>
+  <!-- Modal: Add Daily Field Task -->
+  <div class="modal-overlay" id="addTaskModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="addTaskModalTitle">إسناد مهمة ميدانية جديدة لمشرف 📋</div>
+        <button class="modal-close" onclick="closeModal('addTaskModal')">&times;</button>
+      </div>
+      <form id="taskForm" onsubmit="handleSaveTask(event)">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label id="lblTaskTitle">نص المهمة أو التكليف المطلوب *</label>
+              <input type="text" id="modalTaskTitle" class="form-control" placeholder="مثال: متابعة تحصيل فواتير كبار العملاء في فيصل" required>
+            </div>
+            <div class="form-group">
+              <label id="lblTaskSup">المشرف المسؤول *</label>
+              <select id="modalTaskSup" class="form-control" required>
+                <option value="ALL">جميع المشرفين (القطاع بالكامل)</option>
+                <option value="1">مشرف الجيزة 1 (الهرم وفيصل)</option>
+                <option value="2">مشرف الجيزة 2 (أكتوبر والشيخ زايد)</option>
+                <option value="3">مشرف الصعيد (محافظات الصعيد)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="lblTaskPriority">درجة الأهمية / الأولوية</label>
+              <select id="modalTaskPriority" class="form-control">
+                <option value="high">🔴 عاجل وهام (High)</option>
+                <option value="normal" selected>🟡 أولوية عادية (Normal)</option>
+              </select>
+            </div>
+            <div class="form-group col-full">
+              <label id="lblTaskDueDate">تاريخ الاستحقاق أو الإنجاز</label>
+              <input type="date" id="modalTaskDueDate" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addTaskModal')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ وإسناد المهمة</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Official Tax Invoice & Receipt Preview -->
+  <div class="modal-overlay" id="invoiceModal">
+    <div class="modal-dialog" style="max-width: 760px;">
+      <div class="modal-header">
+        <div class="modal-title" id="invoiceModalTitle">فاتورة بيع وإيصال استلام رسمي 🧾</div>
+        <button class="modal-close" onclick="closeModal('invoiceModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="background:var(--bg-subtle); padding:20px;">
+        <div class="invoice-paper" id="invoicePrintArea">
+          <!-- Dynamically populated invoice layout -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('invoiceModal')">إغلاق</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ طباعة الفاتورة (Print / PDF)</button>
+      </div>
+    </div>
   </div>
 
   <!-- Application Logic -->
@@ -3123,6 +3524,13 @@ html[dir="ltr"] .login-input-icon {
       { id: 201, date: "2026-10-01", supervisorId: 1, branch: "بي تك - شارع فيصل", purpose: "متابعة مبيعات دورية", rating: "ممتاز (مكتمل)", sales: 48000, notes: "المروج متواجد في الموعد، البضاعة متوفرة على الرفوف والعرض جذاب" },
       { id: 202, date: "2026-10-02", supervisorId: 2, branch: "راية - الشيخ زايد (هايبر وان)", purpose: "مراجعة طريقة العرض والاستاندات", rating: "جيد جداً", sales: 76000, notes: "تم تجديد إضاءة الاستاند والتأكيد على تارجت الشهر مع المروج" },
       { id: 203, date: "2026-10-02", supervisorId: 3, branch: "راية - المنيا (ش طه حسين)", purpose: "تدريب وتوجيه المروج", rating: "ممتاز (مكتمل)", sales: 59000, notes: "تدريب المروج على كيفية بيع باقات الإكسسوار مع الهاتف وزيادة متوسط الفاتورة" }
+    ];
+
+    const DEFAULT_TASKS = [
+      { id: 'T-101', title: 'متابعة تحصيل فواتير كبار تجار شارع فيصل والهرم', supervisorId: '1', priority: 'high', dueDate: new Date().toISOString().split('T')[0], done: false },
+      { id: 'T-102', title: 'حصر نواقص الإكسسوارات والشواحن في مول العرب ومول مصر', supervisorId: '2', priority: 'high', dueDate: new Date().toISOString().split('T')[0], done: false },
+      { id: 'T-103', title: 'تغطية 4 زيارات ميدانية لكبار الموزعين في بني سويف والمنيا', supervisorId: '3', priority: 'normal', dueDate: new Date().toISOString().split('T')[0], done: true },
+      { id: 'T-104', title: 'مراجعة عروض الجمعة وتوافر الستاندات مع كافة الفروع', supervisorId: 'ALL', priority: 'normal', dueDate: new Date().toISOString().split('T')[0], done: false }
     ];
 
     /* =========================================================================
@@ -3723,6 +4131,32 @@ html[dir="ltr"] .login-input-icon {
           </tr>
         `;
       }
+
+      // 7. VIP Wholesalers Table Head (Pareto 80/20)
+      const t7 = document.getElementById('vipWholesalersTableHead');
+      if (t7) {
+        t7.innerHTML = isEn ? `
+          <tr>
+            <th>#</th>
+            <th>Client / Wholesaler</th>
+            <th>City & Zone</th>
+            <th>Supervisor</th>
+            <th>Total Sales (${c})</th>
+            <th>Sector Share %</th>
+            <th>Quick Contact</th>
+          </tr>
+        ` : `
+          <tr>
+            <th>#</th>
+            <th>اسم العميل / التاجر</th>
+            <th>المدينة والقطاع</th>
+            <th>المشرف المسؤول</th>
+            <th>إجمالي المسحوبات (${c})</th>
+            <th>نسبة المساهمة بالقطاع</th>
+            <th>تواصل سريع</th>
+          </tr>
+        `;
+      }
     }
 
     function applyLanguage() {
@@ -4015,6 +4449,36 @@ html[dir="ltr"] .login-input-icon {
       const lSubBtn = document.getElementById('loginSubmitBtn');
       if (lSubBtn) lSubBtn.textContent = isEn ? "🚀 Secure Login" : "🚀 تسجيل الدخول الآمن";
 
+      // Enterprise 6 Features Bilingual Translations
+      const pwaBtnText = document.getElementById('btnPwaInstallText');
+      if (pwaBtnText) pwaBtnText.textContent = isEn ? 'Install App 📲' : 'تثبيت التطبيق 📲';
+      const notifHdrTitle = document.getElementById('notifHeaderTitle');
+      if (notifHdrTitle) notifHdrTitle.textContent = isEn ? '🔔 Alerts & Operations' : '🔔 التنبيهات الميدانية والعمليات';
+      const notifMarkAll = document.getElementById('notifMarkReadBtn');
+      if (notifMarkAll) notifMarkAll.textContent = isEn ? 'Mark all as read' : 'تحديد الكل كمقروء';
+      const runRateT = document.getElementById('lblRunRateTitle');
+      if (runRateT) runRateT.textContent = isEn ? 'Month-End Run-Rate Forecast 🔮' : 'التنبؤ الذكي بنهاية الشهر (Run-Rate Forecast)';
+      const runRateSub = document.getElementById('lblRunRateSubtitle');
+      if (runRateSub) runRateSub.textContent = isEn ? 'Based on actual daily sales pace vs remaining days in the month' : 'بناءً على وتيرة المبيعات في الأيام المنقضية ومقارنتها بالأيام المتبقية في الشهر';
+      const runProjS = document.getElementById('lblProjectedSales');
+      if (runProjS) runProjS.textContent = isEn ? 'Projected Month-End Sales' : 'المبيعات المتوقعة لنهاية الشهر';
+      const runProjP = document.getElementById('lblProjectedPct');
+      if (runProjP) runProjP.textContent = isEn ? 'Projected Achievement %' : 'نسبة الإنجاز المتوقعة';
+      const runReqP = document.getElementById('lblRequiredDailyPace');
+      if (runReqP) runReqP.textContent = isEn ? 'Required Daily Pace for 100%' : 'المعدل اليومي المطلوب لتحقيق 100%';
+      const tasksT = document.getElementById('tasksSectionTitle');
+      if (tasksT) tasksT.textContent = isEn ? 'Field Tasks & Daily Follow-ups' : 'المهام الميدانية والمتابعات اليومية للمشرفين';
+      const btnNewTask = document.getElementById('btnAddNewTaskText');
+      if (btnNewTask) btnNewTask.textContent = isEn ? '+ Add Task for Supervisor' : '+ إضافة مهمة لمشرف';
+      const vipT = document.getElementById('vipWholesalersTitle');
+      if (vipT) vipT.textContent = isEn ? 'Top VIP Wholesalers & Clients (Pareto 80/20)' : 'كبار العملاء والتجار الأكثر سحباً ومبيعات (تحليل باريتو 80/20)';
+      const btnViewClts = document.getElementById('btnViewAllClientsText');
+      if (btnViewClts) btnViewClts.textContent = isEn ? 'Clients Directory ⬅' : 'دليل العملاء والفروع ⬅';
+      const addTskModalT = document.getElementById('addTaskModalTitle');
+      if (addTskModalT) addTskModalT.textContent = isEn ? 'Assign Field Task to Supervisor 📋' : 'إسناد مهمة ميدانية جديدة لمشرف 📋';
+      const invModalT = document.getElementById('invoiceModalTitle');
+      if (invModalT) invModalT.textContent = isEn ? 'Official Sales Invoice & Receipt 🧾' : 'فاتورة بيع وإيصال استلام رسمي 🧾';
+
       updateTableHeaders();
       updateSupervisorPortalSelectOptions();
       applySupervisorPortalMode();
@@ -4030,6 +4494,8 @@ html[dir="ltr"] .login-input-icon {
       branches: [],
       sales: [],
       visits: [],
+      tasks: [],
+      dismissedNotifs: [],
       activeSupervisorId: 'MANAGER', // 'MANAGER' | 'ALL' | 1 | 2 | 3
       lang: 'ar'
     };
@@ -4041,6 +4507,8 @@ html[dir="ltr"] .login-input-icon {
         const storedBranches = localStorage.getItem('giza_saeed_branches');
         const storedSales = localStorage.getItem('giza_saeed_sales');
         const storedVisits = localStorage.getItem('giza_saeed_visits');
+        const storedTasks = localStorage.getItem('giza_saeed_tasks');
+        const storedNotifs = localStorage.getItem('giza_saeed_dismissed_notifs');
         const storedActiveSup = localStorage.getItem('giza_saeed_active_sup');
         const storedUser = localStorage.getItem('giza_saeed_current_user');
         const storedLang = localStorage.getItem('giza_saeed_lang');
@@ -4079,6 +4547,8 @@ html[dir="ltr"] .login-input-icon {
         }));
         AppState.sales = storedSales ? JSON.parse(storedSales) : DEFAULT_SALES;
         AppState.visits = storedVisits ? JSON.parse(storedVisits) : DEFAULT_VISITS;
+        AppState.tasks = storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS;
+        AppState.dismissedNotifs = storedNotifs ? JSON.parse(storedNotifs) : [];
         AppState.activeSupervisorId = storedActiveSup ? storedActiveSup : 'MANAGER';
         AppState.currentUser = storedUser ? JSON.parse(storedUser) : null;
       } catch (e) {
@@ -4088,6 +4558,8 @@ html[dir="ltr"] .login-input-icon {
         AppState.branches = DEFAULT_BRANCHES;
         AppState.sales = DEFAULT_SALES;
         AppState.visits = DEFAULT_VISITS;
+        AppState.tasks = DEFAULT_TASKS;
+        AppState.dismissedNotifs = [];
         AppState.activeSupervisorId = 'MANAGER';
         AppState.currentUser = null;
         AppState.lang = 'ar';
@@ -4159,6 +4631,7 @@ html[dir="ltr"] .login-input-icon {
                 if (Array.isArray(data.visits)) AppState.visits = data.visits;
                 if (Array.isArray(data.directives)) AppState.directives = data.directives;
                 if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
+                if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
                 if (data.areaManager) AppState.areaManager = data.areaManager;
 
                 saveStateLocalOnly();
@@ -4202,6 +4675,7 @@ html[dir="ltr"] .login-input-icon {
             visits: AppState.visits,
             directives: AppState.directives,
             promoters: AppState.promoters,
+            tasks: AppState.tasks || [],
             areaManager: AppState.areaManager,
             updatedAt: window._lastLocalSaveTimestamp,
             lastModifiedBy: AppState.currentUser ? AppState.currentUser.name : 'Unknown User'
@@ -4236,6 +4710,8 @@ html[dir="ltr"] .login-input-icon {
         localStorage.setItem('giza_saeed_branches', JSON.stringify(AppState.branches));
         localStorage.setItem('giza_saeed_sales', JSON.stringify(AppState.sales));
         localStorage.setItem('giza_saeed_visits', JSON.stringify(AppState.visits));
+        localStorage.setItem('giza_saeed_tasks', JSON.stringify(AppState.tasks || []));
+        localStorage.setItem('giza_saeed_dismissed_notifs', JSON.stringify(AppState.dismissedNotifs || []));
         localStorage.setItem('giza_saeed_active_sup', AppState.activeSupervisorId);
         if (AppState.currentUser) {
           localStorage.setItem('giza_saeed_current_user', JSON.stringify(AppState.currentUser));
@@ -5034,15 +5510,19 @@ html[dir="ltr"] .login-input-icon {
     function renderAll() {
       applySupervisorPortalMode();
       renderKPIs();
+      renderRunRateAnalytics();
+      renderTasks();
       renderSupervisorCards();
       renderSupervisorDealersCards();
       renderCharts();
+      renderVipWholesalers();
       renderLatestSales();
       renderSalesTable();
       renderBranchesTable();
       renderPromotersLeaderboard();
       renderVisitsTable();
       renderReportsTab();
+      updateNotifications();
       populateSelectOptions();
     }
 
@@ -5214,6 +5694,7 @@ html[dir="ltr"] .login-input-icon {
               <button class="btn btn-purple btn-sm" style="flex:1;" onclick="openSingleSupervisorEdit(${sup.id})">${iconSVG('edit', 12)} ${t('btnEditSupervisor')}</button>
               <button class="btn btn-outline btn-sm" onclick="switchSupervisorPortal(${sup.id})" title="${isEn ? 'Supervisor Portal' : 'لوحة المشرف'}">${iconSVG('eye', 13)}</button>
               <button class="btn btn-success btn-sm" onclick="quickVisitForSupervisor(${sup.id})" title="${isEn ? 'Log Visit' : 'تسجيل زيارة'}">${iconSVG('car', 13)}</button>
+              <button class="btn btn-outline btn-sm" style="color:#25d366; border-color:rgba(37,211,102,0.3);" onclick="sendSupervisorWhatsAppReport(${sup.id})" title="${isEn ? 'Send WhatsApp Report' : 'إرسال تقرير أداء عبر واتساب'}">💬</button>
             </div>
           </div>
         `;
@@ -5253,9 +5734,12 @@ html[dir="ltr"] .login-input-icon {
                 </strong>
               </td>
               <td>${iconSVG('phone', 11)} ${sup.phone || '-'}</td>
-              <td>
+              <td style="white-space:nowrap;">
                 <button class="btn btn-purple btn-sm" onclick="openSingleSupervisorEdit(${sup.id})">
-                  ${iconSVG('edit', 12)} ${isEn ? 'Edit Name & Target' : 'تعديل الاسم والتارجت'}
+                  ${iconSVG('edit', 12)} ${isEn ? 'Edit' : 'تعديل'}
+                </button>
+                <button class="btn btn-outline btn-sm" style="color:#25d366; border-color:rgba(37,211,102,0.3); margin-inline-start:4px;" onclick="sendSupervisorWhatsAppReport(${sup.id})" title="${isEn ? 'Send WhatsApp Report' : 'إرسال تقرير واتساب'}">
+                  💬 ${isEn ? 'WhatsApp' : 'واتساب'}
                 </button>
               </td>
             </tr>
@@ -5876,7 +6360,8 @@ html[dir="ltr"] .login-input-icon {
             <td>${s.qty || 1}</td>
             <td><strong style="color:var(--primary)">${formatCurrency(s.amount)}</strong></td>
             <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis;" title="${s.notes || ''}">${s.notes || '-'}</td>
-            <td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-outline btn-sm" style="color:var(--primary); border-color:rgba(59,130,246,0.3); padding:3px 8px; font-size:11px; margin-inline-end:4px;" onclick="openInvoiceModal(${s.id})" title="${isEn ? 'Print Invoice & Receipt' : 'طباعة فاتورة / إيصال رسمي'}">🧾 ${isEn ? 'Invoice' : 'فاتورة'}</button>
               <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:3px 8px; font-size:11px;" onclick="deleteSale(${s.id})">${iconSVG('trash', 12)} ${isEn ? 'Delete' : 'حذف'}</button>
             </td>
           </tr>
@@ -5921,7 +6406,12 @@ html[dir="ltr"] .login-input-icon {
             <td><span class="badge badge-primary">${b.clientType || (isEn ? 'Client' : 'تاجر')}</span></td>
             <td>${iconSVG('pin', 11)} ${b.city}</td>
             <td><strong>${sup ? getSupervisorName(sup) : '-'}</strong></td>
-            <td>${iconSVG('phone', 11)} ${b.phone || '-'}</td>
+            <td>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span>${iconSVG('phone', 11)} ${b.phone || '-'}</span>
+                ${b.phone ? `<button class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:11px; color:#25d366; border-color:rgba(37,211,102,0.4);" onclick="contactClientWhatsApp('${safeName}', '${b.phone}', '${b.city || ''}')" title="${isEn ? 'WhatsApp Contact' : 'تواصل واتساب'}">💬</button>` : ''}
+              </div>
+            </td>
             <td>${iconSVG('user', 11)} ${b.promoter || (isEn ? 'Unassigned' : 'غير محدد')}</td>
             <td><strong style="font-size:13px;">${formatCurrency(m.target)}</strong></td>
             <td><strong style="color:var(--primary); font-size:13px;">${formatCurrency(m.actual)}</strong></td>
@@ -6026,7 +6516,10 @@ html[dir="ltr"] .login-input-icon {
             <td><span class="badge badge-primary">${v.purpose}</span></td>
             <td><span class="badge badge-success">${v.rating}</span></td>
             <td>${formatCurrency(v.sales || 0)}</td>
-            <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis;" title="${v.notes || ''}">${v.notes || '-'}</td>
+            <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis;" title="${v.notes || ''}">
+              <div>${v.notes || '-'}</div>
+              ${v.lat && v.lng ? `<div style="margin-top:4px;"><a href="https://maps.google.com/?q=${v.lat},${v.lng}" target="_blank" rel="noopener" style="color:var(--primary); font-size:11px; text-decoration:underline; font-weight:700; display:inline-flex; align-items:center; gap:3px;">📍 ${isEn ? 'View GPS Location' : 'موقع GPS الميداني'}</a></div>` : ''}
+            </td>
             <td>
               <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:3px 8px; font-size:11px;" onclick="deleteVisit(${v.id})">${iconSVG('trash', 12)} ${isEn ? 'Delete' : 'حذف'}</button>
             </td>
@@ -6168,6 +6661,15 @@ html[dir="ltr"] .login-input-icon {
       if (!checkPermissionOrAlert('canAddVisit', 'تسجيل تقرير زيارة ميدانية')) return;
       populateSelectOptions();
       document.getElementById('modalVisitDate').value = new Date().toISOString().split('T')[0];
+      const latEl = document.getElementById('modalVisitLat');
+      const lngEl = document.getElementById('modalVisitLng');
+      const statEl = document.getElementById('gpsStatusText');
+      if (latEl) latEl.value = '';
+      if (lngEl) lngEl.value = '';
+      if (statEl) {
+        statEl.textContent = AppState.lang === 'en' ? 'Location not captured (optional)' : 'لم يتم التقاط الموقع (اختياري)';
+        statEl.style.color = 'var(--text-muted)';
+      }
       const mode = AppState.activeSupervisorId;
       if (mode !== 'MANAGER' && mode !== 'ALL') {
         document.getElementById('modalVisitSup').value = AppState.activeSupervisorId;
@@ -6397,6 +6899,8 @@ html[dir="ltr"] .login-input-icon {
       const rating = document.getElementById('modalVisitRating').value;
       const sales = Number(document.getElementById('modalVisitSales').value || 0);
       const notes = document.getElementById('modalVisitNotes').value.trim();
+      const latVal = document.getElementById('modalVisitLat') ? document.getElementById('modalVisitLat').value : '';
+      const lngVal = document.getElementById('modalVisitLng') ? document.getElementById('modalVisitLng').value : '';
 
       const newVisit = {
         id: Date.now(),
@@ -6406,7 +6910,9 @@ html[dir="ltr"] .login-input-icon {
         purpose,
         rating,
         sales,
-        notes
+        notes,
+        lat: latVal ? parseFloat(latVal) : null,
+        lng: lngVal ? parseFloat(lngVal) : null
       };
 
       AppState.visits.unshift(newVisit);
@@ -7529,6 +8035,710 @@ html[dir="ltr"] .login-input-icon {
     }
 
     /* =========================================================================
+       ENTERPRISE SUITE: 6 MAJOR OPERATIONAL FEATURES
+       ========================================================================= */
+
+    // Feature 1: Automation & Quick Contact
+    function cleanEgyptianPhone(phone) {
+      if (!phone) return '';
+      let clean = phone.toString().replace(/\D/g, '');
+      if (clean.startsWith('0')) {
+        clean = '2' + clean;
+      } else if (!clean.startsWith('20') && clean.length === 10) {
+        clean = '20' + clean;
+      }
+      return clean;
+    }
+
+    function sendSupervisorWhatsAppReport(supId) {
+      const sup = AppState.supervisors.find(s => Number(s.id) === Number(supId));
+      if (!sup) return;
+      const m = getSupervisorMetrics(sup);
+      const isEn = AppState.lang === 'en';
+      const cleanPhone = cleanEgyptianPhone(sup.phone);
+
+      const msg = isEn
+        ? `📊 *Field Performance & Sales Report* 🚀\n` +
+          `👤 *Supervisor:* ${getSupervisorName(sup)} (${getSupervisorTitle(sup)})\n` +
+          `📍 *Zone:* ${getSupervisorZone(sup)}\n` +
+          `🎯 *Monthly Target:* ${formatCurrency(m.target)}\n` +
+          `💰 *Actual Achieved:* ${formatCurrency(m.actual)}\n` +
+          `📈 *Achievement Rate:* ${m.pct}%\n` +
+          `⏳ *Remaining to Goal:* ${formatCurrency(m.remaining)}\n` +
+          `🏪 *Branches & Clients:* ${m.branchCount}\n` +
+          `🛒 *Completed Orders:* ${m.salesCount}\n` +
+          `🚗 *Field Visits:* ${m.visitsCount}\n` +
+          `📅 *Date:* ${new Date().toLocaleDateString('en-GB')}\n` +
+          `---\n*Giza & Upper Egypt Sales Management*`
+        : `📊 *تقرير الأداء الميداني والمبيعات* 🚀\n` +
+          `👤 *المشرف المسؤول:* ${getSupervisorName(sup)} (${getSupervisorTitle(sup)})\n` +
+          `📍 *القطاع الجغرافي:* ${getSupervisorZone(sup)}\n` +
+          `🎯 *المستهدف الشهري:* ${formatCurrency(m.target)}\n` +
+          `💰 *المحقق الفعلي:* ${formatCurrency(m.actual)}\n` +
+          `📈 *نسبة الإنجاز:* ${m.pct}%\n` +
+          `⏳ *المتبقي للهدف:* ${formatCurrency(m.remaining)}\n` +
+          `🏪 *عدد العملاء والفروع:* ${m.branchCount}\n` +
+          `🛒 *عدد فواتير البيع:* ${m.salesCount}\n` +
+          `🚗 *الزيارات الميدانية:* ${m.visitsCount}\n` +
+          `📅 *التاريخ:* ${new Date().toLocaleDateString('ar-EG')}\n` +
+          `---\n*إدارة قطاع الجيزة الكبرى والصعيد*`;
+
+      const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+      showToast(isEn ? 'Opening WhatsApp report...' : 'جاري فتح تقرير الواتساب للمشرف...', 'success');
+    }
+
+    function contactClientWhatsApp(name, phone, city) {
+      const isEn = AppState.lang === 'en';
+      const cleanPhone = cleanEgyptianPhone(phone);
+      if (!cleanPhone) {
+        showToast(isEn ? 'No phone number for this client' : 'لا يوجد رقم هاتف مسجل لهذا العميل', 'warning');
+        return;
+      }
+      const msg = isEn
+        ? `Hello ${name},\nGreetings from Giza & Upper Egypt Sales Operations (${city || ''}).\nWe are following up on your replenishment orders and are ready to assist you immediately.`
+        : `مرحباً ${name}،\nتحياتنا من إدارة مبيعات شركة قطاع الجيزة والصعيد (${city || ''}).\nنتابع معكم مسحوباتكم وطلبياتكم ويسعدنا تقديم كامل الدعم لتوفير احتياجاتكم فوراً.`;
+
+      window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+      showToast(isEn ? 'Opening WhatsApp chat...' : 'جاري فتح محادثة الواتساب مع العميل...', 'success');
+    }
+
+    function captureVisitGps() {
+      const stat = document.getElementById('gpsStatusText');
+      const isEn = AppState.lang === 'en';
+
+      if (!navigator.geolocation) {
+        if (stat) stat.textContent = isEn ? 'Geolocation not supported' : 'تحديد الموقع غير مدعوم في متصفحك';
+        showToast(isEn ? 'Geolocation not supported by your browser' : 'خاصية تحديد الموقع غير مدعومة في متصفحك', 'error');
+        return;
+      }
+
+      if (stat) {
+        stat.textContent = isEn ? '⏳ Pinpointing GPS coordinates via satellites...' : '⏳ جاري التقاط إحداثيات الموقع عبر الأقمار الصناعية...';
+        stat.style.color = 'var(--primary)';
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lng = pos.coords.longitude.toFixed(6);
+          const acc = Math.round(pos.coords.accuracy);
+
+          const latInp = document.getElementById('modalVisitLat');
+          const lngInp = document.getElementById('modalVisitLng');
+          if (latInp) latInp.value = lat;
+          if (lngInp) lngInp.value = lng;
+
+          if (stat) {
+            stat.textContent = isEn
+              ? `✅ Captured (${lat}, ${lng} | ±${acc}m)`
+              : `✅ تم التقاط الموقع بنجاح (${lat}, ${lng} | بدقة ±${acc}م)`;
+            stat.style.color = 'var(--success)';
+          }
+          showToast(isEn ? 'GPS location captured!' : 'تم توثيق موقع GPS للزيارة الميدانية بنجاح!', 'success');
+        },
+        (err) => {
+          if (stat) {
+            stat.textContent = isEn ? `⚠️ GPS: ${err.message}` : `⚠️ تعذر التقاط الموقع: ${err.message}`;
+            stat.style.color = 'var(--danger)';
+          }
+          showToast(isEn ? 'Could not retrieve GPS coordinates' : 'تعذر التقاط الموقع الجغرافي (تأكد من تفعيل الـ GPS)', 'warning');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    // Feature 2: Sales Intelligence & Forecasting
+    function renderRunRateAnalytics() {
+      const card = document.getElementById('runRateAnalyticsCard');
+      if (!card) return;
+
+      const mode = AppState.activeSupervisorId;
+      const isManager = mode === 'MANAGER';
+      const isAll = mode === 'ALL';
+      const activeSupId = Number(mode);
+      const isEn = AppState.lang === 'en';
+
+      let salesSet = AppState.sales;
+      let targetVal = 0;
+      if (!isManager && !isAll) {
+        salesSet = AppState.sales.filter(s => Number(s.supervisorId) === activeSupId);
+        const sup = AppState.supervisors.find(s => Number(s.id) === activeSupId);
+        targetVal = sup ? Number(sup.target || 0) : 0;
+      } else {
+        targetVal = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0);
+      }
+
+      const actualSales = salesSet.reduce((sum, s) => sum + Number(s.amount || 0), 0);
+      const now = new Date();
+      const currentDay = Math.max(1, now.getDate());
+      const totalDaysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const remainingDays = Math.max(1, totalDaysInMonth - currentDay);
+
+      const dailyPace = actualSales / currentDay;
+      const projectedSales = Math.round(dailyPace * totalDaysInMonth);
+      const projectedPct = targetVal > 0 ? ((projectedSales / targetVal) * 100).toFixed(1) : 0;
+      const remainingToTarget = Math.max(0, targetVal - actualSales);
+      const requiredDailyPace = Math.round(remainingToTarget / remainingDays);
+
+      const elProjSales = document.getElementById('valProjectedSales');
+      if (elProjSales) elProjSales.textContent = formatCurrency(projectedSales);
+
+      const elProjPct = document.getElementById('valProjectedPct');
+      if (elProjPct) elProjPct.textContent = `${projectedPct}%`;
+
+      const elReqPace = document.getElementById('valRequiredDailyPace');
+      if (elReqPace) elReqPace.textContent = formatCurrency(requiredDailyPace) + (isEn ? ' / day' : ' / يوم');
+
+      const badge = document.getElementById('badgeRunRateStatus');
+      if (badge) {
+        const numPct = Number(projectedPct);
+        if (numPct >= 100) {
+          badge.className = 'badge badge-success';
+          badge.textContent = isEn ? '🚀 Ahead of Target' : '🚀 متقدم عن الخطة';
+        } else if (numPct >= 80) {
+          badge.className = 'badge badge-primary';
+          badge.textContent = isEn ? '🟢 On Track' : '🟢 في المسار الصحيح';
+        } else {
+          badge.className = 'badge badge-warning';
+          badge.textContent = isEn ? '⚠️ Needs Acceleration' : '⚠️ يحتاج تسريع الوتيرة';
+        }
+      }
+    }
+
+    function renderVipWholesalers() {
+      const tbody = document.getElementById('vipWholesalersTableBody');
+      if (!tbody) return;
+
+      const mode = AppState.activeSupervisorId;
+      const isManager = mode === 'MANAGER';
+      const isAll = mode === 'ALL';
+      const activeSupId = Number(mode);
+      const isEn = AppState.lang === 'en';
+
+      let pool = AppState.branches;
+      if (!isManager && !isAll) {
+        pool = pool.filter(b => Number(b.supervisorId) === activeSupId);
+      }
+
+      const scored = pool.map(b => {
+        const m = getClientMetrics(b);
+        return { branch: b, actual: m.actual, target: m.target, pct: m.pct, salesCount: m.salesCount };
+      }).sort((a,b) => b.actual - a.actual);
+
+      const totalPoolSales = scored.reduce((sum, item) => sum + item.actual, 0) || 1;
+
+      if (scored.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--text-muted);">${isEn ? 'No client transactions recorded yet' : 'لا توجد مسحوبات مسجلة للعملاء بعد'}</td></tr>`;
+        return;
+      }
+
+      const topVip = scored.slice(0, 6);
+      tbody.innerHTML = '';
+      topVip.forEach((item, idx) => {
+        const b = item.branch;
+        const sup = AppState.supervisors.find(x => Number(x.id) === Number(b.supervisorId));
+        const sharePct = ((item.actual / totalPoolSales) * 100).toFixed(1);
+        const safeName = (b.name || '').replace(/'/g, "\\'");
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong style="color:var(--primary); font-size:13px;">#${idx + 1}</strong></td>
+            <td>
+              <strong>${b.name}</strong>
+              <div style="font-size:11px; color:var(--text-muted);">${b.clientType || (isEn ? 'Client' : 'عميل')}</div>
+            </td>
+            <td>${iconSVG('pin', 11)} ${b.city}</td>
+            <td><strong>${sup ? getSupervisorName(sup) : '-'}</strong></td>
+            <td><strong style="color:var(--primary); font-size:14px;">${formatCurrency(item.actual)}</strong></td>
+            <td style="min-width:110px;">
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
+                <strong>${sharePct}%</strong>
+                <span style="color:var(--text-muted);">${item.salesCount} ${isEn ? 'orders' : 'طلبية'}</span>
+              </div>
+              <div class="progress-bar-bg" style="height:5px;">
+                <div class="progress-bar-fill fill-green" style="width:${Math.min(100, sharePct)}%"></div>
+              </div>
+            </td>
+            <td>
+              <div style="display:flex; gap:4px; align-items:center;">
+                ${b.phone ? `<button class="btn btn-outline btn-sm" style="color:#25d366; border-color:rgba(37,211,102,0.3); padding:2px 7px; font-size:11px;" onclick="contactClientWhatsApp('${safeName}', '${b.phone}', '${b.city || ''}')" title="${isEn ? 'WhatsApp' : 'واتساب'}">💬 ${isEn ? 'WhatsApp' : 'واتساب'}</button>` : ''}
+                <button class="btn btn-primary btn-sm" style="padding:2px 7px; font-size:11px;" onclick="quickSaleForBranch('${safeName}', ${b.supervisorId})">${iconSVG('plus', 11)} ${isEn ? 'Sale' : 'بيع'}</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // Feature 3: Official Invoices & Receipts Generator
+    function tafqeetArabic(number) {
+      number = Math.floor(Math.abs(Number(number) || 0));
+      if (number === 0) return 'صفر جنيهاً مصرياً لا غير';
+
+      const ones = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'];
+      const tens = ['', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
+      const hundreds = ['', 'مائة', 'مئتان', 'ثلاثمائة', 'أربعمائة', 'خمسمائة', 'ستمائة', 'سبعمائة', 'ثمانمائة', 'تسعمائة'];
+
+      function convertGroup(n) {
+        let res = '';
+        const h = Math.floor(n / 100);
+        const rem = n % 100;
+        if (h > 0) res += hundreds[h];
+        if (rem > 0) {
+          if (res) res += ' و';
+          if (rem < 20) {
+            res += ones[rem];
+          } else {
+            const o = rem % 10;
+            const t = Math.floor(rem / 10);
+            if (o > 0) res += ones[o] + ' و';
+            res += tens[t];
+          }
+        }
+        return res;
+      }
+
+      let parts = [];
+      const millions = Math.floor(number / 1000000);
+      const thousands = Math.floor((number % 1000000) / 1000);
+      const remainder = number % 1000;
+
+      if (millions > 0) {
+        if (millions === 1) parts.push('مليون');
+        else if (millions === 2) parts.push('مليونان');
+        else if (millions >= 3 && millions <= 10) parts.push(convertGroup(millions) + ' ملايين');
+        else parts.push(convertGroup(millions) + ' مليون');
+      }
+
+      if (thousands > 0) {
+        if (thousands === 1) parts.push('ألف');
+        else if (thousands === 2) parts.push('ألفان');
+        else if (thousands >= 3 && thousands <= 10) parts.push(convertGroup(thousands) + ' آلاف');
+        else parts.push(convertGroup(thousands) + ' ألف');
+      }
+
+      if (remainder > 0) {
+        parts.push(convertGroup(remainder));
+      }
+
+      return 'فقط ' + parts.join(' و') + ' جنيهاً مصرياً لا غير';
+    }
+
+    function openInvoiceModal(saleId) {
+      const sale = AppState.sales.find(s => Number(s.id) === Number(saleId));
+      if (!sale) return;
+
+      const sup = AppState.supervisors.find(x => Number(x.id) === Number(sale.supervisorId));
+      const branch = AppState.branches.find(b => b.name === sale.branch);
+      const isEn = AppState.lang === 'en';
+
+      const unitPrice = (sale.qty && Number(sale.qty) > 0) ? Math.round(Number(sale.amount) / Number(sale.qty)) : Number(sale.amount);
+      const invCode = sale.invoice || ('INV-2026-' + String(sale.id).slice(-5));
+      const dateVal = sale.date || new Date().toISOString().split('T')[0];
+      const tafqeetText = tafqeetArabic(sale.amount);
+
+      const printArea = document.getElementById('invoicePrintArea');
+      if (printArea) {
+        printArea.innerHTML = `
+          <div style="padding:24px; background:#fff; color:#1e293b; border-radius:8px; line-height:1.6; border:1px solid #e2e8f0;">
+            <!-- Header -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #4f46e5; padding-bottom:16px; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-size:20px; font-weight:800; color:#4f46e5; display:flex; align-items:center; gap:8px;">
+                  <span>🏢</span> ${isEn ? 'Giza & Upper Egypt Sales Operations' : 'شركة مبيعات قطاع الجيزة الكبرى والصعيد'}
+                </div>
+                <div style="font-size:12px; color:#64748b; margin-top:3px;">
+                  ${isEn ? 'Commercial Register: 489201 | Tax Card: 739-102-554' : 'سجل تجاري: 489201 | بطاقة ضريبية: 739-102-554'}
+                </div>
+                <div style="font-size:12px; color:#64748b;">
+                  ${isEn ? 'Headquarters: Giza Sector Administration' : 'المقر الإداري: إدارة قطاعات محافظات الجيزة والصعيد'}
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="display:inline-block; padding:4px 12px; background:rgba(79,70,229,0.1); color:#4f46e5; border-radius:6px; font-weight:800; font-size:14px;">
+                  ${isEn ? 'OFFICIAL TAX INVOICE' : 'فاتورة بيع وإذن استلام رسمي'}
+                </div>
+                <div style="font-size:13px; font-weight:700; margin-top:6px; color:#0f172a;">${invCode}</div>
+                <div style="font-size:11.5px; color:#64748b;">${isEn ? 'Date:' : 'تاريخ التحرير:'} ${dateVal}</div>
+              </div>
+            </div>
+
+            <!-- Bill To & Rep Info -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px; margin-bottom:20px; font-size:12.5px;">
+              <div>
+                <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${isEn ? 'CLIENT / BILL TO:' : 'بيانات العميل / المستلم:'}</div>
+                <div style="font-size:14px; font-weight:800; color:#0f172a; margin-top:2px;">${sale.branch}</div>
+                <div style="color:#475569;">${isEn ? 'Zone:' : 'المنطقة:'} ${sup ? getSupervisorZone(sup) : (branch ? branch.city : '-')}</div>
+                <div style="color:#475569;">${isEn ? 'Phone:' : 'الهاتف:'} ${branch && branch.phone ? branch.phone : '-'}</div>
+              </div>
+              <div>
+                <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${isEn ? 'ISSUING SUPERVISOR & REP:' : 'المشرف المسؤول والمروج:'}</div>
+                <div style="font-size:13px; font-weight:700; color:#0f172a; margin-top:2px;">${sup ? getSupervisorName(sup) : '-'}</div>
+                <div style="color:#475569;">${isEn ? 'Promoter:' : 'المروج القائم بالبيع:'} ${sale.promoter || (isEn ? 'Direct Sales' : 'مبيعات مباشرة')}</div>
+                <div style="color:#475569;">${isEn ? 'Sector:' : 'القطاع:'} ${sup ? getSupervisorTitle(sup) : '-'}</div>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12.5px;">
+              <thead>
+                <tr style="background:#4f46e5; color:#fff;">
+                  <th style="padding:8px 10px; text-align:start;">#</th>
+                  <th style="padding:8px 10px; text-align:start;">${isEn ? 'Item Description / Category' : 'بيان الصنف والمنتج'}</th>
+                  <th style="padding:8px 10px; text-align:center;">${isEn ? 'Qty' : 'الكمية'}</th>
+                  <th style="padding:8px 10px; text-align:end;">${isEn ? 'Unit Price (EGP)' : 'سعر الوحدة (ج.م)'}</th>
+                  <th style="padding:8px 10px; text-align:end;">${isEn ? 'Total Amount (EGP)' : 'الإجمالي (ج.م)'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #e2e8f0;">
+                  <td style="padding:10px;">1</td>
+                  <td style="padding:10px;">
+                    <strong>${sale.category}</strong>
+                    <div style="font-size:11px; color:#64748b;">${sale.notes || (isEn ? 'Standard delivery' : 'تسليم فوري ومطابق للمواصفات')}</div>
+                  </td>
+                  <td style="padding:10px; text-align:center;">${sale.qty || 1}</td>
+                  <td style="padding:10px; text-align:end;">${formatEGP(unitPrice)}</td>
+                  <td style="padding:10px; text-align:end; font-weight:700; color:#4f46e5;">${formatEGP(sale.amount)}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Summary & Tafqeet -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:24px; padding:12px; background:#f1f5f9; border-radius:8px;">
+              <div style="flex:1; min-width:240px;">
+                <div style="font-size:11px; font-weight:700; color:#64748b;">${isEn ? 'AMOUNT IN WORDS:' : 'المبلغ بالحروف والتفقيط:'}</div>
+                <div style="font-size:13px; font-weight:800; color:#0f172a; margin-top:3px;">${tafqeetText}</div>
+              </div>
+              <div style="text-align:end; min-width:180px;">
+                <div style="font-size:12px; color:#64748b;">${isEn ? 'Subtotal:' : 'المجموع الفرعي:'} ${formatEGP(sale.amount)} ج.م</div>
+                <div style="font-size:12px; color:#64748b;">${isEn ? 'Sales Tax / VAT (14% incl):' : 'ض.ق.م (شاملة):'} 0.00 ج.م</div>
+                <div style="font-size:16px; font-weight:900; color:#4f46e5; margin-top:4px;">${isEn ? 'Grand Total:' : 'الصافي النهائي:'} ${formatEGP(sale.amount)} ج.م</div>
+              </div>
+            </div>
+
+            <!-- Signatures and Stamps -->
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; text-align:center; padding-top:16px; border-top:1px dashed #cbd5e1; font-size:12px;">
+              <div>
+                <div style="font-weight:700; margin-bottom:35px;">${isEn ? 'Customer Receiver Signature' : 'توقيع المستلم / العميل'}</div>
+                <div style="border-bottom:1px solid #94a3b8; width:70%; margin:0 auto;"></div>
+              </div>
+              <div>
+                <div style="font-weight:700; margin-bottom:35px;">${isEn ? 'Supervisor / Sales Rep' : 'المشرف المسؤول'}</div>
+                <div style="border-bottom:1px solid #94a3b8; width:70%; margin:0 auto;"></div>
+              </div>
+              <div>
+                <div style="font-weight:700; margin-bottom:8px;">${isEn ? 'Official Company Stamp' : 'خاتم الاعتماد الرسمي'}</div>
+                <div style="display:inline-block; border:2px dashed #4f46e5; color:#4f46e5; border-radius:50%; width:64px; height:64px; line-height:64px; font-size:11px; font-weight:800; opacity:0.85;">
+                  معتمد 🏢
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById('invoiceModal').classList.add('open');
+    }
+
+    // Feature 4: Smart Notification Center
+    function updateNotifications() {
+      const notifs = [];
+      const isEn = AppState.lang === 'en';
+
+      // 1. High value sales (>= 30k)
+      AppState.sales.forEach(s => {
+        if (Number(s.amount) >= 30000) {
+          notifs.push({
+            id: 'SALE-' + s.id,
+            type: 'sale',
+            icon: '💰',
+            title: isEn ? `High-Value Sale: ${formatEGP(s.amount)} EGP` : `عملية بيع كبرى: ${formatEGP(s.amount)} ج.م`,
+            desc: `${s.branch} (${s.category})`,
+            time: s.date
+          });
+        }
+      });
+
+      // 2. Supervisor milestone (>= 90%)
+      AppState.supervisors.forEach(sup => {
+        const m = getSupervisorMetrics(sup);
+        if (m.pct >= 90) {
+          notifs.push({
+            id: 'SUP-' + sup.id + '-' + (m.pct >= 100 ? '100' : '90'),
+            type: 'milestone',
+            icon: m.pct >= 100 ? '🏆' : '🎯',
+            title: isEn ? `Target Milestone: ${getSupervisorName(sup)}` : `إنجاز مستهدف: ${getSupervisorName(sup)}`,
+            desc: isEn ? `Reached ${m.pct}% of monthly target!` : `وصل إلى نسبة إنجاز ${m.pct}% من المستهدف!`,
+            time: 'Active'
+          });
+        }
+      });
+
+      // 3. Directives
+      (AppState.areaManager?.directives || []).forEach(d => {
+        notifs.push({
+          id: 'DIR-' + d.id,
+          type: 'directive',
+          icon: '📢',
+          title: isEn ? 'Management Directive' : 'توجيه ميداني من مدير الآريتين',
+          desc: d.text,
+          time: d.date
+        });
+      });
+
+      // 4. Critical visit
+      AppState.visits.forEach(v => {
+        if (v.rating && v.rating.includes('مخالف')) {
+          notifs.push({
+            id: 'VISIT-' + v.id,
+            type: 'alert',
+            icon: '⚠️',
+            title: isEn ? `Visit Alert: ${v.branch}` : `تنبيه زيارة: ${v.branch}`,
+            desc: v.notes || (isEn ? 'Low store rating' : 'تقييم منخفض يحتاج متابعة عاجلة'),
+            time: v.date
+          });
+        }
+      });
+
+      const dismissed = AppState.dismissedNotifs || [];
+      const activeNotifs = notifs.filter(n => !dismissed.includes(n.id));
+
+      const badge = document.getElementById('notifBadge');
+      if (badge) {
+        if (activeNotifs.length > 0) {
+          badge.textContent = activeNotifs.length > 9 ? '9+' : activeNotifs.length;
+          badge.style.display = 'flex';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+
+      const list = document.getElementById('notifListContainer');
+      if (list) {
+        if (activeNotifs.length === 0) {
+          list.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text-muted); font-size:12px;">${isEn ? 'No new notifications 🎉' : 'لا توجد تنبيهات جديدة حالياً 🎉'}</div>`;
+        } else {
+          list.innerHTML = '';
+          activeNotifs.slice(0, 10).forEach(n => {
+            list.innerHTML += `
+              <div class="notif-item">
+                <div class="notif-icon-circle">${n.icon}</div>
+                <div style="flex:1; min-width:0;">
+                  <div class="notif-item-title">${n.title}</div>
+                  <div class="notif-item-desc">${n.desc}</div>
+                  <div class="notif-item-time">${n.time}</div>
+                </div>
+                <button onclick="dismissSingleNotif('${n.id}')" class="notif-item-dismiss" title="${isEn ? 'Dismiss' : 'إخفاء'}">&times;</button>
+              </div>
+            `;
+          });
+        }
+      }
+    }
+
+    function toggleNotifDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('notifDropdownMenu');
+      if (menu) menu.classList.toggle('open');
+    }
+
+    function markAllNotifsRead() {
+      const dismissed = AppState.dismissedNotifs || [];
+      const notifs = [];
+      AppState.sales.forEach(s => { if (Number(s.amount) >= 30000) notifs.push('SALE-' + s.id); });
+      AppState.supervisors.forEach(sup => {
+        const m = getSupervisorMetrics(sup);
+        if (m.pct >= 90) notifs.push('SUP-' + sup.id + '-' + (m.pct >= 100 ? '100' : '90'));
+      });
+      (AppState.areaManager?.directives || []).forEach(d => notifs.push('DIR-' + d.id));
+      AppState.visits.forEach(v => { if (v.rating && v.rating.includes('مخالف')) notifs.push('VISIT-' + v.id); });
+
+      AppState.dismissedNotifs = Array.from(new Set([...dismissed, ...notifs]));
+      saveState();
+      updateNotifications();
+      const menu = document.getElementById('notifDropdownMenu');
+      if (menu) menu.classList.remove('open');
+      showToast(AppState.lang === 'en' ? 'All notifications marked as read' : 'تم تحديد جميع الإشعارات كمقروءة', 'info');
+    }
+
+    function dismissSingleNotif(id) {
+      if (!AppState.dismissedNotifs) AppState.dismissedNotifs = [];
+      if (!AppState.dismissedNotifs.includes(id)) {
+        AppState.dismissedNotifs.push(id);
+      }
+      saveState();
+      updateNotifications();
+    }
+
+    // Feature 5: Field Task Manager & Checklist
+    function renderTasks() {
+      const container = document.getElementById('tasksListContainer');
+      if (!container) return;
+
+      const mode = AppState.activeSupervisorId;
+      const isManager = mode === 'MANAGER';
+      const isAll = mode === 'ALL';
+      const activeSupId = String(mode);
+      const isEn = AppState.lang === 'en';
+
+      let list = AppState.tasks || [];
+      if (!isManager && !isAll) {
+        list = list.filter(t => t.supervisorId === 'ALL' || String(t.supervisorId) === activeSupId);
+      }
+
+      const total = list.length;
+      const completed = list.filter(t => t.done).length;
+
+      const badge = document.getElementById('tasksCompletionBadge');
+      if (badge) badge.textContent = `${completed}/${total} ` + (isEn ? 'Completed' : 'مكتملة');
+
+      const pBar = document.getElementById('tasksProgressBar');
+      if (pBar) pBar.style.width = (total > 0 ? ((completed / total) * 100) : 0) + '%';
+
+      if (list.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-muted); font-size:12px;">${isEn ? 'No tasks assigned yet' : 'لا توجد مهام ميدانية مسندة حالياً'}</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      list.forEach(t => {
+        const sup = AppState.supervisors.find(s => String(s.id) === String(t.supervisorId));
+        const supName = t.supervisorId === 'ALL' 
+          ? (isEn ? 'All Supervisors' : 'القطاع بالكامل') 
+          : (sup ? getSupervisorName(sup) : (isEn ? 'Supervisor' : 'مشرف'));
+        const isUrgent = t.priority === 'high';
+        const isUserMgr = AppState.currentUser?.role === 'manager';
+
+        container.innerHTML += `
+          <div class="task-item ${t.done ? 'task-done' : ''}" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; gap:10px;">
+            <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:0;">
+              <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${t.id}')" style="width:18px; height:18px; cursor:pointer; accent-color:var(--primary);">
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:700; color:var(--text-main); ${t.done ? 'text-decoration:line-through; opacity:0.6;' : ''}">
+                  ${t.title}
+                </div>
+                <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:4px; font-size:10.5px;">
+                  <span class="badge ${t.supervisorId === 'ALL' ? 'badge-primary' : (sup ? sup.tagClass : 'badge-primary')}">👔 ${supName}</span>
+                  <span class="badge ${isUrgent ? 'badge-danger' : 'badge-secondary'}">${isUrgent ? (isEn ? '🔴 High Priority' : '🔴 عاجل') : (isEn ? '🟡 Normal' : '🟡 عادي')}</span>
+                  <span style="color:var(--text-muted);">📅 ${t.dueDate || '-'}</span>
+                </div>
+              </div>
+            </div>
+            ${isUserMgr ? `
+              <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:2px 7px; font-size:11px;" onclick="deleteTask('${t.id}')" title="${isEn ? 'Delete Task' : 'حذف المهمة'}">
+                ${iconSVG('trash', 12)}
+              </button>
+            ` : ''}
+          </div>
+        `;
+      });
+    }
+
+    function toggleTaskDone(taskId) {
+      const task = (AppState.tasks || []).find(t => String(t.id) === String(taskId));
+      if (!task) return;
+      task.done = !task.done;
+      saveState();
+      renderTasks();
+      const isEn = AppState.lang === 'en';
+      showToast(task.done ? (isEn ? 'Task marked as completed! ✅' : 'تم إنجاز المهمة بنجاح! ✅') : (isEn ? 'Task re-opened' : 'تمت إعادة فتح المهمة'), 'success');
+    }
+
+    function openAddTaskModal() {
+      if (AppState.currentUser && AppState.currentUser.role !== 'manager') {
+        showToast(AppState.lang === 'en' ? 'Adding tasks is restricted to Area Manager' : 'إسناد المهام متاح فقط لمدير الآريتين', 'warning');
+        return;
+      }
+      const dueInput = document.getElementById('modalTaskDueDate');
+      if (dueInput) dueInput.value = new Date().toISOString().split('T')[0];
+      document.getElementById('addTaskModal').classList.add('open');
+    }
+
+    function handleSaveTask(e) {
+      e.preventDefault();
+      const title = document.getElementById('modalTaskTitle').value.trim();
+      const sup = document.getElementById('modalTaskSup').value;
+      const priority = document.getElementById('modalTaskPriority').value;
+      const dueDate = document.getElementById('modalTaskDueDate').value;
+
+      const newTask = {
+        id: 'T-' + Date.now(),
+        title,
+        supervisorId: sup,
+        priority,
+        dueDate,
+        done: false
+      };
+
+      if (!AppState.tasks) AppState.tasks = [];
+      AppState.tasks.unshift(newTask);
+      saveState();
+      closeModal('addTaskModal');
+      document.getElementById('taskForm').reset();
+      renderTasks();
+      showToast(AppState.lang === 'en' ? 'Task successfully assigned! 📋' : 'تم إسناد المهمة للمشرف بنجاح! 📋', 'success');
+    }
+
+    function deleteTask(taskId) {
+      if (AppState.currentUser && AppState.currentUser.role !== 'manager') return;
+      const isEn = AppState.lang === 'en';
+      if (confirm(isEn ? 'Are you sure you want to delete this task?' : 'هل أنت متأكد من حذف هذه المهمة الميدانية؟')) {
+        AppState.tasks = (AppState.tasks || []).filter(t => String(t.id) !== String(taskId));
+        saveState();
+        renderTasks();
+        showToast(isEn ? 'Task deleted' : 'تم حذف المهمة بنجاح', 'info');
+      }
+    }
+
+    // Feature 6: Full PWA Mobile App Support
+    let deferredPwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPwaPrompt = e;
+      const btn = document.getElementById('btnPwaInstall');
+      if (btn) btn.style.display = 'inline-flex';
+    });
+
+    function triggerPwaInstall() {
+      const isEn = AppState.lang === 'en';
+      if (deferredPwaPrompt) {
+        deferredPwaPrompt.prompt();
+        deferredPwaPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            showToast(isEn ? 'Thank you for installing our App! 📱' : 'شكراً لتثبيت التطبيق على جهازك! 📱', 'success');
+            const btn = document.getElementById('btnPwaInstall');
+            if (btn) btn.style.display = 'none';
+          }
+          deferredPwaPrompt = null;
+        });
+      } else {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert(isEn 
+            ? 'To install on iOS: Tap the Share button (⎋) in Safari and choose "Add to Home Screen" ➕' 
+            : 'لتثبيت التطبيق على جهازك (آيفون/آيباد): اضغط على زر المشاركة (⎋) في متصفح سفاري ثم اختر "إضافة إلى الصفحة الرئيسية" ➕');
+        } else {
+          alert(isEn 
+            ? 'To install: Use your browser options menu (⋮) and select "Install App" or "Add to Home screen".' 
+            : 'لتثبيت التطبيق: افتح قائمة خيارات متصفحك (⋮) واختر "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية" ليعمل كتطبيق هاتف متكامل.');
+        }
+      }
+    }
+
+    // Close notification dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const notifMenu = document.getElementById('notifDropdownMenu');
+      const notifBtn = document.getElementById('btnHeaderNotif');
+      if (notifMenu && notifMenu.classList.contains('open')) {
+        if (!notifMenu.contains(e.target) && (!notifBtn || !notifBtn.contains(e.target))) {
+          notifMenu.classList.remove('open');
+        }
+      }
+    });
+
+    /* =========================================================================
        INITIALIZATION
        ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
@@ -7538,6 +8748,11 @@ html[dir="ltr"] .login-input-icon {
       applySupervisorPortalMode();
       renderAll();
       initCloudSync();
+
+      const btnPwa = document.getElementById('btnPwaInstall');
+      if (btnPwa && !window.matchMedia('(display-mode: standalone)').matches) {
+        btnPwa.style.display = 'inline-flex';
+      }
 
       if (!AppState.currentUser) {
         showLoginModal();
