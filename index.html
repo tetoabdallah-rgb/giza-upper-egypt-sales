@@ -3365,7 +3365,7 @@ html[dir="ltr"] .notif-dropdown-menu {
               <div style="width:34px; height:34px; border-radius:8px; background:rgba(124,58,237,0.12); display:flex; align-items:center; justify-content:center; font-weight:800; color:#7c3aed; font-size:16px;">👨‍💼</div>
               <div>
                 <div style="font-weight:800; font-size:13px; color:var(--text-main);">مدير قطاعي الجيزة والصعيد</div>
-                <div style="font-size:10.5px; color:var(--text-muted);">أ / أحمد فؤاد (Master Admin)</div>
+                <div style="font-size:10.5px; color:var(--text-muted);">أ / عبدالله أحمد إبراهيم (Master Admin)</div>
               </div>
             </div>
             <span style="background:#7c3aed; color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;">دخول 👑</span>
@@ -3577,10 +3577,10 @@ html[dir="ltr"] .notif-dropdown-menu {
        DEFAULT DATA INITIALIZATION (AREA MANAGER + 3 SUPERVISORS)
        ========================================================================= */
     const DEFAULT_MANAGER = {
-      name: "أ / أحمد فؤاد",
-      title: "مدير قطاع الجيزة الكبرى والصعيد (Area Sales Manager)",
-      phone: "01000000001",
-      email: "areamanager@company.com",
+      name: "أ / عبدالله أحمد إبراهيم",
+      title: "مدير عام قطاع الجيزة الكبرى والصعيد (Area Sales Manager)",
+      phone: "01009939930",
+      email: "abdallah.ahme@2b.com.eg",
       username: "manager",
       password: "123",
       directives: [
@@ -4720,8 +4720,24 @@ html[dir="ltr"] .notif-dropdown-menu {
         AppState.visits = storedVisits ? JSON.parse(storedVisits) : DEFAULT_VISITS;
         AppState.tasks = storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS;
         AppState.dismissedNotifs = storedNotifs ? JSON.parse(storedNotifs) : [];
-        AppState.activeSupervisorId = storedActiveSup ? storedActiveSup : 'MANAGER';
-        AppState.currentUser = storedUser ? JSON.parse(storedUser) : null;
+        if (storedUser) {
+          try {
+            AppState.currentUser = JSON.parse(storedUser);
+          } catch(err) {
+            AppState.currentUser = null;
+          }
+        }
+        if (!AppState.currentUser) {
+          const mgr = AppState.areaManager || DEFAULT_MANAGER;
+          AppState.currentUser = {
+            role: 'manager',
+            username: mgr.username || 'manager',
+            name: mgr.name || 'أ / عبدالله أحمد إبراهيم',
+            avatar: '👨‍💼',
+            title: mgr.title
+          };
+          localStorage.setItem('giza_saeed_current_user', JSON.stringify(AppState.currentUser));
+        }
         const storedTs = localStorage.getItem('giza_saeed_last_sync_timestamp');
         window._lastLocalSaveTimestamp = storedTs ? Number(storedTs) : 0;
       } catch (e) {
@@ -4734,7 +4750,13 @@ html[dir="ltr"] .notif-dropdown-menu {
         AppState.tasks = DEFAULT_TASKS;
         AppState.dismissedNotifs = [];
         AppState.activeSupervisorId = 'MANAGER';
-        AppState.currentUser = null;
+        AppState.currentUser = {
+          role: 'manager',
+          username: 'manager',
+          name: 'أ / عبدالله أحمد إبراهيم',
+          avatar: '👨‍💼',
+          title: 'مدير عام قطاع الجيزة الكبرى والصعيد'
+        };
         AppState.lang = 'ar';
       }
     }
@@ -4766,6 +4788,7 @@ html[dir="ltr"] .notif-dropdown-menu {
     let _sheetsPushTimeout = null;
     let _sheetsPollingInterval = null;
     window._sheetsLastError = null;
+    window._hasCompletedFirstCloudPull = false;
 
     function updateSyncUI(status, text) {
       const dot = document.getElementById('cloudSyncDot');
@@ -4836,9 +4859,9 @@ html[dir="ltr"] .notif-dropdown-menu {
               if (data && data.updatedAt) {
                 const remoteTime = Number(data.updatedAt) || 0;
                 const localTime = Number(window._lastLocalSaveTimestamp) || 0;
-                if (remoteTime > 0 && (remoteTime > localTime || localTime === 0)) {
+                if (remoteTime > 0 && (!window._hasCompletedFirstCloudPull || remoteTime > localTime || localTime === 0)) {
                   if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
-                  if (Array.isArray(data.branches) && data.branches.length > 0) AppState.branches = data.branches;
+                  if (Array.isArray(data.branches)) AppState.branches = data.branches;
                   if (Array.isArray(data.directives)) AppState.directives = data.directives;
                   if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
                   if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
@@ -4846,6 +4869,7 @@ html[dir="ltr"] .notif-dropdown-menu {
                   if (Array.isArray(data.sales)) AppState.sales = data.sales;
                   if (Array.isArray(data.visits)) AppState.visits = data.visits;
 
+                  window._hasCompletedFirstCloudPull = true;
                   window._lastLocalSaveTimestamp = remoteTime;
                   localStorage.setItem('giza_saeed_last_sync_timestamp', String(remoteTime));
 
@@ -4922,9 +4946,9 @@ html[dir="ltr"] .notif-dropdown-menu {
           const remoteTime = Number(data.updatedAt) || 0;
           const localTime = Number(window._lastLocalSaveTimestamp) || 0;
 
-          if (remoteTime > 0 && (remoteTime > localTime || isManual || localTime === 0)) {
+          if (remoteTime > 0 && (!window._hasCompletedFirstCloudPull || remoteTime > localTime || isManual || localTime === 0)) {
             if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
-            if (Array.isArray(data.branches) && data.branches.length > 0) AppState.branches = data.branches;
+            if (Array.isArray(data.branches)) AppState.branches = data.branches;
             if (Array.isArray(data.directives)) AppState.directives = data.directives;
             if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
             if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
@@ -4932,6 +4956,7 @@ html[dir="ltr"] .notif-dropdown-menu {
             if (Array.isArray(data.sales)) AppState.sales = data.sales;
             if (Array.isArray(data.visits)) AppState.visits = data.visits;
 
+            window._hasCompletedFirstCloudPull = true;
             window._lastLocalSaveTimestamp = remoteTime;
             localStorage.setItem('giza_saeed_last_sync_timestamp', String(remoteTime));
 
@@ -5406,7 +5431,7 @@ function doPost(e) {
        WIPE & RESET CAPABILITIES
        ========================================================================= */
     function confirmClearSalesOnly() {
-      if (!AppState.currentUser || AppState.currentUser.role !== 'manager') {
+      if (!isMasterAdmin()) {
         alert("⛔ مسح المبيعات والزيارات متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
@@ -5420,7 +5445,7 @@ function doPost(e) {
     }
 
     function openWipeConfirmationModal() {
-      if (!AppState.currentUser || AppState.currentUser.role !== 'manager') {
+      if (!isMasterAdmin()) {
         alert("⛔ مسح جميع بيانات التطبيق وتصفير النظام متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
@@ -5428,7 +5453,7 @@ function doPost(e) {
     }
 
     function executeFullWipe() {
-      if (!AppState.currentUser || AppState.currentUser.role !== 'manager') {
+      if (!isMasterAdmin()) {
         alert("⛔ مسح جميع بيانات التطبيق وتصفير النظام متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
@@ -5458,7 +5483,7 @@ function doPost(e) {
     }
 
     function resetToSampleData() {
-      if (!AppState.currentUser || AppState.currentUser.role !== 'manager') {
+      if (!isMasterAdmin()) {
         alert("⛔ استعادة البيانات النموذجية متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
@@ -5478,18 +5503,36 @@ function doPost(e) {
     /* =========================================================================
        PERMISSIONS & AUTHENTICATION CORE LOGIC
        ========================================================================= */
+    function isMasterAdmin() {
+      if (!AppState.currentUser) {
+        return AppState.activeSupervisorId === 'MANAGER' || AppState.activeSupervisorId === 'ALL' || !AppState.activeSupervisorId;
+      }
+      const role = String(AppState.currentUser.role || '').toLowerCase();
+      return role === 'manager' || (role !== 'supervisor' && AppState.activeSupervisorId !== '1' && AppState.activeSupervisorId !== '2' && AppState.activeSupervisorId !== '3');
+    }
+
     function hasPermission(permKey) {
-      if (!AppState.currentUser) return false;
       // Area Manager is the master controller and has all permissions unrestricted
-      if (AppState.currentUser.role === 'manager') return true;
+      if (isMasterAdmin()) return true;
 
       // Supervisor role: check their individual permission flags
-      if (AppState.currentUser.role === 'supervisor') {
+      if (AppState.currentUser && String(AppState.currentUser.role).toLowerCase() === 'supervisor') {
         const sup = AppState.supervisors.find(s => Number(s.id) === Number(AppState.currentUser.supervisorId));
         if (!sup || !sup.permissions) return true; // fallback safe
         return sup.permissions[permKey] !== false;
       }
-      return false;
+
+      // If active supervisor view is set without explicit login, allow daily operations
+      if (AppState.activeSupervisorId && AppState.activeSupervisorId !== 'MANAGER' && AppState.activeSupervisorId !== 'ALL') {
+        const sup = AppState.supervisors.find(s => String(s.id) === String(AppState.activeSupervisorId));
+        if (sup && sup.permissions && sup.permissions[permKey] === false) {
+          return false;
+        }
+        if (permKey === 'canDelete' || permKey === 'canEditProfile') return false;
+        return true;
+      }
+
+      return true;
     }
 
     function checkPermissionOrAlert(permKey, actionName) {
@@ -5515,7 +5558,7 @@ function doPost(e) {
         loginSuccess({
           role: 'manager',
           username: mgr.username || 'manager',
-          name: mgr.name || 'أ / أحمد فؤاد',
+          name: mgr.name || 'أ / عبدالله أحمد إبراهيم',
           avatar: '👨‍💼',
           title: mgr.title
         });
@@ -5554,7 +5597,7 @@ function doPost(e) {
         loginSuccess({
           role: 'manager',
           username: mgr.username || 'manager',
-          name: mgr.name || 'أ / أحمد فؤاد',
+          name: mgr.name || 'أ / عبدالله أحمد إبراهيم',
           avatar: '👨‍💼',
           title: mgr.title
         });
@@ -5726,9 +5769,23 @@ ${baseUrl}?user=manager${sheetsParam}
     }
 
     function openPermissionsModal() {
-      if (!AppState.currentUser || AppState.currentUser.role !== 'manager') {
+      if (AppState.currentUser && String(AppState.currentUser.role).toLowerCase() === 'supervisor') {
         alert("⛔ عذراً، لوحة إدارة الحسابات والصلاحيات متاحة فقط لمدير الإدارة (Master Admin)!");
         return;
+      }
+
+      // Auto-heal active user session to Master Manager
+      if (!AppState.currentUser || String(AppState.currentUser.role).toLowerCase() !== 'manager') {
+        const mgr = AppState.areaManager || DEFAULT_MANAGER;
+        AppState.currentUser = {
+          role: 'manager',
+          username: mgr.username || 'manager',
+          name: mgr.name || 'أ / عبدالله أحمد إبراهيم',
+          avatar: '👨‍💼',
+          title: mgr.title || 'مدير عام قطاع الجيزة الكبرى والصعيد'
+        };
+        saveState();
+        applySupervisorPortalMode();
       }
 
       // Populate manager security credentials
@@ -5845,6 +5902,11 @@ ${baseUrl}?user=manager${sheetsParam}
       const mgrPass = document.getElementById('mgrPassword').value.trim();
       if (mgrUser) AppState.areaManager.username = mgrUser;
       if (mgrPass) AppState.areaManager.password = mgrPass;
+      if (isMasterAdmin()) {
+        if (!AppState.currentUser) AppState.currentUser = { role: 'manager' };
+        AppState.currentUser.role = 'manager';
+        if (mgrUser) AppState.currentUser.username = mgrUser;
+      }
 
       // Save Supervisor Credentials & Permissions
       AppState.supervisors.forEach(sup => {
@@ -6186,10 +6248,14 @@ ${baseUrl}?user=manager${sheetsParam}
       if (newUsername) AppState.areaManager.username = newUsername;
       if (newPassword) AppState.areaManager.password = newPassword;
 
-      if (AppState.currentUser && AppState.currentUser.role === 'manager') {
-        AppState.currentUser.name = newName;
-        AppState.currentUser.title = newTitle;
-        if (newUsername) AppState.currentUser.username = newUsername;
+      if (!AppState.currentUser || AppState.currentUser.role === 'manager' || isMasterAdmin()) {
+        AppState.currentUser = {
+          role: 'manager',
+          username: newUsername || AppState.areaManager.username || 'manager',
+          name: newName,
+          title: newTitle,
+          avatar: '👨‍💼'
+        };
       }
 
       saveState();
