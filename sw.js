@@ -1,4 +1,4 @@
-const CACHE_NAME = 'giza-sales-v2026-10-04-v3';
+const CACHE_NAME = 'giza-sales-v2026-10-06-v1';
 const ASSETS = [
   './',
   './index.html',
@@ -31,11 +31,22 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Fetch Event: Network-First for HTML navigation to ensure users always see latest updates
+// Fetch Event
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   
-  // For HTML documents & page navigations: Network First, fallback to cache if offline
+  // 1. NEVER intercept non-GET requests (e.g. POST to Google Sheets or APIs)
+  if (req.method !== 'GET') {
+    return;
+  }
+
+  // 2. Only handle requests for same-origin assets
+  // Let Google Apps Script, Firebase, Google Fonts, and external CDNs bypass SW completely
+  if (!req.url.startsWith(self.location.origin)) {
+    return;
+  }
+
+  // 3. For HTML documents & page navigations: Network First, fallback to cache if offline
   if (req.mode === 'navigate' || req.destination === 'document' || req.url.endsWith('index.html') || req.url.endsWith('/')) {
     e.respondWith(
       fetch(req)
@@ -51,7 +62,7 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // For static assets (images, fonts, manifest): Stale-While-Revalidate
+  // 4. For same-origin static assets: Stale-While-Revalidate
   e.respondWith(
     caches.match(req).then((cachedRes) => {
       const fetchPromise = fetch(req)

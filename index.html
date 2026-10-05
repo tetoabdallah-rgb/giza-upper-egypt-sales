@@ -1967,6 +1967,12 @@ html[dir="ltr"] .notif-dropdown-menu {
           <span id="cloudSyncText">مزامنة سحابية لحظية</span>
         </div>
 
+        <!-- WhatsApp Links Button for Supervisors -->
+        <button class="btn btn-outline btn-sm" id="btnHeaderShareLinks" onclick="openShareLinksModal()" title="إرسال روابط المشرفين المباشرة عبر الواتساب" style="border-color:rgba(16,185,129,0.3); color:var(--success);">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+          <span id="btnHeaderShareLinksText">روابط المشرفين 📲</span>
+        </button>
+
         <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تبديل اللغة">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           <span id="langToggleBtnText">English</span>
@@ -2048,6 +2054,10 @@ html[dir="ltr"] .notif-dropdown-menu {
             </div>
 
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="openShareLinksModal()" style="border-color:rgba(16,185,129,0.35); color:var(--success);" title="إرسال روابط المشرفين المباشرة عبر الواتساب">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                <span>روابط المشرفين (واتساب) 📲</span>
+              </button>
               <button class="btn btn-purple btn-sm" onclick="openPermissionsModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 <span id="btnMgrPermsText">حسابات وصلاحيات المشرفين</span>
@@ -3272,9 +3282,9 @@ html[dir="ltr"] .notif-dropdown-menu {
 
   <!-- Modal: User Authentication / Login Screen -->
   <div class="modal-overlay" id="loginModal">
-    <div class="modal-dialog">
-      <div class="login-header-banner">
-        <div class="login-logo-glow">
+    <div class="modal-dialog" style="max-width:480px; width:92%; padding:22px 18px;">
+      <div class="login-header-banner" style="text-align:center; margin-bottom:14px;">
+        <div class="login-logo-glow" style="margin:0 auto 10px auto; width:50px; height:50px;">
           <svg viewBox="0 0 48 48" fill="none" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="logoGradModal" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -3297,48 +3307,178 @@ html[dir="ltr"] .notif-dropdown-menu {
             <circle cx="37" cy="7" r="2.5" fill="#facc15"/>
           </svg>
         </div>
-        <div class="modal-title" id="loginModalTitle" style="font-size:20px; font-weight:900; color:var(--text-main); letter-spacing:-0.3px;">تسجيل الدخول للمنظومة</div>
-        <p id="loginModalSub" style="font-size:12px; color:var(--text-muted); margin-top:5px; max-width:320px; line-height:1.5;">
-          بوابة الإدارة التنفيذية والمتابعة اللحظية لقطاعي الجيزة والصعيد
+        <div class="modal-title" id="loginModalTitle" style="font-size:19px; font-weight:900; color:var(--text-main); letter-spacing:-0.3px;">تسجيل الدخول للمنظومة</div>
+        <p id="loginModalSub" style="font-size:12px; color:var(--text-muted); margin-top:4px; max-width:340px; margin-inline:auto; line-height:1.4;">
+          بوابة الإدارة والمشرفين الميدانيين لقطاعي الجيزة والصعيد
         </p>
       </div>
 
-      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
-        <div class="modal-body" style="padding-top:0;">
-          <div id="loginErrorMsg" style="display:none; background:var(--danger-light); color:var(--danger); border:1px solid rgba(220,38,38,0.2); padding:10px 14px; border-radius:10px; font-size:12.5px; font-weight:700; text-align:center;">
-          </div>
+      <!-- Quick 1-Tap Login Cards -->
+      <div style="background:var(--bg-main); border:1.5px solid var(--border-color); border-radius:12px; padding:12px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-size:12px; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:6px;">
+            <span>⚡</span> <span>اختر حسابك للدخول المباشر الفوري:</span>
+          </span>
+          <span class="badge badge-success" style="font-size:10px; padding:2px 8px;">دخول بنقرة واحدة</span>
+        </div>
 
-          <div class="form-group">
-            <label id="loginUserLabel" style="font-weight:700;">اسم المستخدم (Username) *</label>
-            <div class="login-input-group">
-              <svg class="login-input-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-              <input type="text" id="loginUsername" class="form-control login-input-with-icon" required placeholder="manager أو اسم المشرف" autocomplete="username">
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <!-- Sup 1 -->
+          <button type="button" onclick="quickLogin('giza1')" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:9px 12px; background:var(--bg-card); border:1.5px solid rgba(59,130,246,0.3); border-radius:10px; cursor:pointer; text-align:start; transition:all 0.2s;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <div style="width:34px; height:34px; border-radius:8px; background:rgba(59,130,246,0.12); display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--primary); font-size:13px;">ج1</div>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text-main);">مشرف الجيزة 1</div>
+                <div style="font-size:10.5px; color:var(--text-muted);">الهرم • فيصل • الدقي • المهندسين</div>
+              </div>
             </div>
-          </div>
-
-          <div class="form-group">
-            <label id="loginPassLabel" style="font-weight:700;">كلمة المرور (Password) *</label>
-            <div class="login-input-group">
-              <svg class="login-input-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>
-              <input type="password" id="loginPassword" class="form-control login-input-with-icon" required placeholder="أدخل كلمة المرور" autocomplete="current-password" style="padding-inline-end:38px !important;">
-              <button type="button" onclick="togglePasswordVisibility('loginPassword')" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:14px; color:var(--text-muted); display:flex; align-items:center;" title="إظهار / إخفاء">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="width:100%; padding:12px; font-size:14px; font-weight:800; margin-top:8px; border-radius:10px;">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-            <span>دخول المنظومة</span>
+            <span style="background:var(--primary); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;">دخول 🚀</span>
           </button>
 
-          <div class="login-security-tag">
-            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            <span>اتصال سحابي مشفّر مع Google Firebase Firestore</span>
+          <!-- Sup 2 -->
+          <button type="button" onclick="quickLogin('giza2')" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:9px 12px; background:var(--bg-card); border:1.5px solid rgba(2,132,199,0.3); border-radius:10px; cursor:pointer; text-align:start; transition:all 0.2s;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <div style="width:34px; height:34px; border-radius:8px; background:rgba(2,132,199,0.12); display:flex; align-items:center; justify-content:center; font-weight:800; color:#0284c7; font-size:13px;">ج2</div>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text-main);">مشرف الجيزة 2</div>
+                <div style="font-size:10.5px; color:var(--text-muted);">6 أكتوبر • الشيخ زايد • حدائق أكتوبر</div>
+              </div>
+            </div>
+            <span style="background:#0284c7; color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;">دخول 🚀</span>
+          </button>
+
+          <!-- Sup 3 -->
+          <button type="button" onclick="quickLogin('saeed')" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:9px 12px; background:var(--bg-card); border:1.5px solid rgba(16,185,129,0.3); border-radius:10px; cursor:pointer; text-align:start; transition:all 0.2s;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <div style="width:34px; height:34px; border-radius:8px; background:rgba(16,185,129,0.12); display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--success); font-size:13px;">ص</div>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text-main);">مشرف الصعيد</div>
+                <div style="font-size:10.5px; color:var(--text-muted);">بني سويف • المنيا • أسيوط • سوهاج • قنا • أسوان</div>
+              </div>
+            </div>
+            <span style="background:var(--success); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;">دخول 🚀</span>
+          </button>
+
+          <!-- Manager -->
+          <button type="button" onclick="quickLogin('manager')" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:9px 12px; background:var(--bg-card); border:1.5px solid rgba(124,58,237,0.3); border-radius:10px; cursor:pointer; text-align:start; transition:all 0.2s;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <div style="width:34px; height:34px; border-radius:8px; background:rgba(124,58,237,0.12); display:flex; align-items:center; justify-content:center; font-weight:800; color:#7c3aed; font-size:16px;">👨‍💼</div>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text-main);">مدير قطاعي الجيزة والصعيد</div>
+                <div style="font-size:10.5px; color:var(--text-muted);">أ / أحمد فؤاد (Master Admin)</div>
+              </div>
+            </div>
+            <span style="background:#7c3aed; color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;">دخول 👑</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Manual login collapse -->
+      <details style="background:var(--bg-subtle); border-radius:10px; padding:8px 12px; margin-bottom:8px;">
+        <summary style="font-size:11.5px; font-weight:700; color:var(--text-muted); cursor:pointer;">
+          🔐 أو تسجيل الدخول اليدوي بكلمة المرور...
+        </summary>
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)" style="margin-top:10px;">
+          <div id="loginErrorMsg" style="display:none; background:var(--danger-light); color:var(--danger); border:1px solid rgba(220,38,38,0.2); padding:8px 10px; border-radius:8px; font-size:12px; font-weight:700; text-align:center; margin-bottom:10px;"></div>
+
+          <div class="form-group" style="margin-bottom:8px;">
+            <label id="loginUserLabel" style="font-size:11.5px; font-weight:700;">اسم المستخدم (Username):</label>
+            <input type="text" id="loginUsername" class="form-control" placeholder="manager أو giza1 أو giza2 أو saeed" style="font-size:12.5px;">
+          </div>
+
+          <div class="form-group" style="margin-bottom:10px;">
+            <label id="loginPassLabel" style="font-size:11.5px; font-weight:700;">كلمة المرور (Password):</label>
+            <div style="position:relative;">
+              <input type="password" id="loginPassword" class="form-control" placeholder="123" style="padding-inline-end:36px; font-size:12.5px;">
+              <button type="button" onclick="togglePasswordVisibility('loginPassword')" style="position:absolute; left:8px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:13px; color:var(--text-muted);">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-sm" style="width:100%; padding:9px; font-weight:800; border-radius:8px;">
+            دخول يدوي
+          </button>
+
+          <div style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:6px;">
+            كلمة المرور الافتراضية لجميع الحسابات هي: <strong>123</strong>
+          </div>
+        </form>
+      </details>
+
+      <div class="login-security-tag" style="margin-top:6px;">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span>مزامنة سحابية مباشرة عبر Google Sheets & Firestore</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Share Direct Links with Supervisors (WhatsApp) -->
+  <div class="modal-overlay" id="shareLinksModal">
+    <div class="modal-dialog" style="max-width:540px; width:92%;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+          <span>📲</span> <span>روابط الدخول المباشر للمشرفين (واتساب)</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('shareLinksModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.25); border-radius:10px; padding:12px; margin-bottom:14px; font-size:12.5px; line-height:1.6; color:var(--text-main);">
+          💡 <strong>كل مشرف له رابط مباشر خاص به:</strong><br>
+          بمجرد أن يضغط المشرف على رابطه في رسالة الواتساب، سيفتح التطبيق على هاتفه فوراً بحسابه وبوابته بدون أن يطلب منه أي باسوورد أو إعدادات!
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:9px; margin-bottom:16px;">
+          <!-- Sup 1 -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px;">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--text-main);">👔 مشرف الجيزة 1 (الهرم وفيصل)</div>
+              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=giza1</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('giza1', 'مشرف الجيزة 1')">
+              📋 نسخ الرابط
+            </button>
+          </div>
+
+          <!-- Sup 2 -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px;">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--text-main);">👔 مشرف الجيزة 2 (أكتوبر والزايد)</div>
+              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=giza2</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('giza2', 'مشرف الجيزة 2')">
+              📋 نسخ الرابط
+            </button>
+          </div>
+
+          <!-- Sup 3 -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px;">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--text-main);">👔 مشرف الصعيد (المحافظات بالكامل)</div>
+              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=saeed</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('saeed', 'مشرف الصعيد')">
+              📋 نسخ الرابط
+            </button>
+          </div>
+
+          <!-- Manager -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:rgba(124,58,237,0.06); border:1px solid rgba(124,58,237,0.25); border-radius:10px;">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:#7c3aed;">👨‍💼 مدير الآريتين (Master Admin)</div>
+              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=manager</div>
+            </div>
+            <button class="btn btn-purple btn-sm" onclick="copyIndividualSupervisorLink('manager', 'مدير الآريتين')">
+              📋 نسخ رابط المدير
+            </button>
           </div>
         </div>
-      </form>
+
+        <button type="button" class="btn btn-success" onclick="copyFullWhatsAppBroadcastMessage()" style="width:100%; padding:12px; font-weight:800; font-size:13.5px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <span>💬</span>
+          <span>نسخ الرسالة الشاملة لجروب الواتساب بالكامل</span>
+        </button>
+      </div>
     </div>
+  </div>
   <!-- Modal: Add Daily Field Task -->
   <div class="modal-overlay" id="addTaskModal">
     <div class="modal-dialog">
@@ -4582,6 +4722,8 @@ html[dir="ltr"] .notif-dropdown-menu {
         AppState.dismissedNotifs = storedNotifs ? JSON.parse(storedNotifs) : [];
         AppState.activeSupervisorId = storedActiveSup ? storedActiveSup : 'MANAGER';
         AppState.currentUser = storedUser ? JSON.parse(storedUser) : null;
+        const storedTs = localStorage.getItem('giza_saeed_last_sync_timestamp');
+        window._lastLocalSaveTimestamp = storedTs ? Number(storedTs) : 0;
       } catch (e) {
         console.error("Error loading state:", e);
         AppState.areaManager = DEFAULT_MANAGER;
@@ -4692,26 +4834,20 @@ html[dir="ltr"] .notif-dropdown-menu {
             if (doc.exists) {
               const data = doc.data();
               if (data && data.updatedAt) {
-                const localTime = window._lastLocalSaveTimestamp || 0;
-                if (data.updatedAt > localTime) {
+                const remoteTime = Number(data.updatedAt) || 0;
+                const localTime = Number(window._lastLocalSaveTimestamp) || 0;
+                if (remoteTime > 0 && (remoteTime > localTime || localTime === 0)) {
                   if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
-                  if (Array.isArray(data.branches)) AppState.branches = data.branches;
+                  if (Array.isArray(data.branches) && data.branches.length > 0) AppState.branches = data.branches;
                   if (Array.isArray(data.directives)) AppState.directives = data.directives;
                   if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
                   if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
                   if (data.areaManager) AppState.areaManager = data.areaManager;
+                  if (Array.isArray(data.sales)) AppState.sales = data.sales;
+                  if (Array.isArray(data.visits)) AppState.visits = data.visits;
 
-                  if (Array.isArray(data.sales)) {
-                    const remoteIds = new Set(data.sales.map(s => Number(s.id)));
-                    const localOnly = AppState.sales.filter(s => !remoteIds.has(Number(s.id)));
-                    AppState.sales = [...data.sales, ...localOnly];
-                  }
-
-                  if (Array.isArray(data.visits)) {
-                    const remoteVIds = new Set(data.visits.map(v => Number(v.id)));
-                    const localOnlyV = AppState.visits.filter(v => !remoteVIds.has(Number(v.id)));
-                    AppState.visits = [...data.visits, ...localOnlyV];
-                  }
+                  window._lastLocalSaveTimestamp = remoteTime;
+                  localStorage.setItem('giza_saeed_last_sync_timestamp', String(remoteTime));
 
                   saveStateLocalOnly();
                   renderAll();
@@ -4763,7 +4899,7 @@ html[dir="ltr"] .notif-dropdown-menu {
         if (!_sheetsPollingInterval) {
           _sheetsPollingInterval = setInterval(() => {
             pullStateFromGoogleSheets();
-          }, 12000);
+          }, 8000);
         }
       }
     }
@@ -4774,7 +4910,7 @@ html[dir="ltr"] .notif-dropdown-menu {
 
       try {
         const fetchUrl = sheetsUrl + (sheetsUrl.includes('?') ? '&' : '?') + 'action=load&nocache=' + Date.now();
-        const res = await fetch(fetchUrl);
+        const res = await fetch(fetchUrl, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
@@ -4783,35 +4919,28 @@ html[dir="ltr"] .notif-dropdown-menu {
           window._sheetsLastError = null;
           updateSyncUI();
 
-          if (data.updatedAt) {
-            const localTime = window._lastLocalSaveTimestamp || 0;
-            if (data.updatedAt > localTime) {
-              if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
-              if (Array.isArray(data.branches)) AppState.branches = data.branches;
-              if (Array.isArray(data.directives)) AppState.directives = data.directives;
-              if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
-              if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
-              if (data.areaManager) AppState.areaManager = data.areaManager;
+          const remoteTime = Number(data.updatedAt) || 0;
+          const localTime = Number(window._lastLocalSaveTimestamp) || 0;
 
-              if (Array.isArray(data.sales)) {
-                const remoteIds = new Set(data.sales.map(s => Number(s.id)));
-                const localOnly = AppState.sales.filter(s => !remoteIds.has(Number(s.id)));
-                AppState.sales = [...data.sales, ...localOnly];
-              }
+          if (remoteTime > 0 && (remoteTime > localTime || isManual || localTime === 0)) {
+            if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
+            if (Array.isArray(data.branches) && data.branches.length > 0) AppState.branches = data.branches;
+            if (Array.isArray(data.directives)) AppState.directives = data.directives;
+            if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
+            if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
+            if (data.areaManager) AppState.areaManager = data.areaManager;
+            if (Array.isArray(data.sales)) AppState.sales = data.sales;
+            if (Array.isArray(data.visits)) AppState.visits = data.visits;
 
-              if (Array.isArray(data.visits)) {
-                const remoteVIds = new Set(data.visits.map(v => Number(v.id)));
-                const localOnlyV = AppState.visits.filter(v => !remoteVIds.has(Number(v.id)));
-                AppState.visits = [...data.visits, ...localOnlyV];
-              }
+            window._lastLocalSaveTimestamp = remoteTime;
+            localStorage.setItem('giza_saeed_last_sync_timestamp', String(remoteTime));
 
-              saveStateLocalOnly();
-              renderAll();
-              if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
-                showToast(AppState.lang === 'en' 
-                  ? `Live cloud sync: Updated by ${data.lastModifiedBy}` 
-                  : `تحديث سحابي مباشر وصل من: ${data.lastModifiedBy}`, 'info', 2500);
-              }
+            saveStateLocalOnly();
+            renderAll();
+            if (window.showToast && data.lastModifiedBy && data.lastModifiedBy !== (AppState.currentUser?.name)) {
+              showToast(AppState.lang === 'en' 
+                ? `Live cloud sync: Updated by ${data.lastModifiedBy}` 
+                : `تحديث سحابي مباشر وصل من: ${data.lastModifiedBy}`, 'info', 2500);
             }
           }
           if (isManual) {
@@ -4827,13 +4956,15 @@ html[dir="ltr"] .notif-dropdown-menu {
       }
     }
 
-    function pushStateToGoogleSheets() {
+    function pushStateToGoogleSheets(forceImmediate) {
       const sheetsUrl = getActiveSheetsUrl();
       if (!sheetsUrl) return;
 
-      clearTimeout(_sheetsPushTimeout);
-      _sheetsPushTimeout = setTimeout(() => {
+      const doPush = () => {
         try {
+          window._lastLocalSaveTimestamp = Date.now();
+          localStorage.setItem('giza_saeed_last_sync_timestamp', String(window._lastLocalSaveTimestamp));
+
           const payload = {
             supervisors: AppState.supervisors,
             branches: AppState.branches,
@@ -4843,27 +4974,51 @@ html[dir="ltr"] .notif-dropdown-menu {
             promoters: AppState.promoters,
             tasks: AppState.tasks || [],
             areaManager: AppState.areaManager,
-            updatedAt: window._lastLocalSaveTimestamp || Date.now(),
+            updatedAt: window._lastLocalSaveTimestamp,
             lastModifiedBy: AppState.currentUser ? AppState.currentUser.name : 'Unknown User'
           };
 
           fetch(sheetsUrl, {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
           }).then(() => {
             _isSheetsConnected = true;
             window._sheetsLastError = null;
             updateSyncUI();
+            if (forceImmediate && window.showToast) {
+              showToast(AppState.lang === 'en' ? 'Data uploaded to Google Sheets! 🚀' : 'تم رفع كامل البيانات لشيت السحابة بنجاح! 🚀', 'success');
+            }
           }).catch(err => {
             console.warn('Sheets push error:', err);
             window._sheetsLastError = err;
+            if (forceImmediate && window.showToast) {
+              showToast(AppState.lang === 'en' ? 'Failed to upload to Sheets' : 'تعذر إرسال البيانات للسحابة', 'error');
+            }
           });
         } catch(e) {
           console.warn('Sheets push exception:', e);
         }
-      }, 1000);
+      };
+
+      clearTimeout(_sheetsPushTimeout);
+      if (forceImmediate) {
+        doPush();
+      } else {
+        _sheetsPushTimeout = setTimeout(doPush, 500);
+      }
+    }
+
+    function forcePushStateNow() {
+      if (window.showToast) {
+        showToast(AppState.lang === 'en' ? 'Uploading all local data to cloud...' : 'جاري رفع كامل بيانات جهازك للسحابة وتحديث بقية الأجهزة...', 'info', 3000);
+      }
+      window._lastLocalSaveTimestamp = Date.now();
+      localStorage.setItem('giza_saeed_last_sync_timestamp', String(window._lastLocalSaveTimestamp));
+      pushStateToCloud();
+      pushStateToGoogleSheets(true);
     }
 
     function saveGoogleSheetsUrl() {
@@ -5055,6 +5210,17 @@ function doPost(e) {
                 <span class="badge ${ _isSheetsConnected ? 'badge-success' : 'badge-neutral' }">
                   Google Sheets: ${_isSheetsConnected ? 'متصل (إكسيل لايف) 📊' : 'غير متصل'}
                 </span>
+              </div>
+              <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                <button type="button" class="btn btn-success btn-sm" onclick="forcePushStateNow()" style="font-weight:800; font-size:12px;">
+                  📤 رفع وتحديث بيانات جهازي للسحابة الآن
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="pullStateFromGoogleSheets(true)" style="font-size:12px;">
+                  🔄 جلب أحدث داتا من السحابة
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="openShareLinksModal()" style="font-size:12px;">
+                  📲 روابط المشرفين للواتساب
+                </button>
               </div>
             </div>
           </div>
@@ -5449,6 +5615,86 @@ function doPost(e) {
       if (loginModal) loginModal.classList.remove('open');
       applySupervisorPortalMode();
       renderAll();
+
+      if (window.showToast) {
+        showToast(AppState.lang === 'en' 
+          ? `Welcome ${userObj.name}! Logged in successfully 🚀` 
+          : `مرحباً بك يا ${userObj.name}! تم الدخول بنجاح 🚀`, 'success', 3000);
+      }
+    }
+
+    function checkUrlAutoLogin() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userParam = urlParams.get('user') || urlParams.get('login') || urlParams.get('role');
+        if (userParam) {
+          const clean = userParam.trim().toLowerCase();
+          if (clean === 'manager' || clean === 'admin') {
+            quickLogin('manager');
+          } else if (clean === 'giza1' || clean === '1') {
+            quickLogin('giza1');
+          } else if (clean === 'giza2' || clean === '2') {
+            quickLogin('giza2');
+          } else if (clean === 'saeed' || clean === 'upper' || clean === '3') {
+            quickLogin('saeed');
+          }
+          // Clean URL parameter from address bar safely (only when hosted on http/https)
+          if (window.location.protocol.startsWith('http')) {
+            const cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
+            window.history.replaceState({}, document.title, cleanUrl);
+          }
+        }
+      } catch(e) {
+        console.warn('URL auto-login note:', e);
+      }
+    }
+
+    function openShareLinksModal() {
+      const m = document.getElementById('shareLinksModal');
+      if (m) m.classList.add('open');
+    }
+
+    function copyIndividualSupervisorLink(userKey, roleTitle) {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const sheetsUrl = getActiveSheetsUrl();
+      const sheetsParam = sheetsUrl ? `&sheets=${encodeURIComponent(sheetsUrl)}` : '';
+      const link = `${baseUrl}?user=${userKey}${sheetsParam}`;
+
+      const text = `رابط الدخول المباشر لـ (${roleTitle}):\n${link}\n(اضغط وهيفتح معاك فوراً بدون كلمة سر)`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(AppState.lang === 'en' ? `Link for ${roleTitle} copied! 📋` : `تم نسخ رابط (${roleTitle}) للواتساب! 📋`, 'success', 3500);
+      }).catch(() => {
+        prompt('انسخ الرابط:', link);
+      });
+    }
+
+    function copyFullWhatsAppBroadcastMessage() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const sheetsUrl = getActiveSheetsUrl();
+      const sheetsParam = sheetsUrl ? `&sheets=${encodeURIComponent(sheetsUrl)}` : '';
+
+      const msg = `السلام عليكم يا شباب 🌟
+دي روابط الدخول المباشر لمنظومة مبيعات الجيزة والصعيد الجديدة، كل مشرف يضغط على الرابط بتاعه وهيفتح معاه حسابه فوراً بدون طلب أي كلمة سر:
+
+👔 مشرف الجيزة 1 (الهرم، فيصل، الدقي، المهندسين):
+${baseUrl}?user=giza1${sheetsParam}
+
+👔 مشرف الجيزة 2 (6 أكتوبر، الشيخ زايد، حدائق أكتوبر):
+${baseUrl}?user=giza2${sheetsParam}
+
+👔 مشرف الصعيد (محافظات الصعيد بالكامل):
+${baseUrl}?user=saeed${sheetsParam}
+
+👨‍💼 رابط مدير الآريتين (Master Admin):
+${baseUrl}?user=manager${sheetsParam}
+
+بالتوفيق للجميع وتحقيق أعلى مبيعات هذا الشهر إن شاء الله 🚀`;
+
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast(AppState.lang === 'en' ? 'Full WhatsApp message copied! 📋' : 'تم نسخ رسالة الواتساب الشاملة بنجاح! الصقها الآن في الجروب 💬', 'success', 4000);
+      }).catch(() => {
+        prompt('انسخ الرسالة:', msg);
+      });
     }
 
     function handleLogout() {
@@ -9257,6 +9503,7 @@ function doPost(e) {
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       loadState();
+      checkUrlAutoLogin();
       applyLanguage();
       applySupervisorPortalMode();
       renderAll();
@@ -9312,7 +9559,7 @@ function doPost(e) {
     };
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=20261004v3').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261006v1').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
