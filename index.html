@@ -5077,14 +5077,14 @@ html[dir="ltr"] .notif-dropdown-menu {
         dot.classList.add('pulse');
         textElem.textContent = isEn ? 'Synced (Cloud + Sheets) 🚀' : 'متصل (سحابي + شيت) 🚀';
         if (badge) badge.title = isEn ? 'Live sync active with Firebase & Google Sheets' : 'المزامنة متصلة بنجاح بسيرفر Firebase وشيت Google Sheets معاً';
-      } else if (_isCloudConnected) {
-        dot.classList.add('pulse');
-        textElem.textContent = text || (isEn ? 'Firebase Synced ✅' : 'متصل بالسحابة (Firebase) ✅');
-        if (badge) badge.title = isEn ? 'Live Firebase Sync Connected - Click for details' : 'المزامنة السحابية اللحظية تعمل بنجاح عبر Firebase - اضغط للتفاصيل';
       } else if (_isSheetsConnected) {
         dot.classList.add('pulse');
         textElem.textContent = text || (isEn ? 'Sheets Synced ✅' : 'متصل بالسحابة (Google Sheets) ✅');
         if (badge) badge.title = isEn ? 'Live Google Sheets Connected - Click for details' : 'مزامنة Google Sheets تعمل بنجاح - اضغط للتفاصيل';
+      } else if (_isCloudConnected) {
+        dot.classList.add('pulse');
+        textElem.textContent = text || (isEn ? 'Firebase Synced ✅' : 'متصل بالسحابة (Firebase) ✅');
+        if (badge) badge.title = isEn ? 'Live Firebase Sync Connected - Click for details' : 'المزامنة السحابية اللحظية تعمل بنجاح عبر Firebase - اضغط للتفاصيل';
       } else if (status === 'syncing') {
         dot.classList.add('syncing');
         textElem.textContent = text || (isEn ? 'Syncing...' : 'جاري المزامنة...');
@@ -5114,7 +5114,10 @@ html[dir="ltr"] .notif-dropdown-menu {
         }
       } catch(e) {}
 
-      // 2. Initialize Firebase Firestore (Realtime)
+      // 2. Initialize Google Sheets Sync immediately (Primary resilient cloud backend)
+      initGoogleSheetsSync();
+
+      // 3. Initialize Firebase Firestore (Realtime secondary)
       try {
         if (typeof firebase !== 'undefined') {
           if (!firebase.apps.length) {
@@ -5123,7 +5126,9 @@ html[dir="ltr"] .notif-dropdown-menu {
           _cloudDb = firebase.firestore();
           _cloudDb.settings({ experimentalForceLongPolling: true });
 
-          updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري فحص الاتصال...');
+          if (!_isSheetsConnected) {
+            updateSyncUI('syncing', AppState.lang === 'en' ? 'Connecting...' : 'جاري فحص الاتصال...');
+          }
 
           const stateDoc = _cloudDb.collection('giza_upper_egypt_sales').doc('master_state');
           stateDoc.onSnapshot(doc => {
@@ -5176,7 +5181,7 @@ html[dir="ltr"] .notif-dropdown-menu {
             console.warn('Firebase sync note:', err);
             window._cloudLastError = err;
             _isCloudConnected = false;
-            updateSyncUI();
+            if (!_isSheetsConnected) updateSyncUI();
           });
         } else {
           window._cloudLastError = { message: 'Firebase SDK not loaded' };
@@ -5185,10 +5190,8 @@ html[dir="ltr"] .notif-dropdown-menu {
         console.warn('Firebase init error:', err);
         window._cloudLastError = err;
         _isCloudConnected = false;
+        if (!_isSheetsConnected) updateSyncUI();
       }
-
-      // 3. Initialize Google Sheets Sync (Polling + Sync)
-      initGoogleSheetsSync();
     }
 
     const DEFAULT_GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwWL-TR2D5WEaqwXct5MPZjUiOEIWhnkI647eQ3gVzP56GD4LpVanY0A1QQll-360Of/exec";
@@ -5217,7 +5220,7 @@ html[dir="ltr"] .notif-dropdown-menu {
 
       try {
         const fetchUrl = sheetsUrl + (sheetsUrl.includes('?') ? '&' : '?') + 'action=load&nocache=' + Date.now();
-        const res = await fetch(fetchUrl, { cache: 'no-store' });
+        const res = await fetch(fetchUrl, { method: 'GET', redirect: 'follow' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
@@ -5500,13 +5503,13 @@ function doPost(e) {
               console.warn('Cloud push error:', err);
               window._cloudLastError = err;
               _isCloudConnected = false;
-              updateSyncUI();
+              if (!_isSheetsConnected) updateSyncUI();
             });
         } catch (e) {
           console.warn('Push error:', e);
           window._cloudLastError = e;
           _isCloudConnected = false;
-          updateSyncUI('offline');
+          if (!_isSheetsConnected) updateSyncUI('offline');
         }
       }, 500);
     }
@@ -6641,7 +6644,8 @@ ${baseUrl}?user=manager${sheetsParam}
         award: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>',
         chart: '<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'
       };
-      return '<svg class="icon-svg ' + (className || '') + '" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">' + path + '</svg>';
+      const pathContent = icons[name] || '';
+      return '<svg class="icon-svg ' + (className || '') + '" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">' + pathContent + '</svg>';
     }
 
     function formatEGP(val) {
@@ -10655,7 +10659,11 @@ ${baseUrl}?user=manager${sheetsParam}
       checkUrlAutoLogin();
       applyLanguage();
       applySupervisorPortalMode();
-      renderAll();
+      try {
+        renderAll();
+      } catch(e) {
+        console.error('Initial renderAll note:', e);
+      }
       initCloudSync();
 
       const btnPwa = document.getElementById('btnPwaInstall');
@@ -10713,7 +10721,7 @@ ${baseUrl}?user=manager${sheetsParam}
     };
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=20261006v5').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261006v6').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
