@@ -2055,6 +2055,11 @@ html[dir="ltr"] .notif-dropdown-menu {
                 <div style="font-size:11.5px; color:var(--text-muted); margin-top:3px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                   <span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg> <span id="displayManagerPhone">01000000001</span></span>
                   <span><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> <span id="displayManagerEmail">areamanager@company.com</span></span>
+                  <span class="badge badge-purple" style="font-size:11.5px; font-weight:800; padding:2px 8px; border:1px solid rgba(139,92,246,0.3); background:rgba(139,92,246,0.12); display:inline-flex; align-items:center; gap:4px;">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span id="lblDisplayMgrTarget">🎯 تارجت المدير العام:</span>
+                    <strong id="displayManagerTarget" style="color:var(--text-main); font-weight:900;">2,500,000 ج.م</strong>
+                  </span>
                 </div>
               </div>
             </div>
@@ -2933,6 +2938,11 @@ html[dir="ltr"] .notif-dropdown-menu {
               <label id="lblMgrEmail">البريد الإلكتروني الرسمي</label>
               <input type="email" id="modalMgrEmail" class="form-control" placeholder="manager@company.com">
             </div>
+            <div class="form-group col-full">
+              <label id="lblMgrTarget">🎯 التارجت الشهري للمدير العام (ج.م) *</label>
+              <input type="number" id="modalMgrTarget" class="form-control" min="0" step="1000" placeholder="مثال: 2500000" required>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:3px;" id="lblMgrTargetHelp">التارجت المستهدف الرسمي المعين من الإدارة العليا لقطاع الجيزة والصعيد بالكامل.</div>
+            </div>
           </div>
 
           <div style="font-size:12px; font-weight:800; color:var(--purple); margin:16px 0 10px; padding-top:12px; border-top:1px solid var(--border-color); display:flex; align-items:center; gap:6px;">
@@ -3784,6 +3794,7 @@ html[dir="ltr"] .notif-dropdown-menu {
     const DEFAULT_MANAGER = {
       name: "أ / عبدالله أحمد إبراهيم",
       title: "مدير عام قطاع الجيزة الكبرى والصعيد (Area Sales Manager)",
+      target: 2500000,
       phone: "01009939930",
       email: "abdallah.ahme@2b.com.eg",
       username: "manager",
@@ -4838,6 +4849,14 @@ html[dir="ltr"] .notif-dropdown-menu {
       const bSavePerm = document.getElementById('btnSavePermissions');
       if (bSavePerm) bSavePerm.textContent = isEn ? "💾 Save Changes & Permissions" : "💾 حفظ التعديلات والصلاحيات لجميع المشرفين";
 
+      // Manager Profile Modal Labels
+      const lblMgrTgt = document.getElementById('lblMgrTarget');
+      if (lblMgrTgt) lblMgrTgt.textContent = isEn ? "🎯 Monthly General Manager Target (EGP) *" : "🎯 التارجت الشهري للمدير العام (ج.م) *";
+      const lblMgrTgtH = document.getElementById('lblMgrTargetHelp');
+      if (lblMgrTgtH) lblMgrTgtH.textContent = isEn ? "Official master target quota assigned by senior leadership for entire territory." : "التارجت المستهدف الرسمي المعين من الإدارة العليا لقطاع الجيزة والصعيد بالكامل.";
+      const lblDispMgrTgt = document.getElementById('lblDisplayMgrTarget');
+      if (lblDispMgrTgt) lblDispMgrTgt.textContent = isEn ? "🎯 Manager Target:" : "🎯 تارجت المدير العام:";
+
       // Login Modal
       const lModT = document.getElementById('loginModalTitle');
       if (lModT) lModT.textContent = isEn ? "Login to Sales Management System" : "تسجيل الدخول لمنظومة المبيعات";
@@ -4920,9 +4939,13 @@ html[dir="ltr"] .notif-dropdown-menu {
 
         const parsedMgr = storedMgr ? JSON.parse(storedMgr) : DEFAULT_MANAGER;
         AppState.areaManager = {
+          ...DEFAULT_MANAGER,
           ...parsedMgr,
-          username: parsedMgr.username || "manager",
-          password: parsedMgr.password || "123"
+          target: (parsedMgr && parsedMgr.target !== undefined && parsedMgr.target !== null && !isNaN(parsedMgr.target))
+            ? Number(parsedMgr.target)
+            : (DEFAULT_MANAGER.target || 2500000),
+          username: (parsedMgr && parsedMgr.username) || DEFAULT_MANAGER.username || "manager",
+          password: (parsedMgr && parsedMgr.password) || DEFAULT_MANAGER.password || "123"
         };
 
         const parsedSups = storedSups ? JSON.parse(storedSups) : DEFAULT_SUPERVISORS;
@@ -5097,7 +5120,16 @@ html[dir="ltr"] .notif-dropdown-menu {
                   if (Array.isArray(data.directives)) AppState.directives = data.directives;
                   if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
                   if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
-                  if (data.areaManager) AppState.areaManager = data.areaManager;
+                  if (data.areaManager) {
+                    AppState.areaManager = {
+                      ...DEFAULT_MANAGER,
+                      ...AppState.areaManager,
+                      ...data.areaManager,
+                      target: (data.areaManager.target !== undefined && data.areaManager.target !== null && !isNaN(data.areaManager.target))
+                        ? Number(data.areaManager.target)
+                        : (AppState.areaManager?.target || DEFAULT_MANAGER.target || 2500000)
+                    };
+                  }
                   if (Array.isArray(data.sales)) AppState.sales = data.sales;
                   if (Array.isArray(data.visits)) AppState.visits = data.visits;
 
@@ -5184,7 +5216,16 @@ html[dir="ltr"] .notif-dropdown-menu {
             if (Array.isArray(data.directives)) AppState.directives = data.directives;
             if (Array.isArray(data.promoters)) AppState.promoters = data.promoters;
             if (Array.isArray(data.tasks)) AppState.tasks = data.tasks;
-            if (data.areaManager) AppState.areaManager = data.areaManager;
+            if (data.areaManager) {
+              AppState.areaManager = {
+                ...DEFAULT_MANAGER,
+                ...AppState.areaManager,
+                ...data.areaManager,
+                target: (data.areaManager.target !== undefined && data.areaManager.target !== null && !isNaN(data.areaManager.target))
+                  ? Number(data.areaManager.target)
+                  : (AppState.areaManager?.target || DEFAULT_MANAGER.target || 2500000)
+              };
+            }
             if (Array.isArray(data.sales)) AppState.sales = data.sales;
             if (Array.isArray(data.visits)) AppState.visits = data.visits;
 
@@ -6291,6 +6332,14 @@ ${baseUrl}?user=manager${sheetsParam}
       document.getElementById('displayManagerPhone').textContent = mgr.phone || '-';
       document.getElementById('displayManagerEmail').textContent = mgr.email || '-';
 
+      const mgrTargetEl = document.getElementById('displayManagerTarget');
+      if (mgrTargetEl) {
+        const mgrTargetVal = (mgr.target !== undefined && mgr.target !== null && !isNaN(mgr.target) && Number(mgr.target) > 0)
+          ? Number(mgr.target)
+          : (AppState.supervisors || []).reduce((s, x) => s + (Number(x.target) || 0), 0);
+        mgrTargetEl.textContent = formatCurrency(mgrTargetVal);
+      }
+
       if (isManager) {
         if (modeBanner) modeBanner.style.display = 'none';
         if (bannerText) bannerText.textContent = t('managerBannerText');
@@ -6457,6 +6506,8 @@ ${baseUrl}?user=manager${sheetsParam}
       const mgr = AppState.areaManager || DEFAULT_MANAGER;
       document.getElementById('modalMgrName').value = mgr.name || '';
       document.getElementById('modalMgrTitle').value = mgr.title || '';
+      const totalSupTargets = (AppState.supervisors || []).reduce((s, x) => s + (Number(x.target) || 0), 0);
+      document.getElementById('modalMgrTarget').value = (mgr.target !== undefined && mgr.target !== null && !isNaN(mgr.target)) ? mgr.target : (totalSupTargets || 2500000);
       document.getElementById('modalMgrPhone').value = mgr.phone || '';
       document.getElementById('modalMgrEmail').value = mgr.email || '';
       document.getElementById('modalMgrUsername').value = mgr.username || 'manager';
@@ -6468,6 +6519,7 @@ ${baseUrl}?user=manager${sheetsParam}
       e.preventDefault();
       const newName = document.getElementById('modalMgrName').value.trim();
       const newTitle = document.getElementById('modalMgrTitle').value.trim();
+      const newTarget = parseFloat(document.getElementById('modalMgrTarget').value) || 0;
       const newPhone = document.getElementById('modalMgrPhone').value.trim();
       const newEmail = document.getElementById('modalMgrEmail').value.trim();
       const newUsername = document.getElementById('modalMgrUsername').value.trim();
@@ -6475,6 +6527,7 @@ ${baseUrl}?user=manager${sheetsParam}
 
       AppState.areaManager.name = newName;
       AppState.areaManager.title = newTitle;
+      AppState.areaManager.target = newTarget;
       AppState.areaManager.phone = newPhone;
       AppState.areaManager.email = newEmail;
       if (newUsername) AppState.areaManager.username = newUsername;
@@ -6601,7 +6654,12 @@ ${baseUrl}?user=manager${sheetsParam}
         const sup = AppState.supervisors.find(s => Number(s.id) === activeSupId);
         targetVal = sup ? Number(sup.target || 0) : 0;
       } else {
-        targetVal = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0);
+        const mgrTarget = AppState.areaManager && Number(AppState.areaManager.target);
+        if (isManager && mgrTarget && !isNaN(mgrTarget) && mgrTarget > 0) {
+          targetVal = mgrTarget;
+        } else {
+          targetVal = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0);
+        }
       }
 
       const totalSales = salesSet.reduce((sum, s) => sum + Number(s.amount || 0), 0);
@@ -7337,10 +7395,15 @@ ${baseUrl}?user=manager${sheetsParam}
 
       const isEn = AppState.lang === 'en';
       const sups = AppState.supervisors;
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
       const totalTarget = sups.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const mgrTarget = (mgr.target !== undefined && mgr.target !== null && !isNaN(mgr.target) && Number(mgr.target) > 0)
+        ? Number(mgr.target)
+        : totalTarget;
+      const effTarget = mgrTarget > 0 ? mgrTarget : totalTarget;
       const totalActual = sups.reduce((sum, s) => sum + getSupervisorSales(s.id), 0);
-      const totalPct = totalTarget > 0 ? Number(((totalActual / totalTarget) * 100).toFixed(1)) : (totalActual > 0 ? 100 : 0);
-      const totalRemaining = Math.max(0, totalTarget - totalActual);
+      const totalPct = effTarget > 0 ? Number(((totalActual / effTarget) * 100).toFixed(1)) : (totalActual > 0 ? 100 : 0);
+      const totalRemaining = Math.max(0, effTarget - totalActual);
 
       const now = new Date();
       const curDay = now.getDate();
@@ -7367,16 +7430,19 @@ ${baseUrl}?user=manager${sheetsParam}
           statusColor = 'var(--danger)';
         }
 
+        const coveragePct = mgrTarget > 0 ? Math.round((totalTarget / mgrTarget) * 100) : 100;
+
         kpiGrid.innerHTML = `
           <!-- Card 1: Total Target -->
           <div class="kpi-card" style="border-top:3.5px solid var(--purple); background:var(--bg-card);">
             <div class="kpi-header">
-              <span class="kpi-title">${isEn ? 'Total Territory Target' : 'إجمالي تارجت القطاع الكلي'}</span>
+              <span class="kpi-title">${isEn ? 'Master Area Target' : 'تارجت المدير العام للقطاع'}</span>
               <span class="kpi-icon" style="background:rgba(124,58,237,0.12); color:#7c3aed;">🎯</span>
             </div>
-            <div class="kpi-value" style="color:var(--text-main); font-size:24px;">${formatCurrency(totalTarget)}</div>
-            <div class="kpi-sub" style="color:var(--text-muted); font-size:11.5px; margin-top:4px;">
-              ${isEn ? 'Combined quota for 3 areas' : 'مجموع مستهدفات الـ 3 آريات كاملة'}
+            <div class="kpi-value" style="color:var(--text-main); font-size:24px;">${formatCurrency(mgrTarget)}</div>
+            <div class="kpi-sub" style="color:var(--text-muted); font-size:11px; margin-top:4px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+              <span>${isEn ? 'Distributed: ' : 'الموزع للمشرفين: '}<strong style="color:var(--primary);">${formatCurrency(totalTarget)}</strong></span>
+              <span class="badge ${coveragePct === 100 ? 'badge-success' : 'badge-purple'}" style="font-size:10px; padding:1px 6px;">${isEn ? 'Coverage' : 'التغطية'}: ${coveragePct}%</span>
             </div>
           </div>
 
@@ -7868,9 +7934,12 @@ ${baseUrl}?user=manager${sheetsParam}
         alert("⛔ توزيع وتعديل تارجت الآريات متاح فقط لمدير الإدارة (Master Admin)!");
         return;
       }
-      const totalTarget = AppState.supervisors.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      const mgrTarget = Number(mgr.target);
+      const totalSupTarget = AppState.supervisors.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const defaultTotal = (mgrTarget > 0) ? mgrTarget : (totalSupTarget > 0 ? totalSupTarget : 2500000);
       const input = document.getElementById('smartTotalTargetInput');
-      if (input) input.value = totalTarget > 0 ? totalTarget : 3000000;
+      if (input) input.value = defaultTotal;
       previewSmartDistribution();
       const m = document.getElementById('smartDistributorModal');
       if (m) m.classList.add('open');
@@ -7951,6 +8020,9 @@ ${baseUrl}?user=manager${sheetsParam}
         s.target = Math.round(total * (weights[i] || 0.33));
       });
 
+      if (!AppState.areaManager) AppState.areaManager = { ...DEFAULT_MANAGER };
+      AppState.areaManager.target = total;
+
       saveState();
       renderAll();
       closeModal('smartDistributorModal');
@@ -7967,10 +8039,16 @@ ${baseUrl}?user=manager${sheetsParam}
       if (!checkPermissionOrAlert('canExport', isEn ? 'Export Targets Report' : 'تصدير تقرير المستهدفات')) return;
 
       const sups = AppState.supervisors;
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
       const totalTarget = sups.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const mgrTarget = (mgr.target !== undefined && mgr.target !== null && !isNaN(mgr.target) && Number(mgr.target) > 0)
+        ? Number(mgr.target)
+        : totalTarget;
       const totalActual = sups.reduce((sum, s) => sum + getSupervisorSales(s.id), 0);
       const totalPct = totalTarget > 0 ? ((totalActual / totalTarget) * 100).toFixed(1) : 0;
+      const mgrPct = mgrTarget > 0 ? ((totalActual / mgrTarget) * 100).toFixed(1) : 0;
       const totalRemaining = Math.max(0, totalTarget - totalActual);
+      const mgrRemaining = Math.max(0, mgrTarget - totalActual);
 
       const now = new Date();
       const daysRemaining = Math.max(1, new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate());
@@ -7978,7 +8056,7 @@ ${baseUrl}?user=manager${sheetsParam}
       let csv = "\uFEFF"; // UTF-8 BOM
       csv += "تقرير المستهدفات العامة والتارجت - قطاع الجيزة الكبرى والصعيد\n";
       csv += `تاريخ التقرير: ${now.toLocaleDateString('ar-EG')} - ${now.toLocaleTimeString('ar-EG')}\n`;
-      csv += `إجمالي تارجت القطاع: ${totalTarget} ج.م | إجمالي المحقق: ${totalActual} ج.م | نسبة الإنجاز: ${totalPct}% | المتبقي: ${totalRemaining} ج.م\n\n`;
+      csv += `تارجت المدير العام الرسمي: ${mgrTarget} ج.م | إجمالي تارجت المشرفين الموزع: ${totalTarget} ج.م | إجمالي المحقق: ${totalActual} ج.م | نسبة الإنجاز: ${mgrPct}%\n\n`;
 
       csv += "الآريا / المنطقة,المشرف المسؤول,التارجت المطلوب (ج.م),المحقق الفعلي (ج.م),نسبة الإنجاز %,المتبقي (ج.م),المطلوب يومياً (ج.م/يوم),عدد الفروع,الهاتف\n";
       sups.forEach(s => {
@@ -7987,7 +8065,8 @@ ${baseUrl}?user=manager${sheetsParam}
         csv += `"${getSupervisorTitle(s)}","${getSupervisorName(s)}",${s.target},${m.actual},${m.pct}%,${m.remaining},${dailyRun},${m.branchCount},"${s.phone || ''}"\n`;
       });
 
-      csv += `\n"الإجمالي العام لقطاع الجيزة والصعيد","مدير عام القطاع",${totalTarget},${totalActual},${totalPct}%,${totalRemaining},${Math.round(totalRemaining / daysRemaining)},${AppState.branches.length},""\n`;
+      csv += `\n"تارجت المدير العام الرسمي (Master)","${mgr.name || 'مدير عام القطاع'}",${mgrTarget},${totalActual},${mgrPct}%,${mgrRemaining},${Math.round(mgrRemaining / daysRemaining)},${AppState.branches.length},"${mgr.phone || ''}"\n`;
+      csv += `"مجموع تارجت المشرفين الموزع","3 مشرفين",${totalTarget},${totalActual},${totalPct}%,${totalRemaining},${Math.round(totalRemaining / daysRemaining)},${AppState.branches.length},""\n`;
 
       csv += "\nتفاصيل مستهدفات ومبيعات العملاء والفروع:\n";
       csv += "العميل / الفرع,المدينة,الآريا التابعة,المشرف,تارجت العميل (ج.م),المحقق (ج.م),نسبة الإنجاز %,المتبقي (ج.م)\n";
@@ -8545,7 +8624,7 @@ ${baseUrl}?user=manager${sheetsParam}
     }
 
     function openEditTargetsModal() {
-      const isManager = !AppState.currentUser || AppState.currentUser.role === 'manager';
+      const isManager = !AppState.currentUser || AppState.currentUser.role === 'manager' || isMasterAdmin();
       if (!isManager) {
         alert("⛔ تعديل تارجت المشرفين دفعة واحدة متاح فقط لمدير الآريتين (Master Admin).");
         return;
@@ -8553,27 +8632,62 @@ ${baseUrl}?user=manager${sheetsParam}
       const body = document.getElementById('targetsModalBody');
       body.innerHTML = '';
 
+      const isEn = AppState.lang === 'en';
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      const totalSupTargets = (AppState.supervisors || []).reduce((s, x) => s + (Number(x.target) || 0), 0);
+      const mgrTargetVal = (mgr.target !== undefined && mgr.target !== null && !isNaN(mgr.target) && Number(mgr.target) > 0)
+        ? Number(mgr.target)
+        : (totalSupTargets || 2500000);
+
+      // Prepend Area General Manager Target Card
+      body.innerHTML += `
+        <div style="background:linear-gradient(135deg, rgba(124,58,237,0.12), rgba(37,99,235,0.08)); padding:16px; border-radius:12px; margin-bottom:16px; border:1.5px solid rgba(124,58,237,0.35); box-shadow:0 4px 12px rgba(124,58,237,0.08);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+            <div style="font-weight:900; color:var(--purple); font-size:15px; display:flex; align-items:center; gap:8px;">
+              <span style="font-size:18px;">👑</span>
+              <span>${isEn ? 'Official General Manager Master Target' : 'تارجت المدير العام الرسمي لقطاع الآريتين (Master Quota)'}</span>
+            </div>
+            <span class="badge badge-purple" style="font-size:11px; padding:3px 8px;">${isEn ? 'Executive Leader' : 'القيادة العليا'}</span>
+          </div>
+          <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
+            ${isEn ? 'Set the master territory quota assigned to you by senior management to track overall achievement.' : 'حدد هنا التارجت الشهري الإجمالي المخصص لك كمدير عام للقطاع بالكامل، لمقارنته بمجموع التارجت الموزع على المشرفين.'}
+          </div>
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label style="font-weight:800; color:var(--text-main);">${isEn ? '🎯 General Manager Target (EGP) *' : '🎯 التارجت المالي للمدير العام (ج.م) *'}</label>
+              <input type="number" id="target_manager_val" class="form-control" value="${mgrTargetVal}" min="0" step="1000" required style="font-size:16px; font-weight:800; border-color:rgba(124,58,237,0.4);">
+            </div>
+          </div>
+          <div style="margin-top:10px; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; color:var(--text-muted);">
+            <span>📊 ${isEn ? 'Current Supervisors Distributed Quota:' : 'مجموع تارجت المشرفين الموزع حالياً:'} <strong style="color:var(--primary); font-weight:800;">${formatCurrency(totalSupTargets)}</strong></span>
+          </div>
+        </div>
+        <div style="font-size:13px; font-weight:800; color:var(--text-muted); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+          <span>👥 ${isEn ? 'Supervisor Quotas Distribution (3 Areas):' : 'توزيع التارجت على مشرفي القطاع (3 مشرفين):'}</span>
+        </div>
+      `;
+
       AppState.supervisors.forEach(sup => {
         body.innerHTML += `
           <div style="background:var(--bg-card-hover); padding:14px; border-radius:10px; margin-bottom:12px; border:1px solid var(--border-color);">
             <div style="font-weight:800; margin-bottom:10px; color:var(--primary); font-size:15px;">
-              ${sup.title} (${sup.zone.split('،')[0]}...)
+              ${getSupervisorTitle(sup)} (${getSupervisorZone(sup).split(/[,،]/)[0]}...)
             </div>
             <div class="form-grid">
               <div class="form-group">
-                <label>اسم المشرف</label>
+                <label>${isEn ? 'Supervisor Name' : 'اسم المشرف'}</label>
                 <input type="text" id="target_name_${sup.id}" class="form-control" value="${sup.name}" required>
               </div>
               <div class="form-group">
-                <label>تارجت الشهر بالجنيه (ج.م)</label>
+                <label>${isEn ? 'Monthly Target (EGP)' : 'تارجت الشهر بالجنيه (ج.م)'}</label>
                 <input type="number" id="target_val_${sup.id}" class="form-control" value="${sup.target}" min="0" required>
               </div>
               <div class="form-group">
-                <label>رقم هاتف المشرف</label>
+                <label>${isEn ? 'Phone Number' : 'رقم هاتف المشرف'}</label>
                 <input type="text" id="target_phone_${sup.id}" class="form-control" value="${sup.phone || ''}">
               </div>
               <div class="form-group">
-                <label>المناطق والمدن المغطاة</label>
+                <label>${isEn ? 'Covered Zones' : 'المناطق والمدن المغطاة'}</label>
                 <input type="text" id="target_zone_${sup.id}" class="form-control" value="${sup.zone}">
               </div>
             </div>
@@ -8692,6 +8806,14 @@ ${baseUrl}?user=manager${sheetsParam}
 
     function handleSaveTargets(e) {
       e.preventDefault();
+
+      // Save General Manager Master Target
+      const mgrTargetInput = document.getElementById('target_manager_val');
+      if (mgrTargetInput) {
+        if (!AppState.areaManager) AppState.areaManager = { ...DEFAULT_MANAGER };
+        AppState.areaManager.target = Number(mgrTargetInput.value) || 0;
+      }
+
       AppState.supervisors.forEach(sup => {
         const nameInput = document.getElementById(`target_name_${sup.id}`);
         const valInput = document.getElementById(`target_val_${sup.id}`);
@@ -8708,7 +8830,10 @@ ${baseUrl}?user=manager${sheetsParam}
       updateSupervisorPortalSelectOptions();
       renderAll();
       closeModal('targetsModal');
-      alert('تم حفظ التعديلات وتحديث التارجت بنجاح!');
+      const isEn = AppState.lang === 'en';
+      const msg = isEn ? 'Master target & supervisor quotas saved successfully!' : 'تم حفظ تارجت المدير العام وتحديث تارجت المشرفين بنجاح!';
+      if (window.showToast) showToast(msg, 'success');
+      else alert(msg);
     }
 
     function handleSaveBranch(e) {
