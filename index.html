@@ -1889,12 +1889,18 @@ html[dir="ltr"] .notif-dropdown-menu {
 
     <ul class="nav-menu">
       <li class="nav-section-label" id="navSecLeadership">لوحات المتابعة والقيادة</li>
-      <li class="nav-item active" onclick="switchTab('dashboard')">
+      <li class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         <span id="navDashTitle">لوحة مدير الآريتين</span>
       </li>
 
-      <li class="nav-item" id="navItemSupervisors" onclick="switchTab('supervisors')">
+      <li class="nav-item" id="navItemTargets" data-tab="targets" onclick="switchTab('targets')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke-width="2"/><circle cx="12" cy="12" r="2" stroke-width="2"/></svg>
+        <span id="navTargetsTitle">التارجت العام للآريات</span>
+        <span class="nav-badge" style="background:var(--primary); color:#fff; font-size:11px;">🎯</span>
+      </li>
+
+      <li class="nav-item" id="navItemSupervisors" data-tab="supervisors" onclick="switchTab('supervisors')">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
         <span id="navSupervisorsTitle">المشرفين والتارجت</span>
         <span class="nav-badge" id="supCountBadge">3</span>
@@ -2376,6 +2382,161 @@ html[dir="ltr"] .notif-dropdown-menu {
               </thead>
               <tbody id="latestSalesTableBody">
                 <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB: GENERAL TARGETS (التارجت العام للآريات) ================= -->
+      <section id="tab-targets" class="tab-content">
+        <!-- Top Executive Banner -->
+        <div class="card-section" style="background: linear-gradient(135deg, rgba(79,70,229,0.06), rgba(124,58,237,0.06)); border: 1.5px solid rgba(124,58,237,0.22); border-radius: 14px; margin-bottom: 16px;">
+          <div class="section-header" style="flex-wrap: wrap; gap: 12px; margin-bottom: 0;">
+            <div class="section-title">
+              <span class="section-title-icon" style="font-size: 24px;">🎯</span>
+              <div>
+                <span id="targetsTabMainTitle" style="font-size: 18px; font-weight: 800; color: var(--text-main);">لوحة التارجت العام لمناطق وقطاعات الجيزة والصعيد</span>
+                <div id="targetsTabMainSub" style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
+                  المتابعة المركزية لمستهدفات البيع الشهرية لجميع الآريات والمشرفين ومعدلات الإنجاز ومعدل الجري اليومي (Run Rate) المطلوب لغلق الشهر
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm" onclick="openEditTargetsModal()">
+                <span>🎯</span> <span id="btnTargetsTabEdit">تعديل تارجت المشرفين</span>
+              </button>
+              <button class="btn btn-purple btn-sm" onclick="openSmartTargetDistributorModal()">
+                <span>⚡</span> <span id="btnTargetsTabDistribute">توزيع التارجت الذكي</span>
+              </button>
+              <button class="btn btn-success btn-sm" onclick="exportTargetsReportCSV()">
+                <span>📥</span> <span id="btnTargetsTabExport">تصدير إكسيل</span>
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="printTargetsReport()">
+                <span>🖨️</span> <span id="btnTargetsTabPrint">طباعة تقرير</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 KPI Summary Cards -->
+        <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 18px;" id="targetsKpiGrid">
+          <!-- Populated dynamically by renderTargetsTab() -->
+        </div>
+
+        <!-- Charts Row: Target vs Actual Bar Chart + Target Share Doughnut -->
+        <div class="charts-grid" style="grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 20px;">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">
+                <span style="font-size:18px;">📊</span>
+                <span id="chartTargetsCompTitle">مقارنة التارجت المستهدف مقابل المحقق الفعلي لكل آريا</span>
+              </div>
+              <div style="display:flex; gap:12px; font-size:11.5px; font-weight:700;">
+                <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:10px; height:10px; background:#cbd5e1; border-radius:2px; display:inline-block;"></span> <span id="legendTgtText">التارجت المطلوب</span></span>
+                <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:10px; height:10px; background:linear-gradient(135deg, #4f46e5, #06b6d4); border-radius:2px; display:inline-block;"></span> <span id="legendActText">المحقق الفعلي</span></span>
+              </div>
+            </div>
+            <div style="position:relative; width:100%; height:270px;">
+              <canvas id="chartTargetsAreaComparison"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">
+                <span style="font-size:18px;">🥧</span>
+                <span id="chartTargetsShareTitle">حصص الآريات من التارجت الكلي</span>
+              </div>
+            </div>
+            <div style="position:relative; width:100%; height:270px; display:flex; align-items:center; justify-content:center;">
+              <canvas id="chartTargetsAreaShare"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Area Breakdown Cards -->
+        <div class="card-section">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-title-icon">🏢</span>
+              <span id="targetsCardsHeading">بطاقات التحليل التفصيلي لمستهدفات كل آريا ومعدل البيع اليومي</span>
+            </div>
+          </div>
+          <div class="supervisors-grid" id="targetsAreaCardsContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Master Area Quota Table -->
+        <div class="card-section">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-title-icon">📋</span>
+              <span id="targetsTableHeading">جدول المقارنة الشامل لمستهدفات الآريات ومعدل الجري اليومي (Run Rate)</span>
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>الآريا / المنطقة</th>
+                  <th>المشرف المسؤول</th>
+                  <th>التارجت المطلوب</th>
+                  <th>المحقق الفعلي</th>
+                  <th>نسبة الإنجاز %</th>
+                  <th>المتبقي للهدف</th>
+                  <th>المطلوب يومياً (Run Rate)</th>
+                  <th>عدد الفروع</th>
+                  <th>تقييم الأداء</th>
+                  <th>إجراءات سريعة</th>
+                </tr>
+              </thead>
+              <tbody id="targetsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+              <tfoot id="targetsTableFoot" style="font-weight: 800; background: var(--bg-subtle);">
+                <!-- Dynamically populated -->
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Clients & Branches Quota Breakdown in Area -->
+        <div class="card-section">
+          <div class="section-header" style="flex-wrap: wrap; gap: 12px;">
+            <div class="section-title">
+              <span class="section-title-icon">🏪</span>
+              <span id="targetsClientsHeading">مستهدفات ومبيعات العملاء والفروع موزعة حسب الآريا</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <div class="filter-pills" id="targetsBranchAreaFilter">
+                <button type="button" class="filter-pill active" onclick="filterTargetsBranches('ALL')">الكل</button>
+                <button type="button" class="filter-pill" onclick="filterTargetsBranches('1')">الجيزة 1</button>
+                <button type="button" class="filter-pill" onclick="filterTargetsBranches('2')">الجيزة 2</button>
+                <button type="button" class="filter-pill" onclick="filterTargetsBranches('3')">الصعيد</button>
+              </div>
+              <input type="text" id="inputSearchTargetsBranches" class="form-control" placeholder="بحث باسم العميل أو الفرع..." oninput="filterTargetsBranches()" style="font-size:12px; padding:6px 10px; width:220px;">
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>العميل / الفرع</th>
+                  <th>المدينة والموقع</th>
+                  <th>الآريا التابعة</th>
+                  <th>المشرف</th>
+                  <th>تارجت العميل</th>
+                  <th>المحقق معه</th>
+                  <th>نسبة الإنجاز %</th>
+                  <th>المتبقي للهدف</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="targetsBranchesTableBody">
+                <!-- Dynamically populated -->
               </tbody>
             </table>
           </div>
@@ -3105,6 +3266,50 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="closeModal('targetsModal')">إلغاء</button>
           <button type="submit" class="btn btn-primary">حفظ كل التعديلات</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Smart Target Distributor (توزيع التارجت الذكي) -->
+  <div class="modal-overlay" id="smartDistributorModal">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚡</span> <span>حاسبة وتوزيع التارجت الذكي على الآريات</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('smartDistributorModal')">&times;</button>
+      </div>
+      <form onsubmit="handleApplySmartDistribution(event)">
+        <div class="modal-body">
+          <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px; line-height:1.6; background:rgba(124,58,237,0.06); padding:10px 14px; border-radius:8px; border:1px solid rgba(124,58,237,0.2);">
+            💡 أدخل إجمالي التارجت المطلوب لقطاع الجيزة والصعيد بالكامل، واختر نموذج التوزيع ليتم تقسيم المستهدفات تلقائياً وتحديث المشرفين والسحابة فوراً.
+          </div>
+
+          <div class="form-group">
+            <label style="font-weight:700;">إجمالي تارجت القطاع بالجنيه (Total Territory Target):</label>
+            <input type="number" id="smartTotalTargetInput" class="form-control" placeholder="مثال: 3000000" min="1000" step="1000" required oninput="previewSmartDistribution()">
+          </div>
+
+          <div class="form-group">
+            <label style="font-weight:700;">نموذج التوزيع (Distribution Model):</label>
+            <select id="smartDistributionModel" class="form-control" onchange="previewSmartDistribution()">
+              <option value="historical">نسب القطاعات المتوازنة (الجيزة 1: 35% | الجيزة 2: 30% | الصعيد: 35%)</option>
+              <option value="equal">توزيع متساوي بالتساوي (33.3% لكل آريا)</option>
+              <option value="branches">بناءً على عدد الفروع والعملاء المسجلين في كل آريا</option>
+            </select>
+          </div>
+
+          <div style="font-weight:800; font-size:13px; color:var(--text-main); margin-bottom:8px;">
+            معاينة نصيب كل آريا بعد التوزيع:
+          </div>
+          <div id="smartDistributionPreview" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Rendered live -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('smartDistributorModal')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">✅ تطبيق وتعميم التارجت وحفظه</button>
         </div>
       </form>
     </div>
@@ -4445,6 +4650,7 @@ html[dir="ltr"] .notif-dropdown-menu {
       const tabId = curTab ? curTab.id.replace('tab-', '') : 'dashboard';
       const tabTitles = {
         'dashboard': isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين',
+        'targets': isEn ? 'General Targets Dashboard' : 'التارجت العام للآريات والمناطق',
         'supervisors': isEn ? 'Supervisors & Targets' : 'المشرفين والتارجت',
         'sales': isEn ? 'Area Sales Transactions Log' : 'سجل المبيعات',
         'branches': isEn ? 'Clients & Branches Directory' : 'العملاء والفروع',
@@ -4453,6 +4659,7 @@ html[dir="ltr"] .notif-dropdown-menu {
       };
       const breadcrumbs = {
         'dashboard': isEn ? 'Executive Dashboard' : 'لوحة القيادة والمتابعة',
+        'targets': isEn ? 'Territory Targets & Quotas' : 'التارجت العام للآريات والمستهدفات',
         'supervisors': isEn ? 'Supervisors & Target Management' : 'إدارة المشرفين والمستهدفات',
         'sales': isEn ? 'Sales Operations' : 'حركات وعمليات البيع',
         'branches': isEn ? 'Clients & Retailers' : 'قاعدة بيانات العملاء والتجار',
@@ -4463,6 +4670,31 @@ html[dir="ltr"] .notif-dropdown-menu {
       if (pTitle) pTitle.textContent = tabTitles[tabId] || (isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين');
       const bActive = document.getElementById('headerBreadcrumbsActive');
       if (bActive) bActive.textContent = breadcrumbs[tabId] || '';
+
+      const nTgtT = document.getElementById('navTargetsTitle');
+      if (nTgtT) nTgtT.textContent = isEn ? 'General Targets' : 'التارجت العام للآريات';
+      const tMainT = document.getElementById('targetsTabMainTitle');
+      if (tMainT) tMainT.textContent = isEn ? 'General Targets Dashboard (Giza & Upper Egypt Areas)' : 'لوحة التارجت العام لمناطق وقطاعات الجيزة والصعيد';
+      const tMainS = document.getElementById('targetsTabMainSub');
+      if (tMainS) tMainS.textContent = isEn ? 'Central monitoring of monthly sales targets, achievement rates, and required daily run-rate' : 'المتابعة المركزية لمستهدفات البيع الشهرية لجميع الآريات والمشرفين ومعدلات الإنجاز ومعدل الجري اليومي (Run Rate) المطلوب لغلق الشهر';
+      const bTgtEd = document.getElementById('btnTargetsTabEdit');
+      if (bTgtEd) bTgtEd.textContent = isEn ? 'Edit Targets' : 'تعديل تارجت المشرفين';
+      const bTgtDis = document.getElementById('btnTargetsTabDistribute');
+      if (bTgtDis) bTgtDis.textContent = isEn ? 'Smart Distributor' : 'توزيع التارجت الذكي';
+      const bTgtExp = document.getElementById('btnTargetsTabExport');
+      if (bTgtExp) bTgtExp.textContent = isEn ? 'Export Excel' : 'تصدير إكسيل';
+      const bTgtPrn = document.getElementById('btnTargetsTabPrint');
+      if (bTgtPrn) bTgtPrn.textContent = isEn ? 'Print Report' : 'طباعة تقرير';
+      const cTgtComp = document.getElementById('chartTargetsCompTitle');
+      if (cTgtComp) cTgtComp.textContent = isEn ? 'Target Quota vs Actual Sales by Area' : 'مقارنة التارجت المستهدف مقابل المحقق الفعلي لكل آريا';
+      const cTgtShr = document.getElementById('chartTargetsShareTitle');
+      if (cTgtShr) cTgtShr.textContent = isEn ? 'Area Target Contributions' : 'حصص الآريات من التارجت الكلي';
+      const tCardH = document.getElementById('targetsCardsHeading');
+      if (tCardH) tCardH.textContent = isEn ? 'Area Quota & Daily Run-Rate Analysis' : 'بطاقات التحليل التفصيلي لمستهدفات كل آريا ومعدل البيع اليومي';
+      const tTblH = document.getElementById('targetsTableHeading');
+      if (tTblH) tTblH.textContent = isEn ? 'Territory Quotas & Daily Run-Rate Comparison Table' : 'جدول المقارنة الشامل لمستهدفات الآريات ومعدل الجري اليومي (Run Rate)';
+      const tClnH = document.getElementById('targetsClientsHeading');
+      if (tClnH) tClnH.textContent = isEn ? 'Client & Branch Targets by Area' : 'مستهدفات ومبيعات العملاء والفروع موزعة حسب الآريا';
 
       // Section action buttons
       const btnVAll = document.getElementById('btnViewAllSales');
@@ -6340,6 +6572,7 @@ ${baseUrl}?user=manager${sheetsParam}
       renderSupervisorCards();
       renderSupervisorDealersCards();
       renderCharts();
+      renderTargetsTab();
       renderVipWholesalers();
       renderLatestSales();
       renderSalesTable();
@@ -7091,6 +7324,699 @@ ${baseUrl}?user=manager${sheetsParam}
 
     function isDarkMode() {
       return document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+
+    /* =========================================================================
+       GENERAL TARGETS TAB (التارجت العام للآريات والمناطق)
+       ========================================================================= */
+    let _selectedTargetsBranchFilter = 'ALL';
+
+    function renderTargetsTab() {
+      const tab = document.getElementById('tab-targets');
+      if (!tab) return;
+
+      const isEn = AppState.lang === 'en';
+      const sups = AppState.supervisors;
+      const totalTarget = sups.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const totalActual = sups.reduce((sum, s) => sum + getSupervisorSales(s.id), 0);
+      const totalPct = totalTarget > 0 ? Number(((totalActual / totalTarget) * 100).toFixed(1)) : (totalActual > 0 ? 100 : 0);
+      const totalRemaining = Math.max(0, totalTarget - totalActual);
+
+      const now = new Date();
+      const curDay = now.getDate();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const daysRemaining = Math.max(1, daysInMonth - curDay);
+      const requiredDailyRunRate = Math.round(totalRemaining / daysRemaining);
+
+      // 1. Render 5 KPI Cards
+      const kpiGrid = document.getElementById('targetsKpiGrid');
+      if (kpiGrid) {
+        let statusBadge = '';
+        let statusColor = 'var(--primary)';
+        if (totalPct >= 100) {
+          statusBadge = isEn ? '🟢 Goal Achieved!' : '🟢 مستهدف الشهر مكتمل!';
+          statusColor = 'var(--success)';
+        } else if (totalPct >= 75) {
+          statusBadge = isEn ? '🔵 Strong Performance' : '🔵 أداء متقدم وممتاز';
+          statusColor = 'var(--secondary)';
+        } else if (totalPct >= 50) {
+          statusBadge = isEn ? '🟡 Pace Needs Speed' : '🟡 وتيرة مقبولة وتحتاج تسريع';
+          statusColor = 'var(--warning)';
+        } else {
+          statusBadge = isEn ? '🔴 Below Target Pace' : '🔴 متأخر عن الخطة الزمنية';
+          statusColor = 'var(--danger)';
+        }
+
+        kpiGrid.innerHTML = `
+          <!-- Card 1: Total Target -->
+          <div class="kpi-card" style="border-top:3.5px solid var(--purple); background:var(--bg-card);">
+            <div class="kpi-header">
+              <span class="kpi-title">${isEn ? 'Total Territory Target' : 'إجمالي تارجت القطاع الكلي'}</span>
+              <span class="kpi-icon" style="background:rgba(124,58,237,0.12); color:#7c3aed;">🎯</span>
+            </div>
+            <div class="kpi-value" style="color:var(--text-main); font-size:24px;">${formatCurrency(totalTarget)}</div>
+            <div class="kpi-sub" style="color:var(--text-muted); font-size:11.5px; margin-top:4px;">
+              ${isEn ? 'Combined quota for 3 areas' : 'مجموع مستهدفات الـ 3 آريات كاملة'}
+            </div>
+          </div>
+
+          <!-- Card 2: Actual Sales -->
+          <div class="kpi-card" style="border-top:3.5px solid #0284c7; background:var(--bg-card);">
+            <div class="kpi-header">
+              <span class="kpi-title">${isEn ? 'Actual Sales Achieved' : 'إجمالي المحقق الفعلي'}</span>
+              <span class="kpi-icon" style="background:rgba(2,132,199,0.12); color:#0284c7;">💰</span>
+            </div>
+            <div class="kpi-value" style="color:#0284c7; font-size:24px;">${formatCurrency(totalActual)}</div>
+            <div class="kpi-sub" style="color:var(--text-muted); font-size:11.5px; margin-top:4px;">
+              ${isEn ? 'Total verified revenue' : 'المبيعات الفعلية المسجلة للشهر'}
+            </div>
+          </div>
+
+          <!-- Card 3: Achievement Rate -->
+          <div class="kpi-card" style="border-top:3.5px solid ${statusColor}; background:var(--bg-card);">
+            <div class="kpi-header">
+              <span class="kpi-title">${isEn ? 'Territory Achievement %' : 'نسبة تحقيق التارجت العام'}</span>
+              <span class="kpi-icon" style="background:rgba(5,150,105,0.12); color:var(--success);">📈</span>
+            </div>
+            <div class="kpi-value" style="color:${statusColor}; font-size:24px;">${totalPct}%</div>
+            <div class="progress-container" style="height:7px; margin-top:8px; background:var(--bg-subtle);">
+              <div class="progress-bar" style="width:${Math.min(100, totalPct)}%; background:${statusColor}; border-radius:10px;"></div>
+            </div>
+            <div style="font-size:11px; font-weight:800; color:${statusColor}; margin-top:6px;">
+              ${statusBadge}
+            </div>
+          </div>
+
+          <!-- Card 4: Remaining Gap -->
+          <div class="kpi-card" style="border-top:3.5px solid #f59e0b; background:var(--bg-card);">
+            <div class="kpi-header">
+              <span class="kpi-title">${isEn ? 'Remaining to Target' : 'المتبقي لغلق التارجت'}</span>
+              <span class="kpi-icon" style="background:rgba(245,158,11,0.12); color:#f59e0b;">⏳</span>
+            </div>
+            <div class="kpi-value" style="color:#f59e0b; font-size:24px;">${formatCurrency(totalRemaining)}</div>
+            <div class="kpi-sub" style="color:var(--text-muted); font-size:11.5px; margin-top:4px;">
+              ${isEn ? 'Target completion gap' : 'الفارق المتبقي للوصول إلى 100%'}
+            </div>
+          </div>
+
+          <!-- Card 5: Daily Run-Rate -->
+          <div class="kpi-card" style="border-top:3.5px solid #10b981; background:var(--bg-card);">
+            <div class="kpi-header">
+              <span class="kpi-title">${isEn ? 'Daily Run-Rate Needed' : 'المطلوب يومياً (Run Rate)'}</span>
+              <span class="kpi-icon" style="background:rgba(16,185,129,0.12); color:#10b981;">⚡</span>
+            </div>
+            <div class="kpi-value" style="color:#10b981; font-size:23px;">${formatCurrency(requiredDailyRunRate)}</div>
+            <div class="kpi-sub" style="color:var(--text-muted); font-size:11.5px; margin-top:4px;">
+              ${isEn ? `Required daily for remaining ${daysRemaining} days` : `معدل البيع المطلوب يومياً (${daysRemaining} يوم متبقي)`}
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. Render Detailed Area Cards
+      const cardsContainer = document.getElementById('targetsAreaCardsContainer');
+      if (cardsContainer) {
+        cardsContainer.innerHTML = '';
+        sups.forEach(sup => {
+          const m = getSupervisorMetrics(sup);
+          const sName = getSupervisorName(sup);
+          const sTitle = getSupervisorTitle(sup);
+          const sZone = getSupervisorZone(sup);
+          const supRemainingDays = daysRemaining;
+          const supDailyRunRate = Math.round(m.remaining / supRemainingDays);
+          const avgPerBranch = m.branchCount > 0 ? Math.round(m.actual / m.branchCount) : 0;
+
+          let areaThemeColor = '#7c3aed';
+          if (sup.id === 2) areaThemeColor = '#0284c7';
+          if (sup.id === 3) areaThemeColor = '#059669';
+
+          let statusTag = '';
+          if (m.pct >= 100) {
+            statusTag = `<span class="badge badge-success">${isEn ? 'Completed 100% 🚀' : 'مستهدف مكتمل 🚀'}</span>`;
+          } else if (m.pct >= 70) {
+            statusTag = `<span class="badge badge-primary">${isEn ? 'Strong Pace 🟢' : 'أداء ممتاز 🟢'}</span>`;
+          } else if (m.pct >= 40) {
+            statusTag = `<span class="badge badge-warning">${isEn ? 'Action Needed 🟡' : 'يحتاج تسريع 🟡'}</span>`;
+          } else {
+            statusTag = `<span class="badge badge-danger">${isEn ? 'Behind Pace 🔴' : 'متأخر 🔴'}</span>`;
+          }
+
+          cardsContainer.innerHTML += `
+            <div class="supervisor-card" style="border-top:4px solid ${areaThemeColor};">
+              <div class="sup-card-header">
+                <div class="sup-info">
+                  <div class="sup-avatar" style="background:${areaThemeColor}18; color:${areaThemeColor}; border:1.5px solid ${areaThemeColor}40;">
+                    ${sup.avatar || 'م'}
+                  </div>
+                  <div>
+                    <div class="sup-name" style="font-size:15px;">${sName}</div>
+                    <div class="sup-title" style="color:${areaThemeColor}; font-weight:700;">${sTitle}</div>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">📍 ${sZone}</div>
+                  </div>
+                </div>
+                ${statusTag}
+              </div>
+
+              <!-- Metrics 3-box Grid -->
+              <div class="sup-stats-grid" style="margin-top:12px;">
+                <div>
+                  <div class="sup-stat-lbl">${isEn ? 'Area Quota' : 'تارجت الآريا'}</div>
+                  <div class="sup-stat-val" style="color:var(--text-main); font-size:16px;">${formatCurrency(sup.target)}</div>
+                </div>
+                <div>
+                  <div class="sup-stat-lbl">${isEn ? 'Actual Sales' : 'المحقق الفعلي'}</div>
+                  <div class="sup-stat-val" style="color:${areaThemeColor}; font-size:16px;">${formatCurrency(m.actual)}</div>
+                </div>
+                <div>
+                  <div class="sup-stat-lbl">${isEn ? 'Remaining' : 'المتبقي'}</div>
+                  <div class="sup-stat-val" style="color:#f59e0b; font-size:16px;">${formatCurrency(m.remaining)}</div>
+                </div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div style="margin-top:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; margin-bottom:5px;">
+                  <span style="color:var(--text-muted);">${isEn ? 'Achievement Progress' : 'نسبة إنجاز المستهدف:'}</span>
+                  <span style="color:${areaThemeColor}; font-size:13px;">${m.pct}%</span>
+                </div>
+                <div class="progress-container" style="height:8px; background:var(--bg-subtle);">
+                  <div class="progress-bar" style="width:${Math.min(100, m.pct)}%; background:${areaThemeColor}; border-radius:10px;"></div>
+                </div>
+              </div>
+
+              <!-- Extra Insights -->
+              <div style="background:var(--bg-card-hover); padding:10px 12px; border-radius:8px; margin-top:12px; font-size:11.5px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <div>
+                  <span style="color:var(--text-muted);">${isEn ? 'Daily Run Rate:' : 'المطلوب يومياً:'}</span>
+                  <div style="font-weight:800; color:#10b981; font-size:13px; margin-top:2px;">${formatCurrency(supDailyRunRate)} / ${isEn ? 'day' : 'يوم'}</div>
+                </div>
+                <div>
+                  <span style="color:var(--text-muted);">${isEn ? 'Active Outlets:' : 'عدد الفروع:'}</span>
+                  <div style="font-weight:800; color:var(--text-main); font-size:13px; margin-top:2px;">${m.branchCount} ${isEn ? 'outlets' : 'فرع/عميل'}</div>
+                </div>
+              </div>
+
+              <!-- Quick Action Buttons -->
+              <div class="sup-actions" style="margin-top:14px;">
+                <button class="btn btn-outline btn-sm" style="flex:1;" onclick="openSingleSupervisorEdit(${sup.id})" title="${isEn ? 'Edit Target' : 'تعديل التارجت'}">
+                  ✏️ ${isEn ? 'Edit Target' : 'تعديل التارجت'}
+                </button>
+                <button class="btn btn-outline btn-sm" style="flex:1; color:#25d366; border-color:rgba(37,211,102,0.3);" onclick="sendSupervisorWhatsAppReport(${sup.id})" title="${isEn ? 'WhatsApp' : 'تقرير واتساب'}">
+                  💬 ${isEn ? 'Report' : 'واتساب'}
+                </button>
+                <button class="btn btn-purple btn-sm" style="flex:1;" onclick="filterTargetsBranches('${sup.id}')" title="${isEn ? 'View Outlets' : 'عرض فروع الآريا'}">
+                  🏢 ${isEn ? 'Outlets' : 'الفروع'}
+                </button>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // 3. Render Master Comparison Table & Footer
+      const tableBody = document.getElementById('targetsTableBody');
+      const tableFoot = document.getElementById('targetsTableFoot');
+
+      if (tableBody) {
+        tableBody.innerHTML = '';
+        sups.forEach(sup => {
+          const m = getSupervisorMetrics(sup);
+          const sName = getSupervisorName(sup);
+          const sTitle = getSupervisorTitle(sup);
+          const supDailyRunRate = Math.round(m.remaining / daysRemaining);
+
+          let badgeHtml = '';
+          if (m.pct >= 100) badgeHtml = `<span class="badge badge-success">${isEn ? 'Goal Met 🚀' : 'مكتمل 🚀'}</span>`;
+          else if (m.pct >= 70) badgeHtml = `<span class="badge badge-primary">${isEn ? 'High 🟢' : 'ممتاز 🟢'}</span>`;
+          else if (m.pct >= 40) badgeHtml = `<span class="badge badge-warning">${isEn ? 'Average 🟡' : 'متوسط 🟡'}</span>`;
+          else badgeHtml = `<span class="badge badge-danger">${isEn ? 'Low 🔴' : 'متأخر 🔴'}</span>`;
+
+          tableBody.innerHTML += `
+            <tr>
+              <td>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="badge ${sup.tagClass}">${sup.avatar || 'م'}</span>
+                  <div>
+                    <strong>${sTitle}</strong>
+                    <div style="font-size:11px; color:var(--text-muted);">${getSupervisorZone(sup)}</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>${sName}</strong></td>
+              <td><strong style="color:var(--text-main); font-size:14px;">${formatCurrency(sup.target)}</strong></td>
+              <td><strong style="color:var(--primary); font-size:14px;">${formatCurrency(m.actual)}</strong></td>
+              <td>
+                <strong style="color:${m.pct >= 100 ? 'var(--success)' : (m.pct >= 60 ? 'var(--secondary)' : 'var(--danger)')}; font-size:14px;">
+                  ${m.pct}%
+                </strong>
+              </td>
+              <td><strong style="color:#f59e0b;">${formatCurrency(m.remaining)}</strong></td>
+              <td><strong style="color:#10b981;">${formatCurrency(supDailyRunRate)} / ${isEn ? 'day' : 'يوم'}</strong></td>
+              <td><span class="badge badge-neutral">${m.branchCount}</span></td>
+              <td>${badgeHtml}</td>
+              <td style="white-space:nowrap;">
+                <button class="btn btn-outline btn-sm" onclick="openSingleSupervisorEdit(${sup.id})" style="padding:4px 8px; font-size:11px;">
+                  ✏️ ${isEn ? 'Edit' : 'تعديل'}
+                </button>
+                <button class="btn btn-outline btn-sm" style="color:#25d366; border-color:rgba(37,211,102,0.3); padding:4px 8px; font-size:11px; margin-inline-start:4px;" onclick="sendSupervisorWhatsAppReport(${sup.id})">
+                  💬
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+
+      if (tableFoot) {
+        const totalBranches = AppState.branches.length;
+        tableFoot.innerHTML = `
+          <tr style="border-top:2px solid var(--border-color); background:var(--bg-subtle);">
+            <td colspan="2">
+              <strong style="font-size:14px; color:var(--text-main);">
+                🏁 ${isEn ? 'Total Territory General Quota (All Areas)' : 'الإجمالي العام لمستهدفات قطاع الجيزة والصعيد'}
+              </strong>
+            </td>
+            <td><strong style="font-size:15px; color:var(--text-main);">${formatCurrency(totalTarget)}</strong></td>
+            <td><strong style="font-size:15px; color:var(--primary);">${formatCurrency(totalActual)}</strong></td>
+            <td><strong style="font-size:15px; color:${totalPct >= 100 ? 'var(--success)' : 'var(--primary)'};">${totalPct}%</strong></td>
+            <td><strong style="font-size:15px; color:#f59e0b;">${formatCurrency(totalRemaining)}</strong></td>
+            <td><strong style="font-size:14px; color:#10b981;">${formatCurrency(requiredDailyRunRate)} / ${isEn ? 'day' : 'يوم'}</strong></td>
+            <td><span class="badge badge-purple">${totalBranches}</span></td>
+            <td colspan="2"><span class="badge badge-success">${isEn ? 'Territory Summary' : 'إجمالي القطاع'}</span></td>
+          </tr>
+        `;
+      }
+
+      // 4. Draw Canvas Charts
+      try { drawTargetsAreaComparisonChart(); } catch(e) { console.warn('Targets comp chart note:', e); }
+      try { drawTargetsAreaShareChart(); } catch(e) { console.warn('Targets share chart note:', e); }
+
+      // 5. Render Branches Quota Table
+      renderTargetsBranchesTable();
+    }
+
+    // Chart: Targets Area Comparison
+    function drawTargetsAreaComparisonChart() {
+      const canvas = document.getElementById('chartTargetsAreaComparison');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      setupCanvasResolution(canvas);
+
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const sups = AppState.supervisors;
+      if (!sups || sups.length === 0) return;
+
+      const isEn = AppState.lang === 'en';
+      const labels = sups.map(s => {
+        if (s.id === 1) return isEn ? 'Giza 1' : 'الجيزة 1';
+        if (s.id === 2) return isEn ? 'Giza 2 (Oct)' : 'الجيزة 2 (أكتوبر)';
+        if (s.id === 3) return isEn ? 'Upper Egypt' : 'الصعيد';
+        return s.name;
+      });
+
+      const targets = sups.map(s => Number(s.target || 0));
+      const actuals = sups.map(s => getSupervisorSales(s.id));
+      const maxVal = Math.max(...targets, ...actuals, 50000) * 1.18;
+
+      const padding = { top: 32, right: 30, bottom: 45, left: 65 };
+      const chartW = w - padding.left - padding.right;
+      const chartH = h - padding.top - padding.bottom;
+
+      // Draw Grid Lines
+      const gridLines = 4;
+      ctx.strokeStyle = isDarkMode() ? '#1e293b' : '#e2e8f0';
+      ctx.fillStyle = isDarkMode() ? '#94a3b8' : '#64748b';
+      ctx.font = '11px Tajawal, sans-serif';
+      ctx.textAlign = 'right';
+
+      for (let i = 0; i <= gridLines; i++) {
+        const y = padding.top + (chartH / gridLines) * i;
+        const val = Math.round(maxVal - (maxVal / gridLines) * i);
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(w - padding.right, y);
+        ctx.stroke();
+        ctx.fillText((val >= 1000000 ? (val / 1000000).toFixed(1) + 'M' : (val / 1000).toFixed(0) + 'k'), padding.left - 8, y + 4);
+      }
+
+      // Draw Bars
+      const groupWidth = chartW / labels.length;
+      const barWidth = Math.min(38, groupWidth * 0.28);
+
+      labels.forEach((lbl, i) => {
+        const groupX = padding.left + i * groupWidth;
+        const targetH = Math.max(4, (targets[i] / maxVal) * chartH);
+        const actualH = Math.max(4, (actuals[i] / maxVal) * chartH);
+
+        // Target Bar
+        const tX = groupX + groupWidth / 2 - barWidth - 5;
+        const tY = padding.top + chartH - targetH;
+        ctx.fillStyle = isDarkMode() ? '#334155' : '#cbd5e1';
+        roundRect(ctx, tX, tY, barWidth, targetH, 5);
+        ctx.fill();
+
+        // Actual Bar
+        const aX = groupX + groupWidth / 2 + 5;
+        const aY = padding.top + chartH - actualH;
+        const gradient = ctx.createLinearGradient(0, aY, 0, aY + actualH);
+        gradient.addColorStop(0, '#7c3aed');
+        gradient.addColorStop(1, '#2563eb');
+        ctx.fillStyle = gradient;
+        roundRect(ctx, aX, aY, barWidth, actualH, 5);
+        ctx.fill();
+
+        // Value text above Actual Bar
+        ctx.fillStyle = isDarkMode() ? '#a78bfa' : '#6d28d9';
+        ctx.font = 'bold 11px Tajawal, sans-serif';
+        ctx.textAlign = 'center';
+        const pct = targets[i] > 0 ? Math.round((actuals[i] / targets[i]) * 100) : 0;
+        ctx.fillText(`${pct}%`, aX + barWidth / 2, aY - 6);
+
+        // Label below
+        ctx.fillStyle = isDarkMode() ? '#e2e8f0' : '#1e293b';
+        ctx.font = 'bold 12px Tajawal, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(lbl, groupX + groupWidth / 2, h - 14);
+      });
+    }
+
+    // Chart: Targets Area Share
+    function drawTargetsAreaShareChart() {
+      const canvas = document.getElementById('chartTargetsAreaShare');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      setupCanvasResolution(canvas);
+
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const sups = AppState.supervisors;
+      if (!sups || sups.length === 0) return;
+
+      const totalTarget = sups.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const colors = ['#7c3aed', '#0284c7', '#10b981'];
+
+      const centerX = w * 0.5;
+      const centerY = h * 0.42;
+      const outerRadius = Math.min(centerX, centerY) - 12;
+      const innerRadius = outerRadius * 0.58;
+
+      let startAngle = -Math.PI / 2;
+
+      sups.forEach((s, i) => {
+        const val = Number(s.target || 0);
+        const sliceAngle = totalTarget > 0 ? (val / totalTarget) * (Math.PI * 2) : (Math.PI * 2 / sups.length);
+        const endAngle = startAngle + sliceAngle;
+
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, outerRadius, startAngle, endAngle);
+        ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, true);
+        ctx.closePath();
+        ctx.fill();
+
+        startAngle = endAngle;
+      });
+
+      // Center Text
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = isDarkMode() ? '#f8fafc' : '#0f172a';
+      ctx.font = 'bold 14px Tajawal, sans-serif';
+      const totalFormatted = totalTarget >= 1000000 ? (totalTarget / 1000000).toFixed(2) + 'M' : formatCurrency(totalTarget);
+      ctx.fillText(totalFormatted, centerX, centerY - 6);
+      ctx.fillStyle = isDarkMode() ? '#94a3b8' : '#64748b';
+      ctx.font = '10.5px Tajawal, sans-serif';
+      ctx.fillText(AppState.lang === 'en' ? 'Total Target' : 'إجمالي التارجت', centerX, centerY + 12);
+
+      // Legend below
+      const legendY = h - 20;
+      const itemW = w / sups.length;
+      ctx.font = 'bold 10.5px Tajawal, sans-serif';
+
+      sups.forEach((s, i) => {
+        const x = i * itemW + itemW / 2;
+        const pct = totalTarget > 0 ? Math.round((Number(s.target || 0) / totalTarget) * 100) : 33;
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.beginPath();
+        ctx.arc(x - 26, legendY - 2, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = isDarkMode() ? '#e2e8f0' : '#1e293b';
+        ctx.textAlign = 'center';
+        const shortName = s.id === 1 ? (AppState.lang === 'en' ? 'Giza 1' : 'الجيزة 1') : (s.id === 2 ? (AppState.lang === 'en' ? 'Giza 2' : 'أكتوبر') : (AppState.lang === 'en' ? 'Upper' : 'الصعيد'));
+        ctx.fillText(`${shortName} (${pct}%)`, x, legendY + 2);
+      });
+    }
+
+    // Branch Quota Filter and Rendering
+    function filterTargetsBranches(sectorId) {
+      if (sectorId !== undefined) {
+        _selectedTargetsBranchFilter = String(sectorId);
+        const container = document.getElementById('targetsBranchAreaFilter');
+        if (container) {
+          container.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('onclick')?.includes(`'${sectorId}'`)) {
+              btn.classList.add('active');
+            }
+          });
+        }
+      }
+      renderTargetsBranchesTable();
+    }
+
+    function renderTargetsBranchesTable() {
+      const tbody = document.getElementById('targetsBranchesTableBody');
+      if (!tbody) return;
+
+      const isEn = AppState.lang === 'en';
+      const searchInp = document.getElementById('inputSearchTargetsBranches');
+      const query = searchInp ? searchInp.value.trim().toLowerCase() : '';
+
+      let list = AppState.branches;
+      if (_selectedTargetsBranchFilter !== 'ALL') {
+        list = list.filter(b => String(b.supervisorId) === _selectedTargetsBranchFilter);
+      }
+
+      if (query) {
+        list = list.filter(b => 
+          (b.name || '').toLowerCase().includes(query) ||
+          (b.city || '').toLowerCase().includes(query) ||
+          (b.clientType || '').toLowerCase().includes(query) ||
+          (b.promoter || '').toLowerCase().includes(query)
+        );
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align:center; padding:26px; color:var(--text-muted);">
+              ${isEn ? 'No clients/branches found matching the current filter.' : 'لا توجد فروع أو عملاء مطابقة للفلتر المحدد.'}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      list.forEach(b => {
+        const m = getClientMetrics(b);
+        const sup = AppState.supervisors.find(s => Number(s.id) === Number(b.supervisorId));
+        const supName = sup ? getSupervisorName(sup) : '-';
+        const supTag = sup ? sup.tagClass : 'badge-neutral';
+        const safeName = (b.name || '').replace(/'/g, "\\'");
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <div style="font-weight:800; color:var(--text-main); font-size:13.5px;">${b.name}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${b.clientType || (isEn ? 'Retailer' : 'محل تجاري')}</div>
+            </td>
+            <td><span style="font-size:12px;">📍 ${b.city || '-'}</span></td>
+            <td><span class="badge ${supTag}">${sup ? getSupervisorTitle(sup) : '-'}</span></td>
+            <td><span style="font-size:12px; font-weight:700;">${supName}</span></td>
+            <td><strong style="color:var(--text-main); font-size:13.5px;">${formatCurrency(b.target)}</strong></td>
+            <td><strong style="color:var(--primary); font-size:13.5px;">${formatCurrency(m.actual)}</strong></td>
+            <td>
+              <strong style="color:${m.pct >= 100 ? 'var(--success)' : (m.pct >= 50 ? 'var(--warning)' : 'var(--danger)')};">
+                ${m.pct}%
+              </strong>
+            </td>
+            <td><span style="color:#f59e0b; font-weight:700;">${formatCurrency(m.remaining)}</span></td>
+            <td><span class="badge badge-success">${isEn ? 'Active' : 'نشط'}</span></td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-primary btn-sm" onclick="quickSaleForBranch('${safeName}', ${b.supervisorId})" style="padding:4px 8px; font-size:11px;">
+                ➕ ${isEn ? 'Sale' : 'بيع'}
+              </button>
+              <button class="btn btn-purple btn-sm" onclick="openEditBranchModal(${b.id})" style="padding:4px 8px; font-size:11px; margin-inline-start:4px;">
+                ✏️ ${isEn ? 'Target' : 'تارجت'}
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // Smart Target Distributor Modal Logic
+    function openSmartTargetDistributorModal() {
+      if (!isMasterAdmin()) {
+        alert("⛔ توزيع وتعديل تارجت الآريات متاح فقط لمدير الإدارة (Master Admin)!");
+        return;
+      }
+      const totalTarget = AppState.supervisors.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const input = document.getElementById('smartTotalTargetInput');
+      if (input) input.value = totalTarget > 0 ? totalTarget : 3000000;
+      previewSmartDistribution();
+      const m = document.getElementById('smartDistributorModal');
+      if (m) m.classList.add('open');
+    }
+
+    function previewSmartDistribution() {
+      const container = document.getElementById('smartDistributionPreview');
+      if (!container) return;
+
+      const total = Number(document.getElementById('smartTotalTargetInput')?.value || 0);
+      const model = document.getElementById('smartDistributionModel')?.value || 'historical';
+      const sups = AppState.supervisors;
+      const isEn = AppState.lang === 'en';
+
+      if (total <= 0) {
+        container.innerHTML = `<div style="color:var(--danger); font-size:12px;">⚠️ يرجى إدخال مبلغ تارجت صحيح أكبر من الصفر.</div>`;
+        return;
+      }
+
+      let weights = [0.35, 0.30, 0.35];
+      if (model === 'equal') {
+        weights = [1/3, 1/3, 1/3];
+      } else if (model === 'branches') {
+        const totalB = Math.max(1, AppState.branches.length);
+        weights = sups.map(s => {
+          const count = AppState.branches.filter(b => Number(b.supervisorId) === Number(s.id)).length;
+          return count / totalB;
+        });
+      }
+
+      container.innerHTML = '';
+      sups.forEach((s, i) => {
+        const allocated = Math.round(total * (weights[i] || 0.33));
+        const pct = Math.round((weights[i] || 0.33) * 100);
+        const color = s.id === 1 ? '#7c3aed' : (s.id === 2 ? '#0284c7' : '#059669');
+
+        container.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="badge ${s.tagClass}">${s.avatar || 'م'}</span>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text-main);">${getSupervisorTitle(s)}</div>
+                <div style="font-size:11px; color:var(--text-muted);">${getSupervisorName(s)} (${pct}%)</div>
+              </div>
+            </div>
+            <div style="text-align:end;">
+              <div style="font-weight:800; font-size:14px; color:${color};">${formatCurrency(allocated)}</div>
+              <div style="font-size:10.5px; color:var(--text-muted);">${isEn ? 'Allocated Quota' : 'الحصة المحددة'}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function handleApplySmartDistribution(e) {
+      e.preventDefault();
+      if (!isMasterAdmin()) {
+        alert("⛔ توزيع وتعديل تارجت الآريات متاح فقط لمدير الإدارة (Master Admin)!");
+        return;
+      }
+
+      const total = Number(document.getElementById('smartTotalTargetInput')?.value || 0);
+      const model = document.getElementById('smartDistributionModel')?.value || 'historical';
+      const sups = AppState.supervisors;
+
+      let weights = [0.35, 0.30, 0.35];
+      if (model === 'equal') {
+        weights = [1/3, 1/3, 1/3];
+      } else if (model === 'branches') {
+        const totalB = Math.max(1, AppState.branches.length);
+        weights = sups.map(s => {
+          const count = AppState.branches.filter(b => Number(b.supervisorId) === Number(s.id)).length;
+          return count / totalB;
+        });
+      }
+
+      sups.forEach((s, i) => {
+        s.target = Math.round(total * (weights[i] || 0.33));
+      });
+
+      saveState();
+      renderAll();
+      closeModal('smartDistributorModal');
+
+      const isEn = AppState.lang === 'en';
+      const msg = isEn ? 'Territory targets distributed & synced to cloud successfully! 🚀' : 'تم توزيع وتعميم تارجت الآريات بنجاح وحفظه في السحابة! 🚀';
+      if (window.showToast) showToast(msg, 'success', 3500);
+      else alert(msg);
+    }
+
+    // Export & Print Targets Report
+    function exportTargetsReportCSV() {
+      const isEn = AppState.lang === 'en';
+      if (!checkPermissionOrAlert('canExport', isEn ? 'Export Targets Report' : 'تصدير تقرير المستهدفات')) return;
+
+      const sups = AppState.supervisors;
+      const totalTarget = sups.reduce((sum, s) => sum + Number(s.target || 0), 0);
+      const totalActual = sups.reduce((sum, s) => sum + getSupervisorSales(s.id), 0);
+      const totalPct = totalTarget > 0 ? ((totalActual / totalTarget) * 100).toFixed(1) : 0;
+      const totalRemaining = Math.max(0, totalTarget - totalActual);
+
+      const now = new Date();
+      const daysRemaining = Math.max(1, new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate());
+
+      let csv = "\uFEFF"; // UTF-8 BOM
+      csv += "تقرير المستهدفات العامة والتارجت - قطاع الجيزة الكبرى والصعيد\n";
+      csv += `تاريخ التقرير: ${now.toLocaleDateString('ar-EG')} - ${now.toLocaleTimeString('ar-EG')}\n`;
+      csv += `إجمالي تارجت القطاع: ${totalTarget} ج.م | إجمالي المحقق: ${totalActual} ج.م | نسبة الإنجاز: ${totalPct}% | المتبقي: ${totalRemaining} ج.م\n\n`;
+
+      csv += "الآريا / المنطقة,المشرف المسؤول,التارجت المطلوب (ج.م),المحقق الفعلي (ج.م),نسبة الإنجاز %,المتبقي (ج.م),المطلوب يومياً (ج.م/يوم),عدد الفروع,الهاتف\n";
+      sups.forEach(s => {
+        const m = getSupervisorMetrics(s);
+        const dailyRun = Math.round(m.remaining / daysRemaining);
+        csv += `"${getSupervisorTitle(s)}","${getSupervisorName(s)}",${s.target},${m.actual},${m.pct}%,${m.remaining},${dailyRun},${m.branchCount},"${s.phone || ''}"\n`;
+      });
+
+      csv += `\n"الإجمالي العام لقطاع الجيزة والصعيد","مدير عام القطاع",${totalTarget},${totalActual},${totalPct}%,${totalRemaining},${Math.round(totalRemaining / daysRemaining)},${AppState.branches.length},""\n`;
+
+      csv += "\nتفاصيل مستهدفات ومبيعات العملاء والفروع:\n";
+      csv += "العميل / الفرع,المدينة,الآريا التابعة,المشرف,تارجت العميل (ج.م),المحقق (ج.م),نسبة الإنجاز %,المتبقي (ج.م)\n";
+      AppState.branches.forEach(b => {
+        const m = getClientMetrics(b);
+        const sup = sups.find(s => Number(s.id) === Number(b.supervisorId));
+        csv += `"${b.name || ''}","${b.city || ''}","${sup ? getSupervisorTitle(sup) : ''}","${sup ? getSupervisorName(sup) : ''}",${b.target || 0},${m.actual},${m.pct}%,${m.remaining}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `تقرير_التارجت_العام_للآريات_${now.toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      if (window.showToast) {
+        showToast(isEn ? 'Targets report downloaded successfully! 📊' : 'تم تصدير تقرير التارجت بنجاح بصيغة Excel! 📊', 'success');
+      }
+    }
+
+    function printTargetsReport() {
+      switchTab('targets');
+      setTimeout(() => {
+        window.print();
+      }, 250);
     }
 
     /* =========================================================================
@@ -7896,6 +8822,7 @@ ${baseUrl}?user=manager${sheetsParam}
 
       const titles = {
         'dashboard': isManager ? (isEn ? 'Area Manager Dashboard' : 'لوحة قيادة مدير الآريتين') : (isAll ? (isEn ? 'General Executive Dashboard' : 'لوحة التحكم العامة') : (isEn ? `${sName} Dashboard` : `لوحة متابعة ${sName}`)),
+        'targets': isEn ? 'General Targets Dashboard (All Areas)' : 'التارجت العام لقطاع الجيزة الكبرى والصعيد',
         'supervisors': isEn ? 'Supervisors & Target Management' : 'متابعة المشرفين والتارجت (الجيزة والصعيد)',
         'sales': isEn ? 'Area Sales Transactions Log' : 'سجل مبيعات الآريتين',
         'branches': isEn ? 'Clients & Retailers Directory' : 'العملاء والفروع بالمنطقة',
@@ -7905,6 +8832,7 @@ ${baseUrl}?user=manager${sheetsParam}
 
       const breadcrumbs = {
         'dashboard': isEn ? 'Executive Dashboard' : 'لوحة القيادة والمتابعة',
+        'targets': isEn ? 'Territory Targets & Quotas' : 'التارجت العام للآريات والمستهدفات',
         'supervisors': isEn ? 'Supervisors & Targets' : 'إدارة المشرفين والمستهدفات',
         'sales': isEn ? 'Sales Operations' : 'حركات وعمليات البيع',
         'branches': isEn ? 'Clients & Retailers' : 'قاعدة بيانات العملاء والتجار',
@@ -7917,21 +8845,17 @@ ${baseUrl}?user=manager${sheetsParam}
       const bActive = document.getElementById('headerBreadcrumbsActive');
       if (bActive) bActive.textContent = breadcrumbs[tabName] || '';
 
-      const navItems = document.querySelectorAll('.nav-menu .nav-item');
-      const map = {
-        'dashboard': 0,
-        'supervisors': 1,
-        'sales': 2,
-        'branches': 3,
-        'visits': 4,
-        'reports': 5
-      };
-      if (navItems[map[tabName]]) {
-        navItems[map[tabName]].classList.add('active');
-      }
+      document.querySelectorAll('.nav-menu .nav-item').forEach(el => {
+        el.classList.remove('active');
+        if (el.getAttribute('data-tab') === tabName || el.getAttribute('onclick')?.includes(`'${tabName}'`)) {
+          el.classList.add('active');
+        }
+      });
 
       if (tabName === 'dashboard') {
         setTimeout(renderCharts, 50);
+      } else if (tabName === 'targets') {
+        setTimeout(renderTargetsTab, 50);
       } else if (tabName === 'reports') {
         setTimeout(renderReportsTab, 50);
       }
