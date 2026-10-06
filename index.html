@@ -2,7 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>نظام متابعة مبيعات الجيزة والصعيد | Area Manager & Supervisors Portal</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
@@ -1217,28 +1220,245 @@ tbody tr:hover {
   color: var(--text-muted);
 }
 
-/* Floating Action Button for Mobile */
-.fab {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: white;
+/* ================= MOBILE BOTTOM DOCK & ACTION DOCK ================= */
+.mobile-bottom-nav {
   display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-color);
+  z-index: 95;
+  padding: 0 6px calc(env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+  justify-content: space-around;
+  align-items: center;
+}
+[data-theme="dark"] .mobile-bottom-nav {
+  background: rgba(15, 23, 42, 0.94);
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.35);
+}
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-  z-index: 99;
-  cursor: pointer;
+  gap: 3px;
+  color: var(--text-muted);
+  text-decoration: none;
+  background: none;
   border: none;
-  font-size: 22px;
-  transition: transform 0.2s;
+  padding: 7px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
 }
-.fab:active {
-  transform: scale(0.92);
+.bottom-nav-item svg {
+  width: 21px;
+  height: 21px;
+  transition: transform 0.2s, stroke 0.2s;
+}
+.bottom-nav-item span {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.bottom-nav-item.active {
+  color: var(--primary);
+}
+.bottom-nav-item.active svg {
+  transform: translateY(-2px) scale(1.1);
+  stroke: var(--primary);
+}
+.bottom-nav-item.active span {
+  font-weight: 900;
+  color: var(--primary);
+}
+
+/* Mobile FAB Speed Dial System */
+.fab-speed-dial {
+  display: none;
+  position: fixed;
+  bottom: 74px;
+  left: 18px;
+  z-index: 96;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+html[dir="ltr"] .fab-speed-dial {
+  left: auto;
+  right: 18px;
+  align-items: flex-end;
+}
+.fab-trigger-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 27px;
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+.fab-trigger-btn svg {
+  width: 25px;
+  height: 25px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fab-speed-dial.open .fab-trigger-btn {
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45);
+}
+.fab-menu-options {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px) scale(0.92);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.fab-speed-dial.open .fab-menu-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.fab-option-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--bg-card);
+  padding: 8px 14px;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s, background-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.fab-option-chip:active {
+  transform: scale(0.95);
+}
+.fab-option-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+/* Mobile Operations & More Bottom Sheet */
+.mobile-sheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.mobile-sheet-overlay.open {
+  display: block;
+  opacity: 1;
+}
+.mobile-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+  border-top: 1px solid var(--border-color);
+  padding: 12px 18px calc(24px + env(safe-area-inset-bottom, 0px));
+  max-height: 82vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+.mobile-sheet-overlay.open .mobile-sheet {
+  transform: translateY(0);
+}
+.sheet-drag-handle {
+  width: 44px;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 9999px;
+  margin: 0 auto 14px;
+}
+.sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+.sheet-action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 7px;
+  padding: 15px 10px;
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-main);
+  text-decoration: none;
+}
+.sheet-action-card:active {
+  transform: scale(0.96);
+  background: var(--primary-light);
+}
+.sheet-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+}
+.sheet-action-title {
+  font-size: 12.5px;
+  font-weight: 800;
+}
+.sheet-action-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+.sidebar-close-btn {
+  display: none;
 }
 
 /* Wipe Modal Danger Styling */
@@ -1290,42 +1510,156 @@ tbody tr:hover {
 }
 
 @media (max-width: 992px) {
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
   .sidebar {
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
-    transform: translateX(100%);
+    transform: translateX(105%);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
   }
   .sidebar.open {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .sidebar-close-btn {
+    display: block;
   }
   .mobile-menu-toggle {
     display: inline-flex;
   }
-  .fab {
+  .mobile-bottom-nav {
+    display: flex;
+  }
+  .fab-speed-dial {
     display: flex;
   }
   .content-area {
-    padding: 16px;
+    padding: 14px 12px 90px !important;
   }
   .top-header {
-    padding: 12px 16px;
-  }
-}
-
-@media (max-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .charts-row {
-    grid-template-columns: 1fr;
-  }
-  .supervisors-grid {
-    grid-template-columns: 1fr;
+    padding: 10px 14px;
   }
   .header-actions {
     gap: 6px;
+  }
+  /* Hide heavy buttons on mobile header to prevent overflow */
+  #btnHeaderShareLinks,
+  #btnHeaderAiCopilot,
+  #btnHeaderDailyWhatsApp,
+  #btnHeaderAddSale,
+  #btnHeaderAddVisit,
+  #btnHeaderExport {
+    display: none !important;
+  }
+  #cloudSyncText {
+    display: none;
+  }
+  #cloudSyncBadge {
+    padding: 6px 9px;
+  }
+  #sessionUserName,
+  #sessionUserRoleBadge {
+    display: none;
+  }
+  .user-session-badge {
+    padding: 4px 6px;
+  }
+  /* Modals as native Mobile Bottom Sheets */
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal-dialog {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    max-height: 88vh;
+    margin: 0;
+    width: 100%;
+    transform: translateY(100%);
+  }
+  .modal-overlay.open .modal-dialog {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 15px;
+  }
+  .breadcrumbs {
+    font-size: 10px;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .kpi-card {
+    padding: 12px 14px !important;
+  }
+  .kpi-value {
+    font-size: 18px !important;
+  }
+  .kpi-label {
+    font-size: 11px !important;
+  }
+  .charts-row {
+    grid-template-columns: 1fr !important;
+  }
+  .supervisors-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .ai-metric-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .manager-profile-badge {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .manager-profile-actions {
+    display: flex;
+    overflow-x: auto;
+    width: 100%;
+    gap: 8px;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .manager-profile-actions::-webkit-scrollbar {
+    display: none;
+  }
+  .manager-profile-actions .btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .hierarchy-card {
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .ai-metric-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .sheet-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1349,7 +1683,7 @@ html[dir="ltr"] .form-group {
   html[dir="ltr"] .sidebar {
     right: auto;
     left: 0;
-    transform: translateX(-100%);
+    transform: translateX(-105%);
   }
   html[dir="ltr"] .sidebar.open {
     transform: translateX(0);
@@ -1827,9 +2161,152 @@ html[dir="ltr"] .notif-dropdown-menu {
     display: none !important;
   }
   #invoiceModal .invoice-paper {
-    border: none !important;
-    padding: 15px !important;
-  }
+/* Enterprise Feature Enhancements */
+.ai-copilot-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(79, 70, 229, 0.05) 100%);
+  border: 1.5px solid rgba(124, 58, 237, 0.25);
+  border-radius: 16px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+.ai-copilot-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+}
+.ai-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.ai-metric-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+}
+.ai-metric-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.ai-metric-val {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+/* Voice Dictation Button Animation */
+.mic-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 5px 9px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.mic-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.05);
+}
+.mic-btn.listening {
+  background: #ef4444 !important;
+  color: #fff !important;
+  border-color: #ef4444 !important;
+  animation: micPulse 1.2s infinite;
+}
+@keyframes micPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+/* Gamification & Hall of Fame */
+.hall-fame-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.hall-fame-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.hall-fame-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.hall-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+/* Watermarked Photos & Out-of-Stock Tickets */
+.watermarked-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1.5px solid var(--border-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.watermarked-thumb:hover {
+  transform: scale(1.1);
+  border-color: var(--primary);
+}
+.stock-ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+}
 }
   </style>
 </head>
@@ -1841,34 +2318,37 @@ html[dir="ltr"] .notif-dropdown-menu {
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="brand-row">
-        <div class="app-logo">
-          <svg class="brand-svg-logo" viewBox="0 0 48 48" fill="none" style="width:100%;height:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logoGradSidebar" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#6366f1" />
-                <stop offset="60%" stop-color="#4338ca" />
-                <stop offset="100%" stop-color="#0284c7" />
-              </linearGradient>
-              <linearGradient id="logoArrowSidebar" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#10b981" />
-                <stop offset="100%" stop-color="#38bdf8" />
-              </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#logoGradSidebar)"/>
-            <rect x="2.5" y="2.5" width="43" height="43" rx="11.5" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="16" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2 2" stroke-width="1.2"/>
-            <rect x="11" y="26" width="5" height="11" rx="2" fill="rgba(255,255,255,0.75)"/>
-            <rect x="18.5" y="20" width="5" height="17" rx="2" fill="rgba(255,255,255,0.92)"/>
-            <rect x="26" y="14" width="5" height="23" rx="2" fill="#ffffff"/>
-            <path d="M12 24L20 17L28 12L37 7M37 7H29M37 7V15" stroke="url(#logoArrowSidebar)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="37" cy="7" r="2.5" fill="#facc15"/>
-          </svg>
+      <div class="brand-row" style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="app-logo">
+            <svg class="brand-svg-logo" viewBox="0 0 48 48" fill="none" style="width:100%;height:100%;display:block;" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="logoGradSidebar" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#6366f1" />
+                  <stop offset="60%" stop-color="#4338ca" />
+                  <stop offset="100%" stop-color="#0284c7" />
+                </linearGradient>
+                <linearGradient id="logoArrowSidebar" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#10b981" />
+                  <stop offset="100%" stop-color="#38bdf8" />
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#logoGradSidebar)"/>
+              <rect x="2.5" y="2.5" width="43" height="43" rx="11.5" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+              <circle cx="24" cy="24" r="16" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2 2" stroke-width="1.2"/>
+              <rect x="11" y="26" width="5" height="11" rx="2" fill="rgba(255,255,255,0.75)"/>
+              <rect x="18.5" y="20" width="5" height="17" rx="2" fill="rgba(255,255,255,0.92)"/>
+              <rect x="26" y="14" width="5" height="23" rx="2" fill="#ffffff"/>
+              <path d="M12 24L20 17L28 12L37 7M37 7H29M37 7V15" stroke="url(#logoArrowSidebar)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="37" cy="7" r="2.5" fill="#facc15"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-title" id="brandTitle">مبيعات الجيزة والصعيد</div>
+            <div class="brand-sub" id="brandSub">المنظومة التنفيذية للإدارة والمشرفين</div>
+          </div>
         </div>
-        <div>
-          <div class="brand-title" id="brandTitle">مبيعات الجيزة والصعيد</div>
-          <div class="brand-sub" id="brandSub">المنظومة التنفيذية للإدارة والمشرفين</div>
-        </div>
+        <button class="sidebar-close-btn" onclick="toggleSidebar()" aria-label="إغلاق القائمة" style="background:none; border:none; color:#94a3b8; font-size:20px; cursor:pointer; padding:4px 8px; border-radius:8px; line-height:1;">✕</button>
       </div>
 
       <!-- Supervisor & Area Manager View Switcher -->
@@ -1979,6 +2459,18 @@ html[dir="ltr"] .notif-dropdown-menu {
           <span id="btnHeaderShareLinksText">روابط المشرفين 📲</span>
         </button>
 
+        <!-- AI Executive Sales Copilot -->
+        <button class="btn btn-purple btn-sm" id="btnHeaderAiCopilot" onclick="openAiCopilotModal()" title="المساعد التنفيذي الذكي والتنبؤات (AI Copilot)" style="background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; font-weight:800; border:none; box-shadow:0 2px 8px rgba(124,58,237,0.35);">
+          <span>🧠</span>
+          <span id="btnHeaderAiCopilotText">الذكاء الاصطناعي</span>
+        </button>
+
+        <!-- WhatsApp Daily Broadcast -->
+        <button class="btn btn-success btn-sm" id="btnHeaderDailyWhatsApp" onclick="openDailyWhatsAppModal()" title="تقرير الواتساب اليومي الفوري لجروب المشرفين" style="background:linear-gradient(135deg, #25d366, #128c7e); color:#fff; font-weight:800; border:none; box-shadow:0 2px 8px rgba(37,211,102,0.35);">
+          <span>📲</span>
+          <span id="btnHeaderDailyWhatsAppText">تقرير الواتساب</span>
+        </button>
+
         <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تبديل اللغة">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           <span id="langToggleBtnText">English</span>
@@ -2064,7 +2556,7 @@ html[dir="ltr"] .notif-dropdown-menu {
               </div>
             </div>
 
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <div class="manager-profile-actions" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <button class="btn btn-outline btn-sm" onclick="openShareLinksModal()" style="border-color:rgba(16,185,129,0.35); color:var(--success);" title="إرسال روابط المشرفين المباشرة عبر الواتساب">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
                 <span>روابط المشرفين (واتساب) 📲</span>
@@ -2080,6 +2572,12 @@ html[dir="ltr"] .notif-dropdown-menu {
               <button class="btn btn-outline btn-sm" onclick="openEditTargetsModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                 <span id="btnMgrTargetsText">تعديل تارجت المشرفين</span>
+              </button>
+              <button class="btn btn-warning btn-sm" onclick="openStockTicketModal()" title="إبلاغ عن نقص بضاعة في الفروع" style="font-weight:700;">
+                <span>📦 نقص بضاعة</span>
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="openQuickPinModal()" title="إعداد رمز الدخول السريع 4-Digit PIN">
+                <span>🔐 رمز PIN</span>
               </button>
               <button class="btn btn-outline btn-sm" onclick="openEditManagerModal()">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
@@ -2125,6 +2623,78 @@ html[dir="ltr"] .notif-dropdown-menu {
           <div id="directivesListContainer" style="display:flex; flex-direction:column; gap:8px;">
             <!-- Populated dynamically -->
           </div>
+        </div>
+
+        <!-- AI Executive Sales Copilot & Forecast Intelligence Banner -->
+        <div class="ai-copilot-card" id="aiExecutiveWidget">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:28px;">🧠</span>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <strong style="font-size:15px; color:var(--text-main);" id="aiWidgetHeading">رادار الذكاء الاصطناعي والتنبؤ بالإغلاق الشهري (AI Forecast)</strong>
+                  <span class="ai-badge">AI LIVE</span>
+                </div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;" id="aiWidgetSub">
+                  تحليل مباشر لمعدل سرعة المبيعات (Run-rate) مقارنة بمستهدف الـ 6 مليون
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="playAiAudioBriefing()" title="استمع للموجز الصوتي الذكي" style="font-size:12px;">
+                🔊 استماع صوتي
+              </button>
+              <button class="btn btn-purple btn-sm" onclick="openAiCopilotModal()" style="font-size:12px; font-weight:800; background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; border:none;">
+                🚀 التقرير الذكي الشامل
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-metric-grid" id="aiWidgetMetrics">
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">احتمالية تحقيق تارجت 6M</span>
+              <span class="ai-metric-val" id="aiWidgetProb" style="color:var(--success);">--%</span>
+            </div>
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">المبيعات المتوقعة لنهاية الشهر</span>
+              <span class="ai-metric-val" id="aiWidgetProjected">-- ج.م</span>
+            </div>
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">السرعة اليومية المطلوبة</span>
+              <span class="ai-metric-val" id="aiWidgetDailyReq">-- ج.م/يوم</span>
+            </div>
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">موقف وتيرة البيع</span>
+              <span class="ai-metric-val" id="aiWidgetStatusBadge" style="font-size:13px; font-weight:800; color:var(--primary);">--</span>
+            </div>
+          </div>
+          <div id="aiWidgetAdvice" style="margin-top:12px; font-size:12px; line-height:1.6; color:var(--text-main); background:rgba(255,255,255,0.04); padding:10px 14px; border-radius:10px; border:1px solid var(--border-color);">
+            💡 جاري قراءة وتحليل بيانات المبيعات لحظياً بالذكاء الاصطناعي...
+          </div>
+        </div>
+
+        <!-- Out-of-Stock Urgent Tickets Banner -->
+        <div id="outOfStockAlertBanner" style="display:none; background:rgba(245,158,11,0.1); border:1.5px solid rgba(245,158,11,0.35); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:20px;">📦</span>
+              <div>
+                <strong style="color:var(--warning); font-size:13.5px;" id="outOfStockBannerTitle">رادار نواقص البضاعة: توجد تذاكر نقص بضاعة معلقة بالفروع</strong>
+                <div style="font-size:11.5px; color:var(--text-muted);" id="outOfStockBannerCount">يُرجى مراجعة الأصناف الناقصة للتنسيق مع إدارة التوريد وتفادي ضياع فرص البيع.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-warning btn-sm" onclick="openStockTicketModal()" style="font-weight:700; font-size:11.5px;">+ إبلاغ عن نقص جديد</button>
+            </div>
+          </div>
+          <div id="outOfStockBannerList" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Hall of Fame & Badges Widget -->
+        <div class="hall-fame-grid" id="hallOfFameWidget">
+          <!-- Populated dynamically by renderHallOfFame() -->
         </div>
 
         <!-- Quick KPIs -->
@@ -2904,8 +3474,117 @@ html[dir="ltr"] .notif-dropdown-menu {
     </main>
   </div>
 
-  <!-- Floating Mobile Action Button -->
-  <button class="fab" onclick="openSaleModal()" title="تسجيل بيع">➕</button>
+  <!-- ================= MOBILE NAVIGATION & ACTION DOCK ================= -->
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile Navigation">
+    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')" id="bnavTabDashboard">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span id="bnavDashText">الرئيسية</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="targets" onclick="switchTab('targets')" id="bnavTabTargets">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span id="bnavTargetsText">التارجت</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="sales" onclick="switchTab('sales')" id="bnavTabSales">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span id="bnavSalesText">المبيعات</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="branches" onclick="switchTab('branches')" id="bnavTabDealers">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      <span id="bnavDealersText">العملاء</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openMobileMoreSheet()" id="bnavTabMore">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+      <span id="bnavMoreText">المزيد</span>
+    </button>
+  </nav>
+
+  <!-- Mobile Floating Action Button (FAB) Speed Dial -->
+  <div class="fab-speed-dial" id="mobileFabContainer">
+    <div class="fab-menu-options" id="fabMenuOptions">
+      <button class="fab-option-chip" onclick="openSaleModal(); toggleFabMenu();">
+        <span class="fab-option-icon" style="background:var(--primary-light); color:var(--primary);">💰</span>
+        <span id="fabOptSaleText">تسجيل بيع جديد</span>
+      </button>
+      <button class="fab-option-chip" onclick="openVisitModal(); toggleFabMenu();">
+        <span class="fab-option-icon" style="background:var(--success-light); color:var(--success);">🚗</span>
+        <span id="fabOptVisitText">تقرير زيارة ميدانية</span>
+      </button>
+      <button class="fab-option-chip" onclick="openAiCopilotModal(); toggleFabMenu();">
+        <span class="fab-option-icon" style="background:var(--purple-light); color:var(--purple);">🧠</span>
+        <span id="fabOptAiText">المساعد الذكي (AI)</span>
+      </button>
+      <button class="fab-option-chip" onclick="openDailyWhatsAppModal(); toggleFabMenu();">
+        <span class="fab-option-icon" style="background:#dcfce7; color:#16a34a;">📲</span>
+        <span id="fabOptWaText">تقرير الواتساب اليومي</span>
+      </button>
+    </div>
+    <button class="fab-trigger-btn" id="fabTriggerBtn" onclick="toggleFabMenu()" aria-label="Quick Actions">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile Operations & More Bottom Sheet -->
+  <div class="mobile-sheet-overlay" id="mobileMoreSheetOverlay" onclick="closeMobileMoreSheet(event)">
+    <div class="mobile-sheet" id="mobileMoreSheet" onclick="event.stopPropagation()">
+      <div class="sheet-drag-handle"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:1px solid var(--border-color);">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:18px;">⚡</span>
+          <strong style="font-size:15px; color:var(--text-main);" id="mobileSheetTitle">مركز العمليات السريعة</strong>
+        </div>
+        <button onclick="closeMobileMoreSheet()" style="background:none; border:none; font-size:20px; color:var(--text-muted); cursor:pointer; padding:4px;">✕</button>
+      </div>
+      <div class="sheet-grid">
+        <div class="sheet-action-card" onclick="openShareLinksModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#ecfdf5; color:#10b981;">📲</div>
+          <div class="sheet-action-title" id="sheetCardWaLinks">روابط المشرفين</div>
+          <div class="sheet-action-sub">إرسال روابط واتساب</div>
+        </div>
+        <div class="sheet-action-card" onclick="switchTab('supervisors'); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:var(--purple-light); color:var(--purple);">👥</div>
+          <div class="sheet-action-title" id="sheetCardSups">دليل المشرفين</div>
+          <div class="sheet-action-sub">المستهدفات والمحافظات</div>
+        </div>
+        <div class="sheet-action-card" onclick="switchTab('visits'); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:var(--secondary-light); color:var(--secondary);">🚗</div>
+          <div class="sheet-action-title" id="sheetCardVisits">الزيارات الميدانية</div>
+          <div class="sheet-action-sub">سجل جولات الفروع</div>
+        </div>
+        <div class="sheet-action-card" onclick="exportMasterDataCSV(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#fef3c7; color:#d97706;">📥</div>
+          <div class="sheet-action-title" id="sheetCardExport">تصدير إكسيل</div>
+          <div class="sheet-action-sub">تحميل البيانات CSV</div>
+        </div>
+        <div class="sheet-action-card" onclick="openStockTicketModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#fee2e2; color:#ef4444;">📦</div>
+          <div class="sheet-action-title" id="sheetCardStock">نقص بضاعة</div>
+          <div class="sheet-action-sub">إبلاغ فوري للنواقص</div>
+        </div>
+        <div class="sheet-action-card" onclick="openQuickPinModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:var(--primary-light); color:var(--primary);">🔐</div>
+          <div class="sheet-action-title" id="sheetCardPin">رمز PIN السريع</div>
+          <div class="sheet-action-sub">إعداد الدخول السريع</div>
+        </div>
+        <div class="sheet-action-card" onclick="openCloudDiagnosticsModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:var(--primary-light); color:var(--primary-accent);">⚙️</div>
+          <div class="sheet-action-title" id="sheetCardCloud">فحص السحابة</div>
+          <div class="sheet-action-sub">تشخيص جودة الاتصال</div>
+        </div>
+        <div class="sheet-action-card" onclick="openEditManagerModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#f1f5f9; color:var(--text-main);">👨‍💼</div>
+          <div class="sheet-action-title" id="sheetCardProfile">بيانات المدير</div>
+          <div class="sheet-action-sub">تعديل الحساب والسر</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <button class="btn btn-danger btn-block" onclick="handleLogout(); closeMobileMoreSheet();" style="width:100%; justify-content:center; padding:12px; border-radius:12px;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <span id="sheetBtnLogout">تسجيل الخروج من المنظومة</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= MODALS ================= -->
 
@@ -2990,7 +3669,12 @@ html[dir="ltr"] .notif-dropdown-menu {
               </select>
             </div>
             <div class="form-group col-full">
-              <label>نص التوجيه والتعليمات الإدارية *</label>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label style="margin-bottom:0;">نص التوجيه والتعليمات الإدارية *</label>
+                <button type="button" class="mic-btn" id="btnMicDirectiveText" onclick="toggleVoiceDictation('modalDirectiveText', 'btnMicDirectiveText')">
+                  🎙️ إملاء صوتي
+                </button>
+              </div>
               <textarea id="modalDirectiveText" class="form-control" rows="3" required placeholder="مثال: التركيز على استكمال تارجت كابلات وشواحن الأسبوع الحالي ومتابعة استاندات العرض..."></textarea>
             </div>
           </div>
@@ -3056,7 +3740,10 @@ html[dir="ltr"] .notif-dropdown-menu {
 
             <div class="form-group">
               <label>إجمالي القيمة بالجنيه (ج.م) *</label>
-              <input type="number" id="modalSaleAmount" class="form-control" min="1" step="any" placeholder="مثال: 4500" required>
+              <input type="number" id="modalSaleAmount" class="form-control" min="1" step="any" placeholder="مثال: 4500" required oninput="updateModalSaleCommission()">
+              <div id="modalSaleCommissionBadge" style="font-size:11.5px; font-weight:800; color:var(--purple); margin-top:4px; display:none;">
+                💰 عمولة تقديرية لهذه البيعة: <span id="modalSaleCommissionVal">0</span> ج.م
+              </div>
             </div>
 
             <div class="form-group">
@@ -3065,7 +3752,12 @@ html[dir="ltr"] .notif-dropdown-menu {
             </div>
 
             <div class="form-group col-full">
-              <label>ملاحظات إضافية</label>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label style="margin-bottom:0;">ملاحظات إضافية</label>
+                <button type="button" class="mic-btn" id="btnMicSaleNotes" onclick="toggleVoiceDictation('modalSaleNotes', 'btnMicSaleNotes')">
+                  🎙️ إملاء صوتي
+                </button>
+              </div>
               <textarea id="modalSaleNotes" class="form-control" rows="2" placeholder="أي تفاصيل أو اسم العميل أو الموديل..."></textarea>
             </div>
           </div>
@@ -3145,8 +3837,44 @@ html[dir="ltr"] .notif-dropdown-menu {
               </div>
             </div>
 
+            <!-- Visual Merchandising Photo Auditing with Watermark -->
+            <div class="form-group col-full" style="background:var(--bg-subtle); padding:10px 14px; border-radius:8px; border:1px dashed var(--border-color);">
+              <label style="font-weight:700; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between;">
+                <span>📸 توثيق صورة الفرع والاستاند (مع ختم مائي بالوقت والفرع)</span>
+                <span style="font-size:11px; color:var(--text-muted);">اختياري</span>
+              </label>
+              <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <input type="file" id="modalVisitPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="handleVisitPhotoSelected(event)">
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('modalVisitPhotoInput').click()">
+                  📷 التقاط أو اختيار صورة
+                </button>
+                <div id="visitPhotoPreviewWrap" style="display:none; align-items:center; gap:8px;">
+                  <img id="visitPhotoPreviewImg" src="" style="width:44px; height:44px; border-radius:8px; object-fit:cover; border:1px solid var(--border-color); cursor:pointer;" onclick="openImagePreviewModal(this.src, 'صورة الفرع الميدانية')">
+                  <span id="visitPhotoStatus" style="font-size:11.5px; color:var(--success); font-weight:700;">✅ تم إرفاق وختم الصورة</span>
+                  <button type="button" class="btn btn-outline btn-sm" onclick="clearVisitPhoto()" style="padding:2px 6px; font-size:11px; color:var(--danger);">&times; إلغاء</button>
+                </div>
+                <input type="hidden" id="modalVisitPhotoData" value="">
+              </div>
+            </div>
+
+            <!-- Out-of-Stock Quick Alert -->
+            <div class="form-group col-full" style="display:flex; align-items:center; gap:8px; background:rgba(245,158,11,0.08); padding:8px 12px; border-radius:8px; border:1px solid rgba(245,158,11,0.25);">
+              <input type="checkbox" id="modalVisitHasShortage" style="width:18px; height:18px; cursor:pointer;" onchange="document.getElementById('visitShortageDetailsWrap').style.display = this.checked ? 'block' : 'none';">
+              <label for="modalVisitHasShortage" style="margin-bottom:0; font-weight:800; color:var(--warning); cursor:pointer;">
+                ⚠️ رصد نقص في البضاعة أثناء الزيارة
+              </label>
+            </div>
+            <div class="form-group col-full" id="visitShortageDetailsWrap" style="display:none;">
+              <input type="text" id="modalVisitShortageItem" class="form-control" placeholder="اكتب الأصناف الناقصة (مثال: شواحن 33W، سماعات AirPods، كابلات)">
+            </div>
+
             <div class="form-group col-full">
-              <label>ملاحظات المشرف وتوصياته</label>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label style="margin-bottom:0;">ملاحظات المشرف وتوصياته</label>
+                <button type="button" class="mic-btn" id="btnMicVisitNotes" onclick="toggleVoiceDictation('modalVisitNotes', 'btnMicVisitNotes')">
+                  🎙️ إملاء صوتي
+                </button>
+              </div>
               <textarea id="modalVisitNotes" class="form-control" rows="3" placeholder="اكتب الملاحظات والتوصيات والإجراءات المطلوبة..."></textarea>
             </div>
           </div>
@@ -3781,6 +4509,152 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button type="button" class="btn btn-outline btn-sm" onclick="forceAppUpdateAndClearCache()" title="تحديث ملفات التطبيق ومسح الكاش من المتصفح">⚡ تحديث النسخة ومسح الكاش</button>
           <button type="button" class="btn btn-primary btn-sm" onclick="retryCloudConnection()">🔄 إعادة فحص المزامنة الآن</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: AI Area Sales Copilot & Predictive Forecast -->
+  <div class="modal-overlay" id="aiCopilotModal">
+    <div class="modal-dialog" style="max-width: 860px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(79,70,229,0.1)); border-bottom: 1.5px solid rgba(124,58,237,0.25);">
+        <div class="modal-title" style="display:flex; align-items:center; gap:10px; color:var(--purple); font-weight:900;">
+          <span style="font-size:26px;">🧠</span>
+          <div>
+            <div id="aiCopilotModalTitle">المساعد التنفيذي الذكي ورادار التنبؤات (AI Area Copilot)</div>
+            <div style="font-size:11px; color:var(--text-muted); font-weight:normal;" id="aiCopilotSubtitle">تحليل الأداء اللحظي، التنبؤ بالإغلاق الشهري، وكشف الفجوات لقطاع الجيزة والصعيد</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('aiCopilotModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 20px; overflow-y: auto;" id="aiCopilotBody">
+        <!-- Rendered dynamically by renderAiCopilot() -->
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" id="btnAiAudioBriefing" onclick="playAiAudioBriefing()">
+            🔊 استماع للموجز الصوتي الذكي
+          </button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="copyAiBriefingToClipboard()">
+            📋 نسخ التقرير الذكي
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('aiCopilotModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: 1-Click WhatsApp Daily Executive Broadcast -->
+  <div class="modal-overlay" id="dailyWhatsAppModal">
+    <div class="modal-dialog" style="max-width: 680px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(16,185,129,0.08)); border-bottom: 1.5px solid rgba(37,211,102,0.3);">
+        <div class="modal-title" style="display:flex; align-items:center; gap:10px; color:#128c7e; font-weight:900;">
+          <span style="font-size:26px;">📲</span>
+          <div>
+            <div id="whatsAppModalTitle">تقرير مبيعات الواتساب اليومي الفوري (1-Click Broadcast)</div>
+            <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">جاهز للإرسال بضغطة زر لجروب المشرفين أو الإدارة العليا</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('dailyWhatsAppModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 18px; overflow-y: auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-size:12px; font-weight:800; color:var(--text-main);">معاينة نص الرسالة المنسق للواتساب:</span>
+          <span class="badge badge-success" style="background:#25d366; color:#fff;">جاهز للإرسال ⚡</span>
+        </div>
+        <textarea id="whatsAppReportText" class="form-control" rows="14" style="font-family:monospace; font-size:12.5px; line-height:1.6; direction:rtl; text-align:right; border-color:rgba(37,211,102,0.4); background:var(--bg-subtle);"></textarea>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <button type="button" class="btn btn-outline" onclick="closeModal('dailyWhatsAppModal')">إلغاء</button>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="copyWhatsAppReportText()">📋 نسخ النص</button>
+          <button type="button" class="btn btn-success btn-sm" onclick="sendWhatsAppReportDirect()" style="background:#25d366; border-color:#25d366; color:#fff; font-weight:800;">
+            🚀 إرسال مباشر إلى تطبيق WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Out-of-Stock Ticket -->
+  <div class="modal-overlay" id="stockTicketModal">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title" id="stockTicketModalTitle">إبلاغ عن نقص بضاعة في الفرع 📦</div>
+        <button class="modal-close" onclick="closeModal('stockTicketModal')">&times;</button>
+      </div>
+      <form id="stockTicketForm" onsubmit="handleSaveStockTicket(event)">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>العميل / الفرع المتأثر *</label>
+              <input type="text" id="modalStockBranch" class="form-control" list="branchesList" placeholder="اسم الفرع أو العميل" required>
+            </div>
+            <div class="form-group">
+              <label>المشرف المسؤول *</label>
+              <select id="modalStockSup" class="form-control" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label>الصنف / المنتج الناقص *</label>
+              <input type="text" id="modalStockItem" class="form-control" placeholder="مثال: شواحن 65W، ساعات Watch 4، كابلات Type-C" required>
+            </div>
+            <div class="form-group">
+              <label>درجة الأولوية والتأثير *</label>
+              <select id="modalStockPriority" class="form-control">
+                <option value="عاجل جداً (فرص بيع مفقودة)">🔴 عاجل جداً (فرص بيع مفقودة)</option>
+                <option value="متوسط (نواقص معتادة)">🟡 متوسط (نواقص معتادة)</option>
+                <option value="عادي (طلب تحسين مخزون)">🟢 عادي (طلب تحسين مخزون)</option>
+              </select>
+            </div>
+            <div class="form-group col-full">
+              <label>تفاصيل وملاحظات إضافية</label>
+              <textarea id="modalStockNotes" class="form-control" rows="2" placeholder="الكمية المطلوبة، استفسارات العملاء في الفرع..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('stockTicketModal')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">تسجيل التذكرة وتنبيه الإدارة</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Image Lightbox Preview -->
+  <div class="modal-overlay" id="imagePreviewModal">
+    <div class="modal-dialog" style="max-width: 640px; text-align:center;">
+      <div class="modal-header">
+        <div class="modal-title" id="imagePreviewModalTitle">معاينة صورة التوثيق الميداني 📸</div>
+        <button class="modal-close" onclick="closeModal('imagePreviewModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:15px; background:#000;">
+        <img id="imagePreviewModalImg" src="" alt="Merchandising Photo" style="max-width:100%; max-height:70vh; border-radius:8px; object-fit:contain;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('imagePreviewModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Quick 4-Digit PIN Security -->
+  <div class="modal-overlay" id="quickPinModal">
+    <div class="modal-dialog" style="max-width: 420px; text-align:center;">
+      <div class="modal-header">
+        <div class="modal-title">🔐 رمز الدخول السريع (4-Digit PIN)</div>
+        <button class="modal-close" onclick="closeModal('quickPinModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:20px;">
+        <div style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">
+          أنشئ رمز PIN مكون من 4 أرقام لتسجيل الدخول السريع من الموبايل بلمسة واحدة دون كتابة اسم المستخدم وكلمة المرور في كل مرة.
+        </div>
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
+          <input type="password" id="inputQuickPin" maxlength="4" class="form-control" style="width:160px; font-size:28px; text-align:center; letter-spacing:12px; font-weight:900;" placeholder="••••">
+        </div>
+        <div style="display:flex; justify-content:center; gap:8px;">
+          <button type="button" class="btn btn-primary" onclick="saveQuickPin()">حفظ رمز PIN</button>
+          <button type="button" class="btn btn-outline" onclick="removeQuickPin()">إلغاء تفعيل الـ PIN</button>
         </div>
       </div>
     </div>
@@ -4654,6 +5528,32 @@ html[dir="ltr"] .notif-dropdown-menu {
       if (sSupSecT) sSupSecT.textContent = isEn ? 'Supervisors Performance under Area Manager (Target vs Actual)' : 'أداء المشرفين الثلاثة تحت إدارة مدير الآريتين (Target vs Actual)';
       const bSupEditTgt = document.getElementById('btnSupervisorsEditTargets');
       if (bSupEditTgt) bSupEditTgt.textContent = isEn ? '⚙️ Edit Targets & Supervisors' : '⚙️ تعديل التارجت والمشرفين';
+
+      // Mobile Bottom Nav & Speed Dial
+      const bnavDash = document.getElementById('bnavDashText');
+      if (bnavDash) bnavDash.textContent = isEn ? 'Home' : 'الرئيسية';
+      const bnavTargets = document.getElementById('bnavTargetsText');
+      if (bnavTargets) bnavTargets.textContent = isEn ? 'Targets' : 'التارجت';
+      const bnavSales = document.getElementById('bnavSalesText');
+      if (bnavSales) bnavSales.textContent = isEn ? 'Sales' : 'المبيعات';
+      const bnavDealers = document.getElementById('bnavDealersText');
+      if (bnavDealers) bnavDealers.textContent = isEn ? 'Dealers' : 'العملاء';
+      const bnavMore = document.getElementById('bnavMoreText');
+      if (bnavMore) bnavMore.textContent = isEn ? 'More' : 'المزيد';
+
+      const fabOptSale = document.getElementById('fabOptSaleText');
+      if (fabOptSale) fabOptSale.textContent = isEn ? 'New Sale' : 'تسجيل بيع جديد';
+      const fabOptVisit = document.getElementById('fabOptVisitText');
+      if (fabOptVisit) fabOptVisit.textContent = isEn ? 'Field Visit' : 'تقرير زيارة ميدانية';
+      const fabOptAi = document.getElementById('fabOptAiText');
+      if (fabOptAi) fabOptAi.textContent = isEn ? 'AI Copilot' : 'المساعد الذكي (AI)';
+      const fabOptWa = document.getElementById('fabOptWaText');
+      if (fabOptWa) fabOptWa.textContent = isEn ? 'Daily WhatsApp' : 'تقرير الواتساب اليومي';
+
+      const mobileSheetTitle = document.getElementById('mobileSheetTitle');
+      if (mobileSheetTitle) mobileSheetTitle.textContent = isEn ? 'Quick Actions Hub' : 'مركز العمليات السريعة';
+      const sheetBtnLogout = document.getElementById('sheetBtnLogout');
+      if (sheetBtnLogout) sheetBtnLogout.textContent = isEn ? 'Sign Out of System' : 'تسجيل الخروج من المنظومة';
 
       // Page Title & Breadcrumbs based on current active tab
       const curTab = document.querySelector('.tab-content.active');
@@ -5999,6 +6899,315 @@ function doPost(e) {
         }
       } catch(e) {
         console.warn('URL auto-login note:', e);
+      }
+    }
+
+    /* =========================================================================
+       EXECUTIVE TOOLS: AI COPILOT, WHATSAPP BROADCAST & STOCK TICKETS
+       ========================================================================= */
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function openAiCopilotModal() {
+      const m = document.getElementById('aiCopilotModal');
+      if (!m) return;
+      renderAiCopilot();
+      m.classList.add('open');
+    }
+
+    function renderAiCopilot() {
+      const container = document.getElementById('aiCopilotBody');
+      if (!container) return;
+      const isEn = AppState.lang === 'en';
+
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || 6000000;
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const currentDay = now.getDate();
+      const runRateDaily = currentDay > 0 ? (totalSales / currentDay) : 0;
+      const projectedSales = Math.round(runRateDaily * daysInMonth);
+      const projectedPct = totalTarget > 0 ? Math.round((projectedSales / totalTarget) * 100) : 0;
+      const currentPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : '0';
+
+      const probEl = document.getElementById('aiWidgetProb');
+      if (probEl) probEl.textContent = `${projectedPct}%`;
+
+      let supCardsHtml = '';
+      AppState.supervisors.forEach(sup => {
+        const supSales = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+        const supTgt = Number(sup.target) || 1;
+        const supPct = Math.round((supSales / supTgt) * 100);
+        const supRunRate = currentDay > 0 ? Math.round((supSales / currentDay) * daysInMonth) : 0;
+        const supProjPct = Math.round((supRunRate / supTgt) * 100);
+        const badgeColor = supProjPct >= 100 ? 'var(--success)' : (supProjPct >= 75 ? 'var(--warning)' : 'var(--danger)');
+
+        supCardsHtml += `
+          <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:12px 14px; display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:13px; color:var(--text-main);">${escapeHtml(sup.name)}</strong>
+              <span class="badge" style="background:${badgeColor}22; color:${badgeColor}; font-weight:800; font-size:11px;">توقع الإغلاق: ${supProjPct}%</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--text-muted); display:flex; justify-content:space-between;">
+              <span>المحقق: ${formatCurrency(supSales)}</span>
+              <span>التارجت: ${formatCurrency(supTgt)}</span>
+            </div>
+            <div style="height:6px; background:var(--border-color); border-radius:3px; overflow:hidden;">
+              <div style="width:${Math.min(supPct, 100)}%; height:100%; background:${badgeColor}; border-radius:3px;"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">
+            <div style="background:linear-gradient(135deg, rgba(79,70,229,0.08), rgba(124,58,237,0.04)); border:1px solid rgba(79,70,229,0.2); border-radius:14px; padding:14px; text-align:center;">
+              <div style="font-size:11.5px; color:var(--text-muted); font-weight:700;">المبيعات الفعلية الحالية</div>
+              <div style="font-size:20px; font-weight:900; color:var(--primary); margin-top:4px;">${formatCurrency(totalSales)}</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">إنجاز: ${currentPct}%</div>
+            </div>
+            <div style="background:linear-gradient(135deg, rgba(16,185,129,0.08), rgba(5,150,105,0.04)); border:1px solid rgba(16,185,129,0.2); border-radius:14px; padding:14px; text-align:center;">
+              <div style="font-size:11.5px; color:var(--text-muted); font-weight:700;">التوقع الذكي بنهاية الشهر (Run-Rate)</div>
+              <div style="font-size:20px; font-weight:900; color:var(--success); margin-top:4px;">${formatCurrency(projectedSales)}</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">احتمالية: ${projectedPct}% من التارجت</div>
+            </div>
+            <div style="background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(217,119,6,0.04)); border:1px solid rgba(245,158,11,0.2); border-radius:14px; padding:14px; text-align:center;">
+              <div style="font-size:11.5px; color:var(--text-muted); font-weight:700;">المعدل اليومي المطلوب للوصول</div>
+              <div style="font-size:20px; font-weight:900; color:var(--warning); margin-top:4px;">${formatCurrency(Math.max(0, Math.round((totalTarget - totalSales) / Math.max(1, daysInMonth - currentDay))))}</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">متبقي ${daysInMonth - currentDay} يوم</div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="font-size:13.5px; font-weight:800; margin-bottom:10px; color:var(--text-main);">📊 تحليل وتوقعات المشرفين بالقطاع</h4>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              ${supCardsHtml}
+            </div>
+          </div>
+
+          <div style="background:rgba(124,58,237,0.06); border:1px solid rgba(124,58,237,0.2); border-radius:14px; padding:14px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <span style="font-size:20px;">💡</span>
+              <strong style="font-size:13px; color:var(--purple);">توصيات الذكاء الاصطناعي التنفيذية</strong>
+            </div>
+            <ul style="font-size:12px; color:var(--text-main); margin:0; padding-inline-start:20px; line-height:1.7;">
+              <li>تكثيف جولات الفروع ذات الكثافة العالية لرفع مبيعات الإكسسوارات عالية الهامش.</li>
+              <li>متابعة توفير نواقص البضاعة فوراً لتجنب فقدان فرص البيع في فروع المولات الرئيسية.</li>
+              <li>توجيه المشرفين لتقفيل فواتير الجملة قبل نهاية الثلث الأخير من الشهر لضمان تخطي التارجت.</li>
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function playAiAudioBriefing() {
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || 6000000;
+      const pct = totalTarget > 0 ? Math.round((totalSales / totalTarget) * 100) : 0;
+      const isEn = AppState.lang === 'en';
+
+      const text = isEn 
+        ? `Executive Briefing for Area Manager. Current total sales achieved: ${formatCurrency(totalSales)}, which represents ${pct}% of total target. Keep up the high momentum to ensure complete achievement.`
+        : `مرحباً يا فندم. تقرير الذكاء الاصطناعي لمبيعات قطاع الجيزة والصعيد: إجمالي المبيعات المحققة حتى الآن بلغ ${formatCurrency(totalSales)}، بنسبة إنجاز ${pct}% من مستهدف القطاع. يرجى متابعة الفروع ذات الأولوية لتحقيق المستهدف بالكامل.`;
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = isEn ? 'en-US' : 'ar-SA';
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+        showToast(isEn ? 'Playing audio briefing... 🔊' : 'جاري الاستماع للموجز الصوتي الذكي... 🔊', 'info', 3000);
+      } else {
+        showToast(isEn ? 'Audio synthesis not supported on this browser.' : 'خاصية النطق الصوتي غير مدعومة في هذا المتصفح.', 'warning', 3000);
+      }
+    }
+
+    function copyAiBriefingToClipboard() {
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || 6000000;
+      const pct = totalTarget > 0 ? Math.round((totalSales / totalTarget) * 100) : 0;
+      const text = `🧠 *تقرير الذكاء الاصطناعي والتنبؤ بمبيعات الجيزة والصعيد*\n` +
+        `👤 مدير القطاع: أ/ عبدالله أحمد إبراهيم\n` +
+        `💰 إجمالي المبيعات المحققة: ${formatCurrency(totalSales)}\n` +
+        `🎯 نسبة الإنجاز من التارجت: ${pct}%\n` +
+        `📅 التاريخ: ${new Date().toLocaleDateString('ar-EG')}\n` +
+        `💡 المنظومة التنفيذية لمتابعة المبيعات`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('تم نسخ التقرير الذكي بنجاح! 📋', 'success', 2500);
+      });
+    }
+
+    function openDailyWhatsAppModal() {
+      const m = document.getElementById('dailyWhatsAppModal');
+      if (!m) return;
+      const area = document.getElementById('whatsAppReportText');
+      if (area) {
+        const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+        const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || 6000000;
+        const totalPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : '0';
+        const today = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        let supLines = '';
+        AppState.supervisors.forEach(sup => {
+          const supSales = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+          const supTgt = Number(sup.target) || 1;
+          const supPct = ((supSales / supTgt) * 100).toFixed(1);
+          supLines += `▫️ *${sup.name}*:\n   💰 مبيعات: ${formatCurrency(supSales)} | 🎯 نسبة: ${supPct}%\n`;
+        });
+
+        const report = `📊 *تقرير مبيعات قطاع الجيزة الكبرى والصعيد اليومي*\n` +
+          `📅 *اليوم:* ${today}\n` +
+          `👨‍💼 *إشراف:* أ / عبدالله أحمد إبراهيم (مدير عام القطاع)\n` +
+          `──────────────────\n` +
+          `💎 *إجمالي مبيعات القطاع:* ${formatCurrency(totalSales)}\n` +
+          `🎯 *نسبة الإنجاز العام:* ${totalPct}%\n` +
+          `──────────────────\n` +
+          `👥 *تفاصيل أداء السادة المشرفين:*\n` +
+          supLines +
+          `──────────────────\n` +
+          `🚀 *التوجيه الميداني:* يرجى المتابعة اليومية المكثفة والتركيز على الفروع الرئيسية لتحقيق أعلى معدل إغلاق.\n` +
+          `📱 تم تصدير التقرير عبر المنظومة السحابية لمبيعات الجيزة والصعيد`;
+        area.value = report;
+      }
+      m.classList.add('open');
+    }
+
+    function copyWhatsAppReportText() {
+      const area = document.getElementById('whatsAppReportText');
+      if (area) {
+        navigator.clipboard.writeText(area.value).then(() => {
+          showToast('تم نسخ نص تقرير الواتساب بنجاح! 📋', 'success', 2500);
+        });
+      }
+    }
+
+    function sendWhatsAppReportDirect() {
+      const area = document.getElementById('whatsAppReportText');
+      if (area) {
+        const text = encodeURIComponent(area.value);
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+      }
+    }
+
+    function openStockTicketModal() {
+      const m = document.getElementById('stockTicketModal');
+      if (!m) return;
+      const supSelect = document.getElementById('modalStockSup');
+      if (supSelect) {
+        supSelect.innerHTML = AppState.supervisors.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+      }
+      m.classList.add('open');
+    }
+
+    function handleSaveStockTicket(e) {
+      e.preventDefault();
+      const branch = document.getElementById('modalStockBranch')?.value || '';
+      const supId = document.getElementById('modalStockSup')?.value || '';
+      const item = document.getElementById('modalStockItem')?.value || '';
+      const priority = document.getElementById('modalStockPriority')?.value || 'عادي';
+      const notes = document.getElementById('modalStockNotes')?.value || '';
+
+      if (!AppState.stockTickets) AppState.stockTickets = [];
+      const newTicket = {
+        id: Date.now(),
+        date: new Date().toISOString().split('T')[0],
+        branch,
+        supervisorId: supId,
+        item,
+        priority,
+        notes,
+        status: 'مفتوحة (قيد المتابعة)'
+      };
+      AppState.stockTickets.unshift(newTicket);
+      saveState();
+      renderStockTickets();
+      closeModal('stockTicketModal');
+      showToast('تم تسجيل تذكرة نقص البضاعة وإخطار الإدارة بنجاح! 📦', 'success', 3500);
+    }
+
+    function renderStockTickets() {
+      const container = document.getElementById('outOfStockBannerList');
+      if (!container) return;
+      if (!AppState.stockTickets || AppState.stockTickets.length === 0) {
+        container.innerHTML = `<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:10px;">لا توجد نواقص بضاعة مسجلة حالياً - المخزون بالفروع مستقر ✅</div>`;
+        return;
+      }
+      container.innerHTML = AppState.stockTickets.slice(0, 5).map(t => `
+        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+          <div>
+            <strong>${escapeHtml(t.branch)}</strong>: <span style="color:var(--danger); font-weight:700;">${escapeHtml(t.item)}</span>
+            <span style="font-size:11px; color:var(--text-muted); margin-inline-start:6px;">(${t.date})</span>
+          </div>
+          <span class="badge" style="background:rgba(239,68,68,0.12); color:var(--danger); font-size:10.5px;">${escapeHtml(t.priority)}</span>
+        </div>
+      `).join('');
+    }
+
+    function openQuickPinModal() {
+      const m = document.getElementById('quickPinModal');
+      if (!m) return;
+      const pinInput = document.getElementById('inputQuickPin');
+      if (pinInput) pinInput.value = localStorage.getItem('giza_quick_pin') || '';
+      m.classList.add('open');
+    }
+
+    function saveQuickPin() {
+      const pinInput = document.getElementById('inputQuickPin');
+      const val = pinInput ? pinInput.value.trim() : '';
+      if (!val || val.length !== 4 || isNaN(val)) {
+        showToast('برجاء إدخال رمز PIN مكون من 4 أرقام فقط.', 'warning', 3000);
+        return;
+      }
+      localStorage.setItem('giza_quick_pin', val);
+      closeModal('quickPinModal');
+      showToast('تم تفعيل رمز الدخول السريع (PIN) بنجاح! 🔐', 'success', 3000);
+    }
+
+    function removeQuickPin() {
+      localStorage.removeItem('giza_quick_pin');
+      closeModal('quickPinModal');
+      showToast('تم إلغاء تفعيل رمز الـ PIN بنجاح.', 'info', 2500);
+    }
+
+    function openImagePreviewModal(imgSrc, title) {
+      const m = document.getElementById('imagePreviewModal');
+      if (!m) return;
+      const imgEl = document.getElementById('imagePreviewModalImg');
+      if (imgEl) imgEl.src = imgSrc || '';
+      const tEl = document.getElementById('imagePreviewModalTitle');
+      if (tEl && title) tEl.textContent = title;
+      m.classList.add('open');
+    }
+
+    function clearVisitPhoto() {
+      const fileInput = document.getElementById('modalVisitPhoto');
+      if (fileInput) fileInput.value = '';
+      const preview = document.getElementById('visitPhotoPreviewContainer');
+      if (preview) preview.style.display = 'none';
+    }
+
+    function toggleVoiceDictation(targetInputId) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast('خاصية الإملاء الصوتي غير مدعومة في متصفحك.', 'warning', 3000);
+        return;
+      }
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.lang = AppState.lang === 'en' ? 'en-US' : 'ar-SA';
+        recognition.start();
+        showToast('تحدث الآن، جاري الاستماع وتسجيل الملاحظات... 🎙️', 'info', 3000);
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          const target = document.getElementById(targetInputId);
+          if (target) {
+            target.value = (target.value ? target.value + ' ' : '') + transcript;
+          }
+        };
+      } catch (err) {
+        console.error('Voice dictation error:', err);
       }
     }
 
@@ -9015,6 +10224,13 @@ ${baseUrl}?user=manager${sheetsParam}
         }
       });
 
+      document.querySelectorAll('.bottom-nav-item').forEach(el => {
+        el.classList.remove('active');
+        if (el.getAttribute('data-tab') === tabName) {
+          el.classList.add('active');
+        }
+      });
+
       if (tabName === 'dashboard') {
         setTimeout(renderCharts, 50);
       } else if (tabName === 'targets') {
@@ -9041,6 +10257,41 @@ ${baseUrl}?user=manager${sheetsParam}
         overlay.style.display = 'none';
       }
     }
+
+    /* Mobile FAB Speed Dial & Operations Sheet Handlers */
+    function toggleFabMenu() {
+      const fab = document.getElementById('mobileFabContainer');
+      if (fab) {
+        fab.classList.toggle('open');
+      }
+    }
+
+    function openMobileMoreSheet() {
+      const overlay = document.getElementById('mobileMoreSheetOverlay');
+      if (overlay) {
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeMobileMoreSheet(e) {
+      if (e && e.target && e.target.id !== 'mobileMoreSheetOverlay' && !e.target.closest('button')) {
+        return;
+      }
+      const overlay = document.getElementById('mobileMoreSheetOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Dismiss FAB when tapping outside
+    document.addEventListener('click', (e) => {
+      const fab = document.getElementById('mobileFabContainer');
+      if (fab && fab.classList.contains('open') && !fab.contains(e.target)) {
+        fab.classList.remove('open');
+      }
+    });
 
     /* =========================================================================
        THEME (DARK / LIGHT)
