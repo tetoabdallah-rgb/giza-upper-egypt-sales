@@ -777,10 +777,23 @@ html[dir="ltr"] .sup-badge-tag {
 .tag-giza { background: #e0e7ff; color: #4338ca; border: 1px solid rgba(67, 56, 202, 0.15); }
 .tag-october { background: #fef3c7; color: #b45309; border: 1px solid rgba(180, 83, 9, 0.15); }
 .tag-saeed { background: #d1fae5; color: #065f46; border: 1px solid rgba(6, 95, 70, 0.15); }
+.tag-primary { background: #e0f2fe; color: #0369a1; border: 1px solid rgba(3, 105, 161, 0.15); }
+.tag-teal { background: #ccfbf1; color: #0f766e; border: 1px solid rgba(15, 118, 110, 0.15); }
+.tag-rose { background: #ffe4e6; color: #be123c; border: 1px solid rgba(190, 18, 60, 0.15); }
 [data-theme="dark"] .tag-manager { background: #2e1065; color: #c4b5fd; border-color: rgba(196, 181, 253, 0.2); }
 [data-theme="dark"] .tag-giza { background: #1e1b4b; color: #a5b4fc; border-color: rgba(165, 180, 252, 0.2); }
 [data-theme="dark"] .tag-october { background: #451a03; color: #fde68a; border-color: rgba(253, 230, 138, 0.2); }
 [data-theme="dark"] .tag-saeed { background: #064e3b; color: #6ee7b7; border-color: rgba(110, 231, 183, 0.2); }
+[data-theme="dark"] .tag-primary { background: #082f49; color: #7dd3fc; border-color: rgba(125, 211, 252, 0.2); }
+[data-theme="dark"] .tag-teal { background: #042f2e; color: #5eead4; border-color: rgba(94, 234, 212, 0.2); }
+[data-theme="dark"] .tag-rose { background: #4c0519; color: #fda4af; border-color: rgba(253, 164, 175, 0.2); }
+
+.task-filter-btn.active {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-color: var(--primary) !important;
+  font-weight: 800;
+}
 
 .sup-info-header {
   display: flex;
@@ -2794,9 +2807,12 @@ html[dir="ltr"] .notif-dropdown-menu {
           <div class="section-header">
             <div class="section-title">
               <span class="section-title-icon">👥</span>
-              <span id="supervisorsSectionTitle">أداء المشرفين الثلاثة تحت إدارة مدير الآريتين (Target vs Actual)</span>
+              <span id="supervisorsSectionTitle">أداء المشرفين والآريات تحت إدارة مدير الآريتين (Target vs Actual)</span>
             </div>
-            <button class="btn btn-outline btn-sm" id="btnSupervisorsEditTargets" onclick="openEditTargetsModal()">⚙️ تعديل التارجت والمشرفين</button>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="openAddAreaModal()">➕ إضافة آريا جديدة 🗺️</button>
+              <button class="btn btn-outline btn-sm" id="btnSupervisorsEditTargets" onclick="openEditTargetsModal()">⚙️ تعديل التارجت والمشرفين</button>
+            </div>
           </div>
 
           <div class="supervisors-grid" id="supervisorsCardsContainer">
@@ -2804,19 +2820,43 @@ html[dir="ltr"] .notif-dropdown-menu {
           </div>
         </div>
 
-        <!-- Feature 5: Daily Field Tasks & Checklist -->
+        <!-- Daily & Monthly Tasks System -->
         <div class="card-section tasks-card" id="fieldTasksSection" style="margin-bottom:18px;">
           <div class="section-header">
             <div class="section-title">
               <span class="section-title-icon">✅</span>
-              <span id="tasksSectionTitle">المهام الميدانية والمتابعات اليومية للمشرفين</span>
+              <span id="tasksSectionTitle">المهام والتاسكات الميدانية للمشرفين (اليومية والشهرية)</span>
               <span id="tasksCompletionBadge" class="badge badge-primary" style="margin-inline-start:8px; font-size:11px;">0/0 مكتملة</span>
             </div>
-            <button class="btn btn-primary btn-sm" id="btnAddNewTask" onclick="openAddTaskModal()">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-              <span id="btnAddNewTaskText">+ إضافة مهمة لمشرف</span>
-            </button>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="sendDailyTasksSummaryToWhatsApp()" title="إرسال جدول المهام اليومي لجروب الواتساب">
+                📲 بث المهام بالواتساب
+              </button>
+              <button class="btn btn-primary btn-sm" id="btnAddNewTask" onclick="openAddTaskModal()">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                <span id="btnAddNewTaskText">+ إضافة تاسك جديد</span>
+              </button>
+            </div>
           </div>
+
+          <!-- Tasks Filter Pills & Supervisor Dropdown -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+            <div class="tasks-filter-pills" style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="btn btn-sm btn-outline active task-filter-btn" id="filterTaskAll" onclick="setTaskFilter('all', this)">🌟 الكل</button>
+              <button class="btn btn-sm btn-outline task-filter-btn" id="filterTaskDaily" onclick="setTaskFilter('daily', this)">📅 مهام يومية</button>
+              <button class="btn btn-sm btn-outline task-filter-btn" id="filterTaskMonthly" onclick="setTaskFilter('monthly', this)">📆 مهام شهرية</button>
+              <button class="btn btn-sm btn-outline task-filter-btn" id="filterTaskPending" onclick="setTaskFilter('pending', this)">⏳ قيد التنفيذ</button>
+              <button class="btn btn-sm btn-outline task-filter-btn" id="filterTaskDone" onclick="setTaskFilter('done', this)">✅ مكتملة</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:12px; font-weight:700; color:var(--text-muted);">👔 الآريا:</span>
+              <select id="tasksSupervisorFilter" class="form-control" style="font-size:12px; padding:4px 8px; width:auto;" onchange="setTaskSupFilter(this.value)">
+                <option value="ALL">جميع الآريات والمشرفين</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
           <!-- Progress bar -->
           <div style="width:100%; height:6px; background:var(--border-color); border-radius:3px; overflow:hidden; margin-bottom:14px;">
             <div id="tasksProgressBar" style="height:100%; width:0%; background:linear-gradient(90deg, var(--primary), var(--success)); transition:width 0.3s ease;"></div>
@@ -3126,9 +3166,10 @@ html[dir="ltr"] .notif-dropdown-menu {
               <span class="section-title-icon">👔</span>
               <span id="tab2SupervisorsTitle">جدول متابعة وتعديل المشرفين والتارجت</span>
             </div>
-            <div style="display:flex; gap:8px;">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="openAddAreaModal()">➕ إضافة آريا جديدة 🗺️</button>
               <button class="btn btn-purple btn-sm" id="btnTab2Permissions" onclick="openPermissionsModal()">🛡️ إدارة حسابات وصلاحيات المشرفين</button>
-              <button class="btn btn-primary btn-sm" id="btnTab2EditTargets" onclick="openEditTargetsModal()">⚙️ تعديل التارجت والمشرفين (الكل)</button>
+              <button class="btn btn-outline btn-sm" id="btnTab2EditTargets" onclick="openEditTargetsModal()">⚙️ تعديل التارجت والمشرفين (الكل)</button>
             </div>
           </div>
           
@@ -3540,6 +3581,16 @@ html[dir="ltr"] .notif-dropdown-menu {
           <div class="sheet-action-icon" style="background:#ecfdf5; color:#10b981;">📲</div>
           <div class="sheet-action-title" id="sheetCardWaLinks">روابط المشرفين</div>
           <div class="sheet-action-sub">إرسال روابط واتساب</div>
+        </div>
+        <div class="sheet-action-card" onclick="openAddAreaModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#e0e7ff; color:#4338ca;">🗺️</div>
+          <div class="sheet-action-title">إضافة آريا جديدة</div>
+          <div class="sheet-action-sub">إضافة مشرف ومنطقة</div>
+        </div>
+        <div class="sheet-action-card" onclick="openAddTaskModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#ecfdf5; color:#059669;">📋</div>
+          <div class="sheet-action-title">إسناد تاسك جديد</div>
+          <div class="sheet-action-sub">تاسك يومي أو شهري</div>
         </div>
         <div class="sheet-action-card" onclick="switchTab('supervisors'); closeMobileMoreSheet();">
           <div class="sheet-action-icon" style="background:var(--purple-light); color:var(--purple);">👥</div>
@@ -3982,9 +4033,12 @@ html[dir="ltr"] .notif-dropdown-menu {
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline" onclick="closeModal('singleSupervisorModal')">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ تعديل المشرف</button>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="btn btn-danger btn-sm" onclick="deleteAreaFromEditModal()">🗑️ حذف هذه الآريا</button>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn btn-outline" onclick="closeModal('singleSupervisorModal')">إلغاء</button>
+            <button type="submit" class="btn btn-primary">حفظ تعديل المشرف</button>
+          </div>
         </div>
       </form>
     </div>
@@ -4369,50 +4423,8 @@ html[dir="ltr"] .notif-dropdown-menu {
           بمجرد أن يضغط المشرف على رابطه في رسالة الواتساب، سيفتح التطبيق على هاتفه فوراً بحسابه وبوابته بدون أن يطلب منه أي باسوورد أو إعدادات!
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:9px; margin-bottom:16px;">
-          <!-- Sup 1 -->
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px;">
-            <div>
-              <div style="font-weight:800; font-size:13px; color:var(--text-main);">👔 مشرف الجيزة 1 (الهرم وفيصل)</div>
-              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=giza1</div>
-            </div>
-            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('giza1', 'مشرف الجيزة 1')">
-              📋 نسخ الرابط
-            </button>
-          </div>
-
-          <!-- Sup 2 -->
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px;">
-            <div>
-              <div style="font-weight:800; font-size:13px; color:var(--text-main);">👔 مشرف الجيزة 2 (أكتوبر والزايد)</div>
-              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=giza2</div>
-            </div>
-            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('giza2', 'مشرف الجيزة 2')">
-              📋 نسخ الرابط
-            </button>
-          </div>
-
-          <!-- Sup 3 -->
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px;">
-            <div>
-              <div style="font-weight:800; font-size:13px; color:var(--text-main);">👔 مشرف الصعيد (المحافظات بالكامل)</div>
-              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=saeed</div>
-            </div>
-            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('saeed', 'مشرف الصعيد')">
-              📋 نسخ الرابط
-            </button>
-          </div>
-
-          <!-- Manager -->
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:rgba(124,58,237,0.06); border:1px solid rgba(124,58,237,0.25); border-radius:10px;">
-            <div>
-              <div style="font-weight:800; font-size:13px; color:#7c3aed;">👨‍💼 مدير الآريتين (Master Admin)</div>
-              <div style="font-size:11px; color:var(--text-muted); direction:ltr; text-align:start;">?user=manager</div>
-            </div>
-            <button class="btn btn-purple btn-sm" onclick="copyIndividualSupervisorLink('manager', 'مدير الآريتين')">
-              📋 نسخ رابط المدير
-            </button>
-          </div>
+        <div id="shareLinksListContainer" style="display:flex; flex-direction:column; gap:9px; margin-bottom:16px;">
+          <!-- Dynamically populated for all supervisors + manager -->
         </div>
 
         <button type="button" class="btn btn-success" onclick="copyFullWhatsAppBroadcastMessage()" style="width:100%; padding:12px; font-weight:800; font-size:13.5px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
@@ -4422,11 +4434,11 @@ html[dir="ltr"] .notif-dropdown-menu {
       </div>
     </div>
   </div>
-  <!-- Modal: Add Daily Field Task -->
+  <!-- Modal: Add Field Task (Daily / Monthly) -->
   <div class="modal-overlay" id="addTaskModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 550px;">
       <div class="modal-header">
-        <div class="modal-title" id="addTaskModalTitle">إسناد مهمة ميدانية جديدة لمشرف 📋</div>
+        <div class="modal-title" id="addTaskModalTitle">إسناد تاسك ميداني جديد لمشرف أو آريا 📋</div>
         <button class="modal-close" onclick="closeModal('addTaskModal')">&times;</button>
       </div>
       <form id="taskForm" onsubmit="handleSaveTask(event)">
@@ -4434,33 +4446,107 @@ html[dir="ltr"] .notif-dropdown-menu {
           <div class="form-grid">
             <div class="form-group col-full">
               <label id="lblTaskTitle">نص المهمة أو التكليف المطلوب *</label>
-              <input type="text" id="modalTaskTitle" class="form-control" placeholder="مثال: متابعة تحصيل فواتير كبار العملاء في فيصل" required>
+              <input type="text" id="modalTaskTitle" class="form-control" placeholder="مثال: متابعة تحصيل فواتير كبار العملاء أو جرد الفروع" required>
             </div>
             <div class="form-group">
-              <label id="lblTaskSup">المشرف المسؤول *</label>
+              <label id="lblTaskType">نوع التاسك / التكليف *</label>
+              <select id="modalTaskType" class="form-control" required>
+                <option value="daily" selected>📅 تاسك يومي (Daily Task)</option>
+                <option value="monthly">📆 تاسك شهري (Monthly Task)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="lblTaskSup">المشرف / الآريا المسؤولة *</label>
               <select id="modalTaskSup" class="form-control" required>
                 <option value="ALL">جميع المشرفين (القطاع بالكامل)</option>
-                <option value="1">مشرف الجيزة 1 (الهرم وفيصل)</option>
-                <option value="2">مشرف الجيزة 2 (أكتوبر والشيخ زايد)</option>
-                <option value="3">مشرف الصعيد (محافظات الصعيد)</option>
+                <!-- Dynamically populated from AppState.supervisors -->
               </select>
             </div>
             <div class="form-group">
               <label id="lblTaskPriority">درجة الأهمية / الأولوية</label>
               <select id="modalTaskPriority" class="form-control">
-                <option value="high">🔴 عاجل وهام (High)</option>
+                <option value="high">🔴 عاجل وهام جداً (High)</option>
                 <option value="normal" selected>🟡 أولوية عادية (Normal)</option>
               </select>
             </div>
-            <div class="form-group col-full">
-              <label id="lblTaskDueDate">تاريخ الاستحقاق أو الإنجاز</label>
+            <div class="form-group">
+              <label id="lblTaskDueDate">تاريخ الاستحقاق أو الإنجاز *</label>
               <input type="date" id="modalTaskDueDate" class="form-control" required>
+            </div>
+            <div class="form-group col-full">
+              <label id="lblTaskSalesTarget">مستهدف مبيعات مطلوب تحقيقه مع التاسك (ج.م - اختياري)</label>
+              <input type="number" id="modalTaskSalesTarget" class="form-control" placeholder="مثال: 50000 (تارجت بيع مربوط بالمهمة)" min="0" step="500">
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="closeModal('addTaskModal')">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ وإسناد المهمة</button>
+          <button type="submit" class="btn btn-primary">حفظ وإسناد التاسك</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Area & Supervisor -->
+  <div class="modal-overlay" id="addAreaModal">
+    <div class="modal-dialog" style="max-width: 620px;">
+      <div class="modal-header" style="background:linear-gradient(135deg, rgba(79,70,229,0.1), rgba(124,58,237,0.06)); border-bottom:1.5px solid rgba(79,70,229,0.25);">
+        <div class="modal-title" style="display:flex; align-items:center; gap:8px; color:var(--primary); font-weight:900;">
+          <span style="font-size:22px;">🗺️</span>
+          <span id="addAreaModalTitle">إضافة آريا ومشرف جديد للقطاع</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('addAreaModal')">&times;</button>
+      </div>
+      <form id="addAreaForm" onsubmit="handleSaveNewArea(event)">
+        <div class="modal-body" style="padding:20px;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>اسم المشرف المسؤول *</label>
+              <input type="text" id="newAreaSupName" class="form-control" placeholder="مثال: أ / محمود علي" required>
+            </div>
+            <div class="form-group">
+              <label>المسمى الوظيفي / اسم الآريا *</label>
+              <input type="text" id="newAreaTitle" class="form-control" placeholder="مثال: مشرف قطاع الإسكندرية والبحيرة" required>
+            </div>
+            <div class="form-group col-full">
+              <label>المحافظات والمناطق التابعة للآريا *</label>
+              <input type="text" id="newAreaZone" class="form-control" placeholder="مثال: سموحة، ميامي، محرم بك، دمنهور، كفر الدوار" required>
+            </div>
+            <div class="form-group">
+              <label>التارجت الشهري بالجنيه (ج.م) *</label>
+              <input type="number" id="newAreaTarget" class="form-control" placeholder="مثال: 750000" min="0" step="1000" required>
+            </div>
+            <div class="form-group">
+              <label>رقم هاتف المشرف (للتواصل والواتساب)</label>
+              <input type="tel" id="newAreaPhone" class="form-control" placeholder="010XXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label>اسم المستخدم لتسجيل الدخول *</label>
+              <input type="text" id="newAreaUsername" class="form-control" placeholder="مثال: alex1" required>
+            </div>
+            <div class="form-group">
+              <label>كلمة المرور *</label>
+              <input type="text" id="newAreaPassword" class="form-control" value="123" required>
+            </div>
+            <div class="form-group col-full">
+              <label>لون تمييز الآريا (Tag Color)</label>
+              <select id="newAreaColorTag" class="form-control">
+                <option value="tag-giza">🟣 بنفسجي / أزرق داكن (Giza Style)</option>
+                <option value="tag-october">🟠 برتقالي / عنبري (October Style)</option>
+                <option value="tag-saeed">🟢 أخضر زمردي (Saeed Style)</option>
+                <option value="tag-primary">🔵 أزرق كحلي (Indigo Style)</option>
+                <option value="tag-teal">🌊 تركواز / بحري (Teal Style)</option>
+                <option value="tag-rose">🌹 وردي / أحمر (Rose Style)</option>
+              </select>
+            </div>
+          </div>
+          <div style="background:var(--bg-body); border:1px solid var(--border-color); border-radius:10px; padding:12px; margin-top:14px; font-size:12px; color:var(--text-muted); line-height:1.5;">
+            💡 <strong>ملاحظة:</strong> بمجرد إضافة الآريا، ستظهر فوراً في جميع شاشات المنظومة (تسجيل البيع، تقارير الزيارات الميدانية، المهام، شريط التبديل، وقوائم التارجت)، مع إنشاء رابط واتساب مباشر لدخول المشرف.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addAreaModal')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">➕ تأكيد إضافة الآريا وتفعيلها</button>
         </div>
       </form>
     </div>
@@ -4786,10 +4872,10 @@ html[dir="ltr"] .notif-dropdown-menu {
     ];
 
     const DEFAULT_TASKS = [
-      { id: 'T-101', title: 'متابعة تحصيل فواتير كبار تجار شارع فيصل والهرم', supervisorId: '1', priority: 'high', dueDate: new Date().toISOString().split('T')[0], done: false },
-      { id: 'T-102', title: 'حصر نواقص الإكسسوارات والشواحن في مول العرب ومول مصر', supervisorId: '2', priority: 'high', dueDate: new Date().toISOString().split('T')[0], done: false },
-      { id: 'T-103', title: 'تغطية 4 زيارات ميدانية لكبار الموزعين في بني سويف والمنيا', supervisorId: '3', priority: 'normal', dueDate: new Date().toISOString().split('T')[0], done: true },
-      { id: 'T-104', title: 'مراجعة عروض الجمعة وتوافر الستاندات مع كافة الفروع', supervisorId: 'ALL', priority: 'normal', dueDate: new Date().toISOString().split('T')[0], done: false }
+      { id: 'T-101', title: 'متابعة تحصيل فواتير كبار تجار شارع فيصل والهرم', supervisorId: '1', taskType: 'daily', priority: 'high', dueDate: new Date().toISOString().split('T')[0], salesTarget: 60000, done: false },
+      { id: 'T-102', title: 'حصر نواقص الإكسسوارات والشواحن في مول العرب ومول مصر', supervisorId: '2', taskType: 'daily', priority: 'high', dueDate: new Date().toISOString().split('T')[0], salesTarget: 40000, done: false },
+      { id: 'T-103', title: 'تغطية 4 زيارات ميدانية لكبار الموزعين في بني سويف والمنيا', supervisorId: '3', taskType: 'monthly', priority: 'normal', dueDate: new Date().toISOString().split('T')[0], salesTarget: 150000, done: true },
+      { id: 'T-104', title: 'مراجعة عروض الجمعة وتوافر الستاندات مع كافة الفروع', supervisorId: 'ALL', taskType: 'monthly', priority: 'normal', dueDate: new Date().toISOString().split('T')[0], salesTarget: 0, done: false }
     ];
 
     /* =========================================================================
@@ -5888,7 +5974,11 @@ html[dir="ltr"] .notif-dropdown-menu {
         }));
         AppState.sales = storedSales ? JSON.parse(storedSales) : DEFAULT_SALES;
         AppState.visits = storedVisits ? JSON.parse(storedVisits) : DEFAULT_VISITS;
-        AppState.tasks = storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS;
+        AppState.tasks = (storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS).map(t => ({
+          ...t,
+          taskType: t.taskType || 'daily',
+          salesTarget: Number(t.salesTarget) || 0
+        }));
         AppState.dismissedNotifs = storedNotifs ? JSON.parse(storedNotifs) : [];
         if (storedUser) {
           try {
@@ -6718,7 +6808,7 @@ function doPost(e) {
         return AppState.activeSupervisorId === 'MANAGER' || AppState.activeSupervisorId === 'ALL' || !AppState.activeSupervisorId;
       }
       const role = String(AppState.currentUser.role || '').toLowerCase();
-      return role === 'manager' || (role !== 'supervisor' && AppState.activeSupervisorId !== '1' && AppState.activeSupervisorId !== '2' && AppState.activeSupervisorId !== '3');
+      return role === 'manager' || (role !== 'supervisor' && !(AppState.supervisors || []).some(s => String(s.id) === String(AppState.activeSupervisorId)));
     }
 
     function hasPermission(permKey) {
@@ -6800,7 +6890,8 @@ function doPost(e) {
     }
 
     function quickLogin(userKey) {
-      if (userKey === 'manager') {
+      const keyStr = String(userKey || '').toLowerCase();
+      if (keyStr === 'manager' || keyStr === 'admin') {
         const mgr = AppState.areaManager || DEFAULT_MANAGER;
         document.getElementById('loginUsername').value = mgr.username || 'manager';
         document.getElementById('loginPassword').value = mgr.password || '123';
@@ -6811,40 +6902,27 @@ function doPost(e) {
           avatar: '👨‍💼',
           title: mgr.title
         });
-      } else if (userKey === 'giza1') {
-        const s = AppState.supervisors.find(x => x.id === 1) || DEFAULT_SUPERVISORS[0];
-        document.getElementById('loginUsername').value = s.username || 'giza1';
+        return;
+      }
+
+      // Dynamically search in AppState.supervisors by username or id
+      const s = (AppState.supervisors || []).find(x => 
+        String(x.username || '').toLowerCase() === keyStr ||
+        String(x.id) === keyStr ||
+        (keyStr === 'giza1' && Number(x.id) === 1) ||
+        (keyStr === 'giza2' && Number(x.id) === 2) ||
+        ((keyStr === 'saeed' || keyStr === 'upper') && Number(x.id) === 3)
+      );
+
+      if (s) {
+        document.getElementById('loginUsername').value = s.username || ('user' + s.id);
         document.getElementById('loginPassword').value = s.password || '123';
         loginSuccess({
           role: 'supervisor',
           supervisorId: s.id,
           username: s.username,
           name: s.name,
-          avatar: s.avatar,
-          title: s.title
-        });
-      } else if (userKey === 'giza2') {
-        const s = AppState.supervisors.find(x => x.id === 2) || DEFAULT_SUPERVISORS[1];
-        document.getElementById('loginUsername').value = s.username || 'giza2';
-        document.getElementById('loginPassword').value = s.password || '123';
-        loginSuccess({
-          role: 'supervisor',
-          supervisorId: s.id,
-          username: s.username,
-          name: s.name,
-          avatar: s.avatar,
-          title: s.title
-        });
-      } else if (userKey === 'saeed') {
-        const s = AppState.supervisors.find(x => x.id === 3) || DEFAULT_SUPERVISORS[2];
-        document.getElementById('loginUsername').value = s.username || 'saeed';
-        document.getElementById('loginPassword').value = s.password || '123';
-        loginSuccess({
-          role: 'supervisor',
-          supervisorId: s.id,
-          username: s.username,
-          name: s.name,
-          avatar: s.avatar,
+          avatar: s.avatar || '👔',
           title: s.title
         });
       }
@@ -6882,15 +6960,8 @@ function doPost(e) {
         const userParam = urlParams.get('user') || urlParams.get('login') || urlParams.get('role');
         if (userParam) {
           const clean = userParam.trim().toLowerCase();
-          if (clean === 'manager' || clean === 'admin') {
-            quickLogin('manager');
-          } else if (clean === 'giza1' || clean === '1') {
-            quickLogin('giza1');
-          } else if (clean === 'giza2' || clean === '2') {
-            quickLogin('giza2');
-          } else if (clean === 'saeed' || clean === 'upper' || clean === '3') {
-            quickLogin('saeed');
-          }
+          quickLogin(clean);
+        }
           // Clean URL parameter from address bar safely (only when hosted on http/https)
           if (window.location.protocol.startsWith('http')) {
             const cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
@@ -7212,15 +7283,63 @@ function doPost(e) {
     }
 
     function openShareLinksModal() {
+      renderShareLinksList();
       const m = document.getElementById('shareLinksModal');
       if (m) m.classList.add('open');
+    }
+
+    function renderShareLinksList() {
+      const container = document.getElementById('shareLinksListContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      const isEn = AppState.lang === 'en';
+
+      // 1. Manager Card
+      container.innerHTML += `
+        <div style="background:var(--bg-main); border:1.5px solid rgba(124,58,237,0.3); border-radius:10px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="font-size:22px; width:38px; height:38px; border-radius:8px; background:rgba(124,58,237,0.12); display:flex; align-items:center; justify-content:center;">👑</div>
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--purple);">${mgr.name || (isEn ? 'Area General Manager' : 'مدير الآريتين')}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${mgr.title || (isEn ? 'Master Admin' : 'مدير عام القطاع')}</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('${mgr.username || 'manager'}', '${mgr.name || 'مدير الآريتين'}')" style="font-size:11.5px; padding:5px 10px; color:var(--purple); border-color:rgba(124,58,237,0.4);">
+            📋 ${isEn ? 'Copy Link' : 'نسخ الرابط'}
+          </button>
+        </div>
+      `;
+
+      // 2. Each Supervisor in AppState.supervisors
+      (AppState.supervisors || []).forEach(s => {
+        const supName = getSupervisorName(s);
+        const supTitle = getSupervisorTitle(s);
+        const supZone = getSupervisorZone(s);
+
+        container.innerHTML += `
+          <div style="background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+              <span class="badge ${s.tagClass || 'tag-primary'}" style="font-size:12px; padding:4px 8px;">${s.avatar || '👔'}</span>
+              <div style="min-width:0; flex:1;">
+                <div style="font-weight:800; font-size:13px; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${supName}</div>
+                <div style="font-size:11px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${supTitle} (${supZone.split(/[,،]/)[0]}...)</div>
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="copyIndividualSupervisorLink('${s.username || s.id}', '${supName}')" style="font-size:11.5px; padding:5px 10px; color:#2563eb; border-color:rgba(37,99,235,0.4); white-space:nowrap;">
+              📋 ${isEn ? 'Copy Link' : 'نسخ الرابط'}
+            </button>
+          </div>
+        `;
+      });
     }
 
     function copyIndividualSupervisorLink(userKey, roleTitle) {
       const baseUrl = window.location.origin + window.location.pathname;
       const sheetsUrl = getActiveSheetsUrl();
       const sheetsParam = sheetsUrl ? `&sheets=${encodeURIComponent(sheetsUrl)}` : '';
-      const link = `${baseUrl}?user=${userKey}${sheetsParam}`;
+      const link = `${baseUrl}?user=${encodeURIComponent(userKey)}${sheetsParam}`;
 
       const text = `رابط الدخول المباشر لـ (${roleTitle}):\n${link}\n(اضغط وهيفتح معاك فوراً بدون كلمة سر)`;
       navigator.clipboard.writeText(text).then(() => {
@@ -7234,21 +7353,21 @@ function doPost(e) {
       const baseUrl = window.location.origin + window.location.pathname;
       const sheetsUrl = getActiveSheetsUrl();
       const sheetsParam = sheetsUrl ? `&sheets=${encodeURIComponent(sheetsUrl)}` : '';
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+
+      let supLinksText = '';
+      (AppState.supervisors || []).forEach(s => {
+        const supName = getSupervisorName(s);
+        const supTitle = getSupervisorTitle(s);
+        const supZone = getSupervisorZone(s);
+        supLinksText += `\n👔 ${supName} - ${supTitle} (${supZone}):\n${baseUrl}?user=${encodeURIComponent(s.username || s.id)}${sheetsParam}\n`;
+      });
 
       const msg = `السلام عليكم يا شباب 🌟
 دي روابط الدخول المباشر لمنظومة مبيعات الجيزة والصعيد الجديدة، كل مشرف يضغط على الرابط بتاعه وهيفتح معاه حسابه فوراً بدون طلب أي كلمة سر:
-
-👔 مشرف الجيزة 1 (الهرم، فيصل، الدقي، المهندسين):
-${baseUrl}?user=giza1${sheetsParam}
-
-👔 مشرف الجيزة 2 (6 أكتوبر، الشيخ زايد، حدائق أكتوبر):
-${baseUrl}?user=giza2${sheetsParam}
-
-👔 مشرف الصعيد (محافظات الصعيد بالكامل):
-${baseUrl}?user=saeed${sheetsParam}
-
+${supLinksText}
 👨‍💼 رابط مدير الآريتين (Master Admin):
-${baseUrl}?user=manager${sheetsParam}
+${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
 
 بالتوفيق للجميع وتحقيق أعلى مبيعات هذا الشهر إن شاء الله 🚀`;
 
@@ -7821,7 +7940,31 @@ ${baseUrl}?user=manager${sheetsParam}
       const salesCount = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).length;
       const visitsCount = AppState.visits.filter(v => Number(v.supervisorId) === Number(sup.id)).length;
 
-      return { actual, target, pct: Number(pct), remaining, branchCount, salesCount, visitsCount };
+      // Calculate Daily Target Run-Rate & Today's Sales
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todaySales = AppState.sales
+        .filter(s => Number(s.supervisorId) === Number(sup.id) && s.date === todayStr)
+        .reduce((sum, s) => sum + Number(s.amount || 0), 0);
+
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const remainingDays = Math.max(1, (daysInMonth - now.getDate()) + 1);
+      const dailyTarget = remaining > 0 ? Math.ceil(remaining / remainingDays) : 0;
+      const todayPct = dailyTarget > 0 ? Math.min(100, Math.round((todaySales / dailyTarget) * 100)) : (todaySales > 0 ? 100 : 0);
+
+      return { 
+        actual, 
+        target, 
+        pct: Number(pct), 
+        remaining, 
+        branchCount, 
+        salesCount, 
+        visitsCount,
+        todaySales,
+        dailyTarget,
+        todayPct,
+        remainingDays
+      };
     }
 
     function getClientMetrics(b) {
@@ -8046,6 +8189,19 @@ ${baseUrl}?user=manager${sheetsParam}
               </div>
             </div>
 
+            <div style="background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px; padding:7px 12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:11.5px;">
+              <div style="display:flex; align-items:center; gap:5px;">
+                <span style="font-size:13px;">🎯</span>
+                <span style="color:var(--text-muted);">${isEn ? 'Daily Req:' : 'المطلوب يومياً:'}</span>
+                <strong style="color:var(--purple); font-size:12px;">${formatEGP(m.dailyTarget)} ${isEn ? 'EGP' : 'ج.م'}</strong>
+              </div>
+              <div style="display:flex; align-items:center; gap:5px;">
+                <span style="font-size:13px;">⚡</span>
+                <span style="color:var(--text-muted);">${isEn ? 'Today:' : 'مبيعات اليوم:'}</span>
+                <strong style="color:${m.todaySales >= m.dailyTarget && m.dailyTarget > 0 ? 'var(--success)' : 'var(--primary)'}; font-size:12px;">${formatEGP(m.todaySales)} ${isEn ? 'EGP' : 'ج.م'}</strong>
+              </div>
+            </div>
+
             <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-muted);">
               <span>${t('clientsAndBranches')} <strong>${m.branchCount}</strong></span>
               <span>${t('ordersCount')} <strong>${m.salesCount}</strong></span>
@@ -8088,7 +8244,10 @@ ${baseUrl}?user=manager${sheetsParam}
                 <div><span class="badge ${sup.tagClass}">${sTitle}</span></div>
                 <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">${iconSVG('pin', 11)} ${sZone}</div>
               </td>
-              <td><strong style="color:var(--text-main); font-size:14px;">${formatCurrency(sup.target)}</strong></td>
+              <td>
+                <strong style="color:var(--text-main); font-size:14px;">${formatCurrency(sup.target)}</strong>
+                <div style="font-size:10.5px; color:var(--purple); margin-top:2px;" title="${isEn ? 'Required Daily Run-rate' : 'المستهدف اليومي المتبقي'}">🎯 ${isEn ? 'Daily:' : 'يومي:'} ${formatCurrency(m.dailyTarget)}</div>
+              </td>
               <td><strong style="color:var(--primary); font-size:14px;">${formatCurrency(m.actual)}</strong></td>
               <td>${formatCurrency(m.remaining)}</td>
               <td>
@@ -9206,22 +9365,25 @@ ${baseUrl}?user=manager${sheetsParam}
         return;
       }
 
-      let weights = [0.35, 0.30, 0.35];
-      if (model === 'equal') {
-        weights = [1/3, 1/3, 1/3];
+      const n = Math.max(1, sups.length);
+      let weights = [];
+      if (model === 'historical' && sups.length === 3) {
+        weights = [0.35, 0.30, 0.35];
       } else if (model === 'branches') {
         const totalB = Math.max(1, AppState.branches.length);
         weights = sups.map(s => {
           const count = AppState.branches.filter(b => Number(b.supervisorId) === Number(s.id)).length;
           return count / totalB;
         });
+      } else {
+        weights = sups.map(() => 1 / n);
       }
 
       container.innerHTML = '';
       sups.forEach((s, i) => {
-        const allocated = Math.round(total * (weights[i] || 0.33));
-        const pct = Math.round((weights[i] || 0.33) * 100);
-        const color = s.id === 1 ? '#7c3aed' : (s.id === 2 ? '#0284c7' : '#059669');
+        const allocated = Math.round(total * (weights[i] || (1 / n)));
+        const pct = Math.round((weights[i] || (1 / n)) * 100);
+        const color = s.tagClass === 'tag-saeed' ? '#059669' : (s.tagClass === 'tag-october' ? '#d97706' : '#7c3aed');
 
         container.innerHTML += `
           <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:8px;">
@@ -9251,20 +9413,23 @@ ${baseUrl}?user=manager${sheetsParam}
       const total = Number(document.getElementById('smartTotalTargetInput')?.value || 0);
       const model = document.getElementById('smartDistributionModel')?.value || 'historical';
       const sups = AppState.supervisors;
+      const n = Math.max(1, sups.length);
 
-      let weights = [0.35, 0.30, 0.35];
-      if (model === 'equal') {
-        weights = [1/3, 1/3, 1/3];
+      let weights = [];
+      if (model === 'historical' && sups.length === 3) {
+        weights = [0.35, 0.30, 0.35];
       } else if (model === 'branches') {
         const totalB = Math.max(1, AppState.branches.length);
         weights = sups.map(s => {
           const count = AppState.branches.filter(b => Number(b.supervisorId) === Number(s.id)).length;
           return count / totalB;
         });
+      } else {
+        weights = sups.map(() => 1 / n);
       }
 
       sups.forEach((s, i) => {
-        s.target = Math.round(total * (weights[i] || 0.33));
+        s.target = Math.round(total * (weights[i] || (1 / n)));
       });
 
       if (!AppState.areaManager) AppState.areaManager = { ...DEFAULT_MANAGER };
@@ -9667,6 +9832,7 @@ ${baseUrl}?user=manager${sheetsParam}
       const isManager = mode === 'MANAGER';
       const isAll = mode === 'ALL';
       const activeSupId = Number(mode);
+      const isEn = AppState.lang === 'en';
 
       const supSelects = [
         document.getElementById('modalSaleSup'),
@@ -9688,6 +9854,40 @@ ${baseUrl}?user=manager${sheetsParam}
           }
         }
       });
+
+      // Populate Task Supervisor in Add Task Modal
+      const modalTaskSup = document.getElementById('modalTaskSup');
+      if (modalTaskSup) {
+        const curVal = modalTaskSup.value || 'ALL';
+        modalTaskSup.innerHTML = '';
+        if (isManager || isAll) {
+          modalTaskSup.innerHTML += `<option value="ALL">${isEn ? 'All Supervisors (Full Sector)' : 'جميع المشرفين (القطاع بالكامل)'}</option>`;
+          AppState.supervisors.forEach(s => {
+            modalTaskSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} - ${getSupervisorTitle(s)}</option>`;
+          });
+        } else {
+          const s = AppState.supervisors.find(x => Number(x.id) === activeSupId);
+          if (s) {
+            modalTaskSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} - ${getSupervisorTitle(s)}</option>`;
+          }
+        }
+        if (modalTaskSup.querySelector(`option[value="${curVal}"]`)) {
+          modalTaskSup.value = curVal;
+        }
+      }
+
+      // Populate Supervisor Filter dropdown in Field Tasks Card
+      const tasksSupFilter = document.getElementById('tasksSupervisorFilter');
+      if (tasksSupFilter) {
+        const curVal = tasksSupFilter.value || 'ALL';
+        tasksSupFilter.innerHTML = `<option value="ALL">${isEn ? 'All Areas & Supervisors' : 'جميع الآريات والمشرفين'}</option>`;
+        AppState.supervisors.forEach(s => {
+          tasksSupFilter.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${getSupervisorTitle(s)})</option>`;
+        });
+        if (tasksSupFilter.querySelector(`option[value="${curVal}"]`)) {
+          tasksSupFilter.value = curVal;
+        }
+      }
 
       const dl = document.getElementById('branchesList');
       if (dl) {
@@ -9870,6 +10070,134 @@ ${baseUrl}?user=manager${sheetsParam}
       alert(`تم تعديل بيانات ${name} وتحديث التارجت بنجاح!`);
     }
 
+    // Dynamic Area & Supervisor Management (إضافة وحذف الآريات والمشرفين)
+    function openAddAreaModal() {
+      if (!isMasterAdmin()) {
+        alert("⛔ إضافة آريا جديدة متاح فقط لمدير الآريتين (Master Admin).");
+        return;
+      }
+      const form = document.getElementById('addAreaForm');
+      if (form) form.reset();
+      const pwInput = document.getElementById('newAreaPassword');
+      if (pwInput) pwInput.value = '123';
+      const m = document.getElementById('addAreaModal');
+      if (m) m.classList.add('open');
+    }
+
+    function handleSaveNewArea(e) {
+      e.preventDefault();
+      if (!isMasterAdmin()) {
+        alert("⛔ إضافة آريا جديدة متاح فقط لمدير الآريتين (Master Admin).");
+        return;
+      }
+
+      const name = (document.getElementById('newAreaSupName')?.value || '').trim();
+      const title = (document.getElementById('newAreaTitle')?.value || '').trim();
+      const zone = (document.getElementById('newAreaZone')?.value || '').trim();
+      const target = Number(document.getElementById('newAreaTarget')?.value) || 0;
+      const phone = (document.getElementById('newAreaPhone')?.value || '').trim();
+      const username = (document.getElementById('newAreaUsername')?.value || '').trim().toLowerCase();
+      const password = (document.getElementById('newAreaPassword')?.value || '').trim();
+      const tagClass = document.getElementById('newAreaColorTag')?.value || 'tag-primary';
+
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      if (username === (mgr.username || 'manager').toLowerCase()) {
+        alert("❌ اسم المستخدم هذا محجوز لمدير الآريتين، يرجى اختيار اسم مستخدم آخر.");
+        return;
+      }
+
+      const exists = (AppState.supervisors || []).some(s => (s.username || '').toLowerCase() === username);
+      if (exists) {
+        alert("❌ اسم المستخدم هذا مسجل بالفعل لمشرف آخر، يرجى اختيار اسم مستخدم مختلف.");
+        return;
+      }
+
+      const maxId = (AppState.supervisors || []).reduce((max, s) => Math.max(max, Number(s.id) || 0), 0) || 0;
+      const newId = maxId + 1;
+      const avatarClean = name.replace(/^(أ|م|مشرف|د|مهندس)\s*/, '').slice(0, 2) || ('آ' + newId);
+
+      const newSupervisor = {
+        id: newId,
+        name,
+        title,
+        zone,
+        regionCategory: 'CUSTOM',
+        tagClass: tagClass || 'tag-primary',
+        target: target || 0,
+        phone: phone || '',
+        avatar: avatarClean,
+        username: username || ('user' + newId),
+        password: password || '123',
+        permissions: {
+          canAddSale: true,
+          canAddVisit: true,
+          canAddBranch: true,
+          canEditTarget: true,
+          canDelete: false,
+          canExport: true,
+          canEditProfile: false
+        }
+      };
+
+      if (!AppState.supervisors) AppState.supervisors = [];
+      AppState.supervisors.push(newSupervisor);
+
+      saveState();
+      populateSelectOptions();
+      updateSupervisorPortalSelectOptions();
+      renderAll();
+      closeModal('addAreaModal');
+
+      const isEn = AppState.lang === 'en';
+      const msg = isEn ? `Area & Supervisor "${name}" added and activated successfully! 🎉` : `تمت إضافة آريا المشرف (${name}) وتفعيل حسابه بالمنظومة بنجاح! 🎉`;
+      if (window.showToast) showToast(msg, 'success', 4000);
+      else alert(msg);
+    }
+
+    function deleteArea(supId) {
+      if (!isMasterAdmin()) {
+        alert("⛔ حذف الآريا متاح فقط لمدير الآريتين (Master Admin).");
+        return;
+      }
+
+      const sup = (AppState.supervisors || []).find(s => Number(s.id) === Number(supId));
+      if (!sup) return;
+
+      if ((AppState.supervisors || []).length <= 1) {
+        alert("⚠️ لا يمكن حذف جميع الآريات! يجب أن يتبقى مشرف واحد على الأقل في المنظومة.");
+        return;
+      }
+
+      const isEn = AppState.lang === 'en';
+      const confirmMsg = isEn 
+        ? `Are you sure you want to delete Area "${sup.name}"? This action cannot be undone.` 
+        : `هل أنت متأكد تماماً من حذف آريا (${sup.name} - ${sup.title})؟ سيتم إزالة المشرف وتعديل الإعدادات.`;
+
+      if (!confirm(confirmMsg)) return;
+
+      AppState.supervisors = (AppState.supervisors || []).filter(s => Number(s.id) !== Number(supId));
+
+      if (String(AppState.activeSupervisorId) === String(supId)) {
+        AppState.activeSupervisorId = 'MANAGER';
+      }
+
+      saveState();
+      populateSelectOptions();
+      updateSupervisorPortalSelectOptions();
+      renderAll();
+
+      const successMsg = isEn ? `Area "${sup.name}" deleted successfully.` : `تم حذف آريا (${sup.name}) بنجاح.`;
+      if (window.showToast) showToast(successMsg, 'info', 3500);
+      else alert(successMsg);
+    }
+
+    function deleteAreaFromEditModal() {
+      const id = Number(document.getElementById('editSupId')?.value);
+      if (!id) return;
+      closeModal('singleSupervisorModal');
+      deleteArea(id);
+    }
+
     function openEditTargetsModal() {
       const isManager = !AppState.currentUser || AppState.currentUser.role === 'manager' || isMasterAdmin();
       if (!isManager) {
@@ -9910,7 +10238,7 @@ ${baseUrl}?user=manager${sheetsParam}
           </div>
         </div>
         <div style="font-size:13px; font-weight:800; color:var(--text-muted); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
-          <span>👥 ${isEn ? 'Supervisor Quotas Distribution (3 Areas):' : 'توزيع التارجت على مشرفي القطاع (3 مشرفين):'}</span>
+          <span>👥 ${isEn ? `Supervisor Quotas Distribution (${AppState.supervisors.length} Areas):` : `توزيع التارجت على مشرفي القطاع (${AppState.supervisors.length} آريات):`}</span>
         </div>
       `;
 
@@ -11735,7 +12063,22 @@ ${baseUrl}?user=manager${sheetsParam}
       updateNotifications();
     }
 
-    // Feature 5: Field Task Manager & Checklist
+    // Feature 5: Field Task Manager & Checklist (Daily & Monthly Tasks)
+    let currentTaskFilter = 'all';
+    let currentTaskSupFilter = 'ALL';
+
+    function setTaskFilter(filterType, btn) {
+      currentTaskFilter = filterType;
+      document.querySelectorAll('.task-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderTasks();
+    }
+
+    function setTaskSupFilter(supId) {
+      currentTaskSupFilter = supId;
+      renderTasks();
+    }
+
     function renderTasks() {
       const container = document.getElementById('tasksListContainer');
       if (!container) return;
@@ -11747,8 +12090,26 @@ ${baseUrl}?user=manager${sheetsParam}
       const isEn = AppState.lang === 'en';
 
       let list = AppState.tasks || [];
+
+      // 1. Filter by Portal Role
       if (!isManager && !isAll) {
         list = list.filter(t => t.supervisorId === 'ALL' || String(t.supervisorId) === activeSupId);
+      }
+
+      // 2. Filter by Supervisor Dropdown Selection
+      if (currentTaskSupFilter && currentTaskSupFilter !== 'ALL') {
+        list = list.filter(t => t.supervisorId === 'ALL' || String(t.supervisorId) === String(currentTaskSupFilter));
+      }
+
+      // 3. Filter by Type / Status Pills
+      if (currentTaskFilter === 'daily') {
+        list = list.filter(t => t.taskType === 'daily');
+      } else if (currentTaskFilter === 'monthly') {
+        list = list.filter(t => t.taskType === 'monthly');
+      } else if (currentTaskFilter === 'pending') {
+        list = list.filter(t => !t.done);
+      } else if (currentTaskFilter === 'done') {
+        list = list.filter(t => t.done);
       }
 
       const total = list.length;
@@ -11761,7 +12122,7 @@ ${baseUrl}?user=manager${sheetsParam}
       if (pBar) pBar.style.width = (total > 0 ? ((completed / total) * 100) : 0) + '%';
 
       if (list.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-muted); font-size:12px;">${isEn ? 'No tasks assigned yet' : 'لا توجد مهام ميدانية مسندة حالياً'}</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:18px; color:var(--text-muted); font-size:12.5px;">${isEn ? 'No tasks found for selected filters' : 'لا توجد مهام تطابق الفلاتر المحددة حالياً'}</div>`;
         return;
       }
 
@@ -11772,28 +12133,38 @@ ${baseUrl}?user=manager${sheetsParam}
           ? (isEn ? 'All Supervisors' : 'القطاع بالكامل') 
           : (sup ? getSupervisorName(sup) : (isEn ? 'Supervisor' : 'مشرف'));
         const isUrgent = t.priority === 'high';
-        const isUserMgr = AppState.currentUser?.role === 'manager';
+        const isUserMgr = isMasterAdmin();
+        const isDaily = t.taskType === 'daily';
 
         container.innerHTML += `
-          <div class="task-item ${t.done ? 'task-done' : ''}" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; gap:10px;">
+          <div class="task-item ${t.done ? 'task-done' : ''}" style="display:flex; align-items:center; justify-content:space-between; padding:11px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; gap:10px; transition:all 0.2s ease;">
             <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:0;">
-              <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${t.id}')" style="width:18px; height:18px; cursor:pointer; accent-color:var(--primary);">
+              <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${t.id}')" style="width:19px; height:19px; cursor:pointer; accent-color:var(--primary);">
               <div style="flex:1; min-width:0;">
-                <div style="font-size:13px; font-weight:700; color:var(--text-main); ${t.done ? 'text-decoration:line-through; opacity:0.6;' : ''}">
+                <div style="font-size:13.5px; font-weight:700; color:var(--text-main); ${t.done ? 'text-decoration:line-through; opacity:0.6;' : ''}">
                   ${t.title}
                 </div>
-                <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:4px; font-size:10.5px;">
+                <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:5px; font-size:11px;">
+                  <span class="badge" style="background:${isDaily ? 'rgba(59,130,246,0.12)' : 'rgba(147,51,234,0.12)'}; color:${isDaily ? '#2563eb' : '#7c3aed'}; font-weight:800;">
+                    ${isDaily ? '📅 ' + (isEn ? 'Daily' : 'يومي') : '📆 ' + (isEn ? 'Monthly' : 'شهري')}
+                  </span>
                   <span class="badge ${t.supervisorId === 'ALL' ? 'badge-primary' : (sup ? sup.tagClass : 'badge-primary')}">👔 ${supName}</span>
-                  <span class="badge ${isUrgent ? 'badge-danger' : 'badge-secondary'}">${isUrgent ? (isEn ? '🔴 High Priority' : '🔴 عاجل') : (isEn ? '🟡 Normal' : '🟡 عادي')}</span>
+                  <span class="badge ${isUrgent ? 'badge-danger' : 'badge-secondary'}">${isUrgent ? (isEn ? '🔴 Urgent' : '🔴 عاجل') : (isEn ? '🟡 Normal' : '🟡 عادي')}</span>
                   <span style="color:var(--text-muted);">📅 ${t.dueDate || '-'}</span>
+                  ${t.salesTarget > 0 ? `<span class="badge badge-success" style="font-weight:700;">🎯 ${isEn ? 'Target:' : 'تارجت:'} ${formatEGP(t.salesTarget)} ${isEn ? 'EGP' : 'ج.م'}</span>` : ''}
                 </div>
               </div>
             </div>
-            ${isUserMgr ? `
-              <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:2px 7px; font-size:11px;" onclick="deleteTask('${t.id}')" title="${isEn ? 'Delete Task' : 'حذف المهمة'}">
-                ${iconSVG('trash', 12)}
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button class="btn btn-outline btn-sm" style="color:#25d366; border-color:rgba(37,211,102,0.4); padding:3px 8px; font-size:11px; white-space:nowrap;" onclick="sendTaskToWhatsApp('${t.id}')" title="${isEn ? 'Dispatch via WhatsApp' : 'إرسال المهمة للواتساب'}">
+                💬 ${isEn ? 'WhatsApp' : 'واتساب'}
               </button>
-            ` : ''}
+              ${isUserMgr ? `
+                <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:3px 7px; font-size:11px;" onclick="deleteTask('${t.id}')" title="${isEn ? 'Delete Task' : 'حذف المهمة'}">
+                  ${iconSVG('trash', 12)}
+                </button>
+              ` : ''}
+            </div>
           </div>
         `;
       });
@@ -11810,28 +12181,37 @@ ${baseUrl}?user=manager${sheetsParam}
     }
 
     function openAddTaskModal() {
-      if (AppState.currentUser && AppState.currentUser.role !== 'manager') {
+      if (!isMasterAdmin()) {
         showToast(AppState.lang === 'en' ? 'Adding tasks is restricted to Area Manager' : 'إسناد المهام متاح فقط لمدير الآريتين', 'warning');
         return;
       }
+      populateSelectOptions();
       const dueInput = document.getElementById('modalTaskDueDate');
       if (dueInput) dueInput.value = new Date().toISOString().split('T')[0];
+      const typeInput = document.getElementById('modalTaskType');
+      if (typeInput) typeInput.value = 'daily';
+      const targetInput = document.getElementById('modalTaskSalesTarget');
+      if (targetInput) targetInput.value = '';
       document.getElementById('addTaskModal').classList.add('open');
     }
 
     function handleSaveTask(e) {
       e.preventDefault();
       const title = document.getElementById('modalTaskTitle').value.trim();
+      const taskType = document.getElementById('modalTaskType')?.value || 'daily';
       const sup = document.getElementById('modalTaskSup').value;
       const priority = document.getElementById('modalTaskPriority').value;
       const dueDate = document.getElementById('modalTaskDueDate').value;
+      const salesTarget = Number(document.getElementById('modalTaskSalesTarget')?.value) || 0;
 
       const newTask = {
         id: 'T-' + Date.now(),
         title,
+        taskType,
         supervisorId: sup,
         priority,
         dueDate,
+        salesTarget,
         done: false
       };
 
@@ -11845,7 +12225,7 @@ ${baseUrl}?user=manager${sheetsParam}
     }
 
     function deleteTask(taskId) {
-      if (AppState.currentUser && AppState.currentUser.role !== 'manager') return;
+      if (!isMasterAdmin()) return;
       const isEn = AppState.lang === 'en';
       if (confirm(isEn ? 'Are you sure you want to delete this task?' : 'هل أنت متأكد من حذف هذه المهمة الميدانية؟')) {
         AppState.tasks = (AppState.tasks || []).filter(t => String(t.id) !== String(taskId));
@@ -11853,6 +12233,68 @@ ${baseUrl}?user=manager${sheetsParam}
         renderTasks();
         showToast(isEn ? 'Task deleted' : 'تم حذف المهمة بنجاح', 'info');
       }
+    }
+
+    function sendTaskToWhatsApp(taskId) {
+      const t = (AppState.tasks || []).find(x => String(x.id) === String(taskId));
+      if (!t) return;
+
+      const sup = AppState.supervisors.find(s => String(s.id) === String(t.supervisorId));
+      const supName = t.supervisorId === 'ALL' ? 'جميع مشرفي القطاع' : (sup ? sup.name : 'المشرف');
+      const phone = sup && sup.phone ? sup.phone.replace(/[^0-9]/g, '') : '';
+      const typeText = t.taskType === 'daily' ? '📅 مهمة يومية عاجلة' : '📆 مهمة شهرية دورية';
+      const priorityText = t.priority === 'high' ? '🔴 أولوية عاجلة جداً' : '🟡 أولوية عادية';
+      const targetText = t.salesTarget > 0 ? `\n🎯 مستهدف مبيعات مطلوب تحقيقه: ${formatEGP(t.salesTarget)} ج.م` : '';
+
+      const msg = `السلام عليكم ورحمة الله 🌟
+📋 تكليف ميداني جديد:
+📌 المهمة: ${t.title}
+🏷️ النوع: ${typeText}
+⚡ الأولوية: ${priorityText}
+📅 موعد الإنجاز: ${t.dueDate || 'اليوم'}${targetText}
+👔 موجه إلى: ${supName}
+
+يرجى المتابعة الفورية والتحديث على التطبيق فور الإنجاز 🚀`;
+
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast('تم نسخ نص التكليف! جاري فتح واتساب...', 'success', 2500);
+      }).catch(() => {});
+
+      const waUrl = phone.length >= 10 
+        ? `https://wa.me/2${phone}?text=${encodeURIComponent(msg)}`
+        : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    function sendDailyTasksSummaryToWhatsApp() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const dailyTasks = (AppState.tasks || []).filter(t => t.taskType === 'daily' || t.dueDate === todayStr);
+
+      if (dailyTasks.length === 0) {
+        showToast('لا توجد مهام يومية مسجلة لتاريخ اليوم 📅', 'info');
+        return;
+      }
+
+      let tasksListText = '';
+      dailyTasks.forEach((t, i) => {
+        const sup = AppState.supervisors.find(s => String(s.id) === String(t.supervisorId));
+        const supName = t.supervisorId === 'ALL' ? 'الكل' : (sup ? sup.name : 'مشرف');
+        const status = t.done ? '✅ مكتمل' : '⏳ جاري';
+        const targetStr = t.salesTarget > 0 ? ` [تارجت: ${formatEGP(t.salesTarget)} ج.م]` : '';
+        tasksListText += `${i + 1}. [${status}] ${t.title}\n   👔 المسؤول: ${supName}${targetStr}\n\n`;
+      });
+
+      const msg = `🌟 أجندة وتكليفات العمل اليومية - قطاع الجيزة والصعيد 📋
+📅 التاريخ: ${todayStr}
+عدد المهام اليومية: ${dailyTasks.length}
+
+${tasksListText}بالتوفيق للجميع في تحقيق التارجت اليومي وإنجاز التكليفات 🚀`;
+
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast('تم نسخ الأجندة اليومية! جاري فتح واتساب...', 'success', 2500);
+      }).catch(() => {});
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
     // Feature 6: Full PWA Mobile App Support
