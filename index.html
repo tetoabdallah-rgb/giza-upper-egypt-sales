@@ -6961,7 +6961,6 @@ function doPost(e) {
         if (userParam) {
           const clean = userParam.trim().toLowerCase();
           quickLogin(clean);
-        }
           // Clean URL parameter from address bar safely (only when hosted on http/https)
           if (window.location.protocol.startsWith('http')) {
             const cleanUrl = window.location.origin + window.location.pathname + window.location.hash;
