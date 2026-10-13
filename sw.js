@@ -1,4 +1,4 @@
-const CACHE_NAME = 'giza-sales-v2026-10-13-v1';
+const CACHE_NAME = 'giza-sales-v2026-10-13-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -49,7 +49,7 @@ self.addEventListener('fetch', (e) => {
   // 3. For HTML documents & page navigations: Network First, fallback to cache if offline
   if (req.mode === 'navigate' || req.destination === 'document' || req.url.endsWith('index.html') || req.url.endsWith('/')) {
     e.respondWith(
-      fetch(req)
+      fetch(req, { cache: 'no-cache' })
         .then((networkRes) => {
           if (networkRes && networkRes.status === 200) {
             const copy = networkRes.clone();

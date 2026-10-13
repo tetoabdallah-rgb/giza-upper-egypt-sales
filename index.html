@@ -1744,99 +1744,301 @@ html[dir="ltr"] .fab-speed-dial {
   }
 }
 
+@media (max-width: 992px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+  }
+  .main-wrapper, .content-area, .tab-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+}
+
 @media (max-width: 768px) {
+  *, *::before, *::after {
+    box-sizing: border-box !important;
+  }
+  .content-area {
+    padding: 10px 10px 85px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
   .page-title {
-    font-size: 14.5px;
+    font-size: 14px;
+    max-width: 140px;
   }
-  .kpi-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-  }
-  .kpi-card {
-    padding: 12px 12px !important;
-    gap: 8px !important;
-  }
-  .kpi-title {
-    font-size: 11px !important;
-    line-height: 1.3 !important;
-  }
-  .kpi-value {
-    font-size: 17px !important;
-    gap: 3px !important;
-  }
-  .kpi-unit {
-    font-size: 11px !important;
-  }
-  .kpi-icon {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 14px !important;
-    border-radius: 9px !important;
-  }
-  .charts-row {
-    grid-template-columns: 1fr !important;
-  }
-  .supervisors-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .form-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .ai-metric-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+  .hierarchy-card {
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
   .manager-profile-badge {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .manager-info-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .manager-avatar {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+  }
+  .manager-info-left > div {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  .manager-name {
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+    word-break: break-word !important;
+  }
+  .manager-title {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    word-break: break-word !important;
   }
   .manager-profile-actions {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     width: 100% !important;
-    gap: 8px !important;
+    max-width: 100% !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
   }
   .manager-profile-actions .btn {
-    white-space: nowrap;
-    justify-content: center;
-    padding: 8px 10px;
-    font-size: 12px;
-    width: 100%;
+    white-space: normal !important;
+    word-break: break-word !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 8px 4px !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
   }
-  .hierarchy-card {
-    padding: 14px !important;
+  .territory-filter-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
   }
   .territory-filter-bar {
-    display: flex;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 8px;
-    padding: 4px 0;
-    width: 100%;
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 6px !important;
+    padding: 2px 0 4px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   .territory-filter-bar::-webkit-scrollbar {
     display: none;
   }
   .territory-pill {
-    flex-shrink: 0;
-    white-space: nowrap;
-    font-size: 12px;
-    padding: 7px 12px;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    font-size: 11.5px !important;
+    padding: 6px 10px !important;
+  }
+
+  /* 3-in-1 Executive Feature Hero */
+  .exec-hero-card {
+    padding: 10px !important;
+  }
+  .exec-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+
+  /* KPI Grid */
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .kpi-card {
+    padding: 10px 8px !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .kpi-title {
+    font-size: 10.5px !important;
+    line-height: 1.3 !important;
+    word-break: break-word !important;
+  }
+  .kpi-value {
+    font-size: 15px !important;
+    gap: 2px !important;
+    word-break: break-word !important;
+  }
+  .kpi-unit {
+    font-size: 10px !important;
+  }
+  .kpi-icon {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Gap-to-Target Recovery Engine */
+  .gap-engine-card {
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .gap-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .gap-metric-box {
+    padding: 10px 6px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .gap-sup-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 10px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* AI Copilot Widget */
+  .ai-copilot-card {
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .ai-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .ai-metric-box {
+    padding: 8px 6px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    text-align: center !important;
+  }
+
+  /* Directives Notice Board */
+  .directives-card {
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .directive-item {
+    flex-wrap: wrap !important;
+    padding: 10px 10px !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .directive-item > div:first-child {
+    min-width: 0 !important;
+    flex: 1 1 180px !important;
+    word-break: break-word !important;
+  }
+
+  /* Tables & Grids */
+  .charts-row, .supervisors-grid, .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .table-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  table {
+    min-width: 480px;
+  }
+  .boardroom-paper {
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .boardroom-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  .boardroom-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+  .boardroom-table {
+    min-width: 620px !important;
   }
 }
 
-@media (max-width: 480px) {
-  .kpi-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
+@media (max-width: 380px) {
+  .content-area {
+    padding: 8px 6px 85px !important;
+  }
+  .hierarchy-card, .directives-card, .gap-engine-card, .ai-copilot-card, .card-section {
+    padding: 10px 8px !important;
   }
   .kpi-value {
-    font-size: 15.5px !important;
+    font-size: 14px !important;
   }
-  .sheet-grid {
-    grid-template-columns: 1fr 1fr;
+  .kpi-title {
+    font-size: 10px !important;
+  }
+  .manager-name {
+    font-size: 13.5px !important;
   }
 }
 
@@ -2336,6 +2538,86 @@ html[dir="ltr"] .notif-dropdown-menu {
     display: none !important;
   }
   #invoiceModal .invoice-paper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* =========================================================================
+   MULTINATIONAL 3-IN-1 EXECUTIVE FEATURE COMMAND BAR
+   ========================================================================= */
+.exec-hero-card {
+  background: linear-gradient(135deg, rgba(67, 56, 202, 0.07) 0%, rgba(2, 132, 199, 0.07) 100%);
+  border: 1.5px solid rgba(79, 70, 229, 0.2);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+}
+.exec-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.exec-hero-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: right;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: var(--text-main);
+  box-shadow: var(--shadow-xs);
+}
+.exec-hero-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.exec-hero-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+.exec-hero-text {
+  min-width: 0;
+  flex: 1;
+}
+.exec-hero-title {
+  font-size: 12.5px;
+  font-weight: 900;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+.exec-hero-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
 /* Enterprise Feature Enhancements */
 .ai-copilot-card {
   background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(79, 70, 229, 0.05) 100%);
@@ -2788,8 +3070,16 @@ html[dir="ltr"] .notif-dropdown-menu {
   <!-- Main Content Wrapper -->
   <div class="main-wrapper">
 
+    <!-- Version Update Alert Bar (Appears when new version is detected or cache cleared) -->
+    <div id="appVersionUpdateBar" style="display:none; background:linear-gradient(135deg, #4f46e5, #0284c7); color:#fff; padding:10px 14px; text-align:center; font-size:12.5px; font-weight:800; z-index:999999; box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+      <span>🚀 إصدار المنظومة المحدث (v4.0 Multi-National) جاهز — </span>
+      <button type="button" onclick="forceAppUpdateAndClearCache()" style="background:#fff; color:#4338ca; border:none; padding:4px 12px; border-radius:9999px; font-weight:900; font-size:12px; cursor:pointer; margin-inline-start:6px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+        تحديث الشاشة الآن 🔄
+      </button>
+    </div>
+
     <!-- Top Header -->
-    <header class="top-header">
+    <header class="top-header" id="topHeader">
       <div class="header-left">
         <button class="mobile-menu-toggle" onclick="toggleSidebar()" aria-label="Toggle Navigation">
           <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -2833,6 +3123,16 @@ html[dir="ltr"] .notif-dropdown-menu {
         <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تبديل اللغة">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           <span id="langToggleBtnText">English</span>
+        </button>
+
+        <!-- Mobile/Desktop Quick AI Voice Assistant Button -->
+        <button class="header-icon-btn" id="btnHeaderVoiceAiMobile" onclick="openVoiceAiModal('sale')" title="المساعد الصوتي الذكي (AI Voice)" style="color:#7c3aed; background:rgba(124,58,237,0.1); border-color:rgba(124,58,237,0.3);">
+          <span style="font-size:14px;">🎙️</span>
+        </button>
+
+        <!-- Force Update & Fresh Cache Reload Button -->
+        <button class="header-icon-btn" id="btnHeaderForceUpdateMobile" onclick="forceAppUpdateAndClearCache()" title="تحديث فوري للنظام ومسح الكاش" style="color:#0284c7; background:rgba(2,132,199,0.1); border-color:rgba(2,132,199,0.3);">
+          <span style="font-size:13px;">🔄</span>
         </button>
 
         <!-- Smart Notifications Bell -->
@@ -2954,95 +3254,46 @@ html[dir="ltr"] .notif-dropdown-menu {
           </div>
         </div>
 
-        <!-- Manager Directives / Bulletin Board -->
-        <div class="directives-card" id="directivesSection">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <div style="font-size:13.5px; font-weight:800; display:flex; align-items:center; gap:8px; color:var(--text-main);">
-              <div style="width:28px; height:28px; border-radius:8px; background:var(--purple-light); color:var(--secondary); display:flex; align-items:center; justify-content:center;">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+        <!-- Enterprise 3-in-1 Executive Feature Command Bar -->
+        <div class="exec-hero-card" id="executiveCommandHero">
+          <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px;">
+            <span>⚡ الميزات التنفيذية الذكية (Executive Operations Deck)</span>
+            <span style="font-size:10px; background:rgba(79,70,229,0.15); color:var(--primary); padding:2px 8px; border-radius:9999px; font-weight:800;">إصدار الشركات v4.0</span>
+          </div>
+          <div class="exec-hero-grid">
+            <!-- Feature 1: AI Voice Entry -->
+            <button type="button" class="exec-hero-btn" onclick="openVoiceAiModal('sale')">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; box-shadow:0 3px 10px rgba(124,58,237,0.35);">
+                🎙️
               </div>
-              <span id="directivesTitleText">التوجيهات والتعليمات الميدانية الصادرة للمشرفين</span>
-            </div>
-            <button class="btn btn-outline btn-sm" onclick="openDirectiveModal()">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-              <span id="btnDirectiveAddText">إضافة توجيه جديد</span>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">المساعد الصوتي الذكي (AI)</div>
+                <div class="exec-hero-sub">إملاء العمليات صوتياً بالعامية</div>
+              </div>
+            </button>
+
+            <!-- Feature 2: Gap-to-Target Recovery Engine -->
+            <button type="button" class="exec-hero-btn" onclick="document.getElementById('runRateAnalyticsCard').scrollIntoView({behavior:'smooth'});">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #059669, #10b981); color:#fff; box-shadow:0 3px 10px rgba(16,185,129,0.35);">
+                🎯
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">محرك سد الفجوة وتارجت اليوم</div>
+                <div class="exec-hero-sub">معدل البيع المطلوب لإغلاق 100%</div>
+              </div>
+            </button>
+
+            <!-- Feature 3: Executive Boardroom Report -->
+            <button type="button" class="exec-hero-btn" onclick="openBoardroomReportModal()">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #0284c7, #38bdf8); color:#fff; box-shadow:0 3px 10px rgba(2,132,199,0.35);">
+                🏢
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">تقرير مجلس الإدارة التنفيذي</div>
+                <div class="exec-hero-sub">وثيقة الإغلاق الرسمي وواتساب الإدارة</div>
+              </div>
             </button>
           </div>
-          <div id="directivesListContainer" style="display:flex; flex-direction:column; gap:8px;">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-        <!-- AI Executive Sales Copilot & Forecast Intelligence Banner -->
-        <div class="ai-copilot-card" id="aiExecutiveWidget">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="font-size:28px;">🧠</span>
-              <div>
-                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <strong style="font-size:14.5px; color:var(--text-main);" id="aiWidgetHeading">رادار الذكاء الاصطناعي والتنبؤ بالإغلاق الشهري</strong>
-                  <span class="ai-badge" style="font-size:10.5px; padding:2px 7px;">AI LIVE</span>
-                </div>
-                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;" id="aiWidgetSub">
-                  تحليل مباشر لمعدل سرعة المبيعات (Run-rate) مقارنة بمستهدف الـ 6 مليون
-                </div>
-              </div>
-            </div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button class="btn btn-outline btn-sm" onclick="playAiAudioBriefing()" title="استمع للموجز الصوتي الذكي" style="font-size:12px;">
-                🔊 استماع صوتي
-              </button>
-              <button class="btn btn-purple btn-sm" onclick="openAiCopilotModal()" style="font-size:12px; font-weight:800; background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; border:none;">
-                🚀 التقرير الذكي الشامل
-              </button>
-            </div>
-          </div>
-
-          <div class="ai-metric-grid" id="aiWidgetMetrics">
-            <div class="ai-metric-box">
-              <span class="ai-metric-label">احتمالية تحقيق تارجت 6M</span>
-              <span class="ai-metric-val" id="aiWidgetProb" style="color:var(--success);">--%</span>
-            </div>
-            <div class="ai-metric-box">
-              <span class="ai-metric-label">المبيعات المتوقعة لنهاية الشهر</span>
-              <span class="ai-metric-val" id="aiWidgetProjected">-- ج.م</span>
-            </div>
-            <div class="ai-metric-box">
-              <span class="ai-metric-label">السرعة اليومية المطلوبة</span>
-              <span class="ai-metric-val" id="aiWidgetDailyReq">-- ج.م/يوم</span>
-            </div>
-            <div class="ai-metric-box">
-              <span class="ai-metric-label">موقف وتيرة البيع</span>
-              <span class="ai-metric-val" id="aiWidgetStatusBadge" style="font-size:13px; font-weight:800; color:var(--primary);">--</span>
-            </div>
-          </div>
-          <div id="aiWidgetAdvice" style="margin-top:12px; font-size:12px; line-height:1.6; color:var(--text-main); background:rgba(255,255,255,0.04); padding:10px 14px; border-radius:10px; border:1px solid var(--border-color);">
-            💡 جاري قراءة وتحليل بيانات المبيعات لحظياً بالذكاء الاصطناعي...
-          </div>
-        </div>
-
-        <!-- Out-of-Stock Urgent Tickets Banner -->
-        <div id="outOfStockAlertBanner" style="display:none; background:rgba(245,158,11,0.1); border:1.5px solid rgba(245,158,11,0.35); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-size:20px;">📦</span>
-              <div>
-                <strong style="color:var(--warning); font-size:13.5px;" id="outOfStockBannerTitle">رادار نواقص البضاعة: توجد تذاكر نقص بضاعة معلقة بالفروع</strong>
-                <div style="font-size:11.5px; color:var(--text-muted);" id="outOfStockBannerCount">يُرجى مراجعة الأصناف الناقصة للتنسيق مع إدارة التوريد وتفادي ضياع فرص البيع.</div>
-              </div>
-            </div>
-            <div style="display:flex; gap:6px;">
-              <button class="btn btn-warning btn-sm" onclick="openStockTicketModal()" style="font-weight:700; font-size:11.5px;">+ إبلاغ عن نقص جديد</button>
-            </div>
-          </div>
-          <div id="outOfStockBannerList" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
-
-        <!-- Hall of Fame & Badges Widget -->
-        <div class="hall-fame-grid" id="hallOfFameWidget">
-          <!-- Populated dynamically by renderHallOfFame() -->
         </div>
 
         <!-- Quick KPIs -->
@@ -3100,16 +3351,16 @@ html[dir="ltr"] .notif-dropdown-menu {
         <!-- Feature 1: Enterprise Gap-to-Target Recovery Engine -->
         <div class="card-section gap-engine-card" id="runRateAnalyticsCard">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #4338ca, #6366f1); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 4px 14px rgba(79,70,229,0.35);">
+            <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+              <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, #4338ca, #6366f1); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 14px rgba(79,70,229,0.35); flex-shrink:0;">
                 🎯
               </div>
-              <div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span style="font-weight:900; font-size:15px; color:var(--text-main);" id="lblRunRateTitle">محرك سد الفجوة والتنبؤ بالإغلاق (Gap-to-Target Engine)</span>
-                  <span id="badgeRunRateStatus" class="badge badge-success">في المسار الصحيح 🟢</span>
+              <div style="min-width:0; flex:1;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="font-weight:900; font-size:14.5px; color:var(--text-main);" id="lblRunRateTitle">محرك سد الفجوة والتنبؤ بالإغلاق (Gap-to-Target Engine)</span>
+                  <span id="badgeRunRateStatus" class="badge badge-success" style="font-size:11px;">في المسار الصحيح 🟢</span>
                 </div>
-                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;" id="lblRunRateSubtitle">
+                <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;" id="lblRunRateSubtitle">
                   تحليل حسابي دقيق لمعدل البيع المطلوب يومياً لإغلاق التارجت 100% بناءً على وتيرة المبيعات والأيام المتبقية
                 </div>
               </div>
@@ -3154,7 +3405,7 @@ html[dir="ltr"] .notif-dropdown-menu {
 
           <!-- Supervisor-by-Supervisor Daily Pace & Target Recovery Table -->
           <div id="gapSupervisorBreakdownSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed rgba(79,70,229,0.2);">
-            <div style="font-size:12.5px; font-weight:800; color:var(--text-main); margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="font-size:12.5px; font-weight:800; color:var(--text-main); margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px;">
               <span>📊 معدل البيع المطلوب يومياً من كل مشرف لسد فجوته:</span>
               <span style="font-size:11px; color:var(--primary); font-weight:700;" id="gapRemainingDaysSubtext"></span>
             </div>
@@ -3162,6 +3413,97 @@ html[dir="ltr"] .notif-dropdown-menu {
               <!-- Dynamically populated by renderRunRateAnalytics() -->
             </div>
           </div>
+        </div>
+
+        <!-- AI Executive Sales Copilot & Forecast Intelligence Banner -->
+        <div class="ai-copilot-card" id="aiExecutiveWidget">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:28px;">🧠</span>
+              <div>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <strong style="font-size:14.5px; color:var(--text-main);" id="aiWidgetHeading">رادار الذكاء الاصطناعي والتنبؤ بالإغلاق الشهري</strong>
+                  <span class="ai-badge" style="font-size:10.5px; padding:2px 7px;">AI LIVE</span>
+                </div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;" id="aiWidgetSub">
+                  تحليل مباشر لمعدل سرعة المبيعات (Run-rate) مقارنة بمستهدف الـ 6 مليون
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" onclick="playAiAudioBriefing()" title="استمع للموجز الصوتي الذكي" style="font-size:12px;">
+                🔊 استماع صوتي
+              </button>
+              <button class="btn btn-purple btn-sm" onclick="openAiCopilotModal()" style="font-size:12px; font-weight:800; background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; border:none;">
+                🚀 التقرير الذكي الشامل
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-metric-grid" id="aiWidgetMetrics">
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">احتمالية تحقيق تارجت 6M</span>
+              <span class="ai-metric-val" id="aiWidgetProb" style="color:var(--success);">--%</span>
+            </div>
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">المبيعات المتوقعة لنهاية الشهر</span>
+              <span class="ai-metric-val" id="aiWidgetProjected">-- ج.م</span>
+            </div>
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">السرعة اليومية المطلوبة</span>
+              <span class="ai-metric-val" id="aiWidgetDailyReq">-- ج.م/يوم</span>
+            </div>
+            <div class="ai-metric-box">
+              <span class="ai-metric-label">موقف وتيرة البيع</span>
+              <span class="ai-metric-val" id="aiWidgetStatusBadge" style="font-size:13px; font-weight:800; color:var(--primary);">--</span>
+            </div>
+          </div>
+          <div id="aiWidgetAdvice" style="margin-top:12px; font-size:12px; line-height:1.6; color:var(--text-main); background:rgba(255,255,255,0.04); padding:10px 14px; border-radius:10px; border:1px solid var(--border-color);">
+            💡 جاري قراءة وتحليل بيانات المبيعات لحظياً بالذكاء الاصطناعي...
+          </div>
+        </div>
+
+        <!-- Manager Directives / Bulletin Board -->
+        <div class="directives-card" id="directivesSection">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="font-size:13.5px; font-weight:800; display:flex; align-items:center; gap:8px; color:var(--text-main);">
+              <div style="width:28px; height:28px; border-radius:8px; background:var(--purple-light); color:var(--secondary); display:flex; align-items:center; justify-content:center;">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+              </div>
+              <span id="directivesTitleText">التوجيهات والتعليمات الميدانية الصادرة للمشرفين</span>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="openDirectiveModal()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              <span id="btnDirectiveAddText">إضافة توجيه جديد</span>
+            </button>
+          </div>
+          <div id="directivesListContainer" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Out-of-Stock Urgent Tickets Banner -->
+        <div id="outOfStockAlertBanner" style="display:none; background:rgba(245,158,11,0.1); border:1.5px solid rgba(245,158,11,0.35); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:20px;">📦</span>
+              <div>
+                <strong style="color:var(--warning); font-size:13.5px;" id="outOfStockBannerTitle">رادار نواقص البضاعة: توجد تذاكر نقص بضاعة معلقة بالفروع</strong>
+                <div style="font-size:11.5px; color:var(--text-muted);" id="outOfStockBannerCount">يُرجى مراجعة الأصناف الناقصة للتنسيق مع إدارة التوريد وتفادي ضياع فرص البيع.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-warning btn-sm" onclick="openStockTicketModal()" style="font-weight:700; font-size:11.5px;">+ إبلاغ عن نقص جديد</button>
+            </div>
+          </div>
+          <div id="outOfStockBannerList" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Hall of Fame & Badges Widget -->
+        <div class="hall-fame-grid" id="hallOfFameWidget">
+          <!-- Populated dynamically by renderHallOfFame() -->
         </div>
 
         <!-- Supervisors Target vs Actual Status Cards -->
@@ -4956,6 +5298,8 @@ html[dir="ltr"] .notif-dropdown-menu {
         <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ طباعة الفاتورة (Print / PDF)</button>
       </div>
     </div>
+  </div>
+
   <!-- Modal: Cloud Sync Diagnostics & Setup -->
   <div class="modal-overlay" id="cloudDiagnosticsModal">
     <div class="modal-dialog" style="max-width: 660px; max-height: 90vh; display: flex; flex-direction: column;">
@@ -5131,6 +5475,8 @@ html[dir="ltr"] .notif-dropdown-menu {
         </div>
       </div>
     </div>
+  </div>
+
   <!-- Modal: AI Voice Assistant Dictation -->
   <div class="modal-overlay" id="voiceEntryModal">
     <div class="modal-dialog" style="max-width: 520px; text-align: center;">
@@ -12815,7 +13161,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
           <div><strong>نظام المتابعة:</strong> المنظومة السحابية المركزية المباشرة</div>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:22px;">
+        <div class="boardroom-kpi-grid">
           <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:10px; padding:12px; text-align:center;">
             <div style="font-size:11px; color:#64748b; font-weight:800;">المستهدف الكلي للقطاع</div>
             <div style="font-size:17px; font-weight:900; color:#4338ca; margin-top:3px;">${formatCurrency(totalTarget)}</div>
@@ -12844,43 +13190,47 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         <div style="font-size:14px; font-weight:900; color:#1e293b; margin-bottom:8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">
           1. تقرير الأداء الميداني وجدول ترتيب السادة المشرفين (Supervisors Leaderboard)
         </div>
-        <table class="boardroom-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>المشرف المسؤول</th>
-              <th>الآريا / المحافظات</th>
-              <th>التارجت المستهدف</th>
-              <th>المبيعات المحققة</th>
-              <th>نسبة الإنجاز</th>
-              <th>الفجوة</th>
-              <th>المطلوب يومياً</th>
-              <th>الترتيب</th>
-              <th>التقييم العام</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${supRows}
-          </tbody>
-        </table>
+        <div class="table-container" style="overflow-x:auto; width:100%; margin-bottom:14px;">
+          <table class="boardroom-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>المشرف المسؤول</th>
+                <th>الآريا / المحافظات</th>
+                <th>التارجت المستهدف</th>
+                <th>المبيعات المحققة</th>
+                <th>نسبة الإنجاز</th>
+                <th>الفجوة</th>
+                <th>المطلوب يومياً</th>
+                <th>الترتيب</th>
+                <th>التقييم العام</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${supRows}
+            </tbody>
+          </table>
+        </div>
 
         <div style="font-size:14px; font-weight:900; color:#1e293b; margin:22px 0 8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">
           2. تحليل كبار الموزعين والفروع الأعلى مساهمة (Pareto Top 5 Clients)
         </div>
-        <table class="boardroom-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>اسم العميل / الفرع</th>
-              <th>إجمالي المسحوبات المحققة</th>
-              <th>الوزن النسبي من القطاع</th>
-              <th>تصنيف العميل</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${branchRows || '<tr><td colspan="5" style="text-align:center;">لا توجد مبيعات مسجلة حتى الآن</td></tr>'}
-          </tbody>
-        </table>
+        <div class="table-container" style="overflow-x:auto; width:100%; margin-bottom:14px;">
+          <table class="boardroom-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>اسم العميل / الفرع</th>
+                <th>إجمالي المسحوبات المحققة</th>
+                <th>الوزن النسبي من القطاع</th>
+                <th>تصنيف العميل</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${branchRows || '<tr><td colspan="5" style="text-align:center;">لا توجد مبيعات مسجلة حتى الآن</td></tr>'}
+            </tbody>
+          </table>
+        </div>
 
         <div style="font-size:14px; font-weight:900; color:#1e293b; margin:22px 0 8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">
           3. التوجيهات التنفيذية وخطة العمل للأيام القادمة
@@ -13677,6 +14027,16 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }, 200);
       }, { passive: true });
 
+    const CURRENT_APP_VERSION = 'v4.0.20261013.2';
+    try {
+      const storedVer = localStorage.getItem('giza_app_version');
+      if (storedVer !== CURRENT_APP_VERSION) {
+        const updateBar = document.getElementById('appVersionUpdateBar');
+        if (updateBar) updateBar.style.display = 'block';
+        localStorage.setItem('giza_app_version', CURRENT_APP_VERSION);
+      }
+    } catch(e) {}
+
     window.forceAppUpdateAndClearCache = function() {
       if ('caches' in window) {
         caches.keys().then(keys => {
@@ -13692,13 +14052,15 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         localStorage.removeItem('giza_saeed_manager');
         localStorage.removeItem('giza_saeed_current_user');
         localStorage.removeItem('giza_saeed_last_sync_timestamp');
+        localStorage.setItem('giza_app_version', CURRENT_APP_VERSION);
       } catch(e) {}
       if (window.showToast) {
-        showToast(AppState.lang === 'en' ? 'Purging cache & reloading fresh version...' : 'جاري مسح الكاش وتحميل أحدث نسخة حية من السيرفر...', 'info', 2000);
+        showToast(AppState.lang === 'en' ? 'Purging cache & reloading fresh version...' : 'جاري مسح الكاش وتحديث المنظومة لأحدث إصدار حي...', 'info', 2000);
       }
       setTimeout(() => {
-        window.location.reload(true);
-      }, 500);
+        const freshUrl = window.location.pathname + '?v=' + Date.now() + (window.location.hash || '');
+        window.location.replace(freshUrl);
+      }, 400);
     };
 
     if ('serviceWorker' in navigator) {
@@ -13710,7 +14072,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261013v1').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261013v2').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
