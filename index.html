@@ -2482,8 +2482,192 @@ html[dir="ltr"] .notif-dropdown-menu {
   font-size: 11px;
   font-weight: 800;
 }
+
+/* =========================================================================
+   FEATURE 1: GAP-TO-TARGET RECOVERY ENGINE STYLES
+   ========================================================================= */
+.gap-engine-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(2, 132, 199, 0.05) 100%);
+  border: 1.5px solid rgba(79, 70, 229, 0.18);
+  padding: 18px 20px;
+  margin-bottom: 20px;
 }
-  </style>
+.gap-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.gap-metric-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 12px 10px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.gap-metric-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.gap-sup-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+.gap-sup-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-xs);
+}
+
+/* =========================================================================
+   FEATURE 2: AI VOICE ASSISTANT & AUDIO WAVE STYLES
+   ========================================================================= */
+.voice-wave-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 48px;
+  margin: 14px 0;
+}
+.voice-wave-bar {
+  width: 5px;
+  height: 14px;
+  border-radius: 9999px;
+  background: linear-gradient(to top, var(--primary), #818cf8);
+  animation: wavePulse 0.9s ease-in-out infinite alternate;
+}
+.voice-wave-bar:nth-child(2) { animation-delay: 0.15s; height: 26px; }
+.voice-wave-bar:nth-child(3) { animation-delay: 0.3s; height: 42px; }
+.voice-wave-bar:nth-child(4) { animation-delay: 0.45s; height: 30px; }
+.voice-wave-bar:nth-child(5) { animation-delay: 0.2s; height: 18px; }
+@keyframes wavePulse {
+  0% { transform: scaleY(0.4); opacity: 0.5; }
+  100% { transform: scaleY(1.3); opacity: 1; }
+}
+
+.voice-mic-circle {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  margin: 0 auto 12px;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  animation: voiceMicGlow 1.5s infinite;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease;
+}
+.voice-mic-circle:active {
+  transform: scale(0.95);
+}
+@keyframes voiceMicGlow {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.voice-ai-preview-card {
+  background: var(--bg-subtle);
+  border: 1.5px dashed var(--primary);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 14px;
+  text-align: right;
+  direction: rtl;
+}
+
+/* =========================================================================
+   FEATURE 3: EXECUTIVE BOARDROOM REPORT PRINTABLE STYLES
+   ========================================================================= */
+.boardroom-paper {
+  background: #ffffff;
+  color: #0f172a;
+  padding: 32px 36px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  direction: rtl;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.boardroom-header {
+  border-bottom: 2.5px solid #4338ca;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.boardroom-seal {
+  display: inline-block;
+  border: 2px solid #059669;
+  color: #059669;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.boardroom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 12.5px;
+}
+.boardroom-table th {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 9px 10px;
+  font-weight: 800;
+  color: #1e293b;
+  text-align: right;
+}
+.boardroom-table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  text-align: right;
+}
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #boardroomPrintArea, #boardroomPrintArea * {
+    visibility: visible !important;
+  }
+  #boardroomPrintArea {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -2913,36 +3097,69 @@ html[dir="ltr"] .notif-dropdown-menu {
           </div>
         </div>
 
-        <!-- Feature 2: Executive Run-Rate & Projections Banner -->
-        <div class="card-section run-rate-card" id="runRateAnalyticsCard" style="margin-bottom:18px; padding:16px 20px; border-radius:14px; background:linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(2,132,199,0.06) 100%); border:1px solid rgba(79,70,229,0.18);">
+        <!-- Feature 1: Enterprise Gap-to-Target Recovery Engine -->
+        <div class="card-section gap-engine-card" id="runRateAnalyticsCard">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div style="display:flex; align-items:center; gap:12px;">
-              <div style="width:42px; height:42px; border-radius:10px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 12px rgba(79,70,229,0.3);">
-                🔮
+              <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #4338ca, #6366f1); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 4px 14px rgba(79,70,229,0.35);">
+                🎯
               </div>
               <div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <span style="font-weight:800; font-size:14px; color:var(--text-main);" id="lblRunRateTitle">التنبؤ الذكي بنهاية الشهر (Run-Rate Forecast)</span>
+                  <span style="font-weight:900; font-size:15px; color:var(--text-main);" id="lblRunRateTitle">محرك سد الفجوة والتنبؤ بالإغلاق (Gap-to-Target Engine)</span>
                   <span id="badgeRunRateStatus" class="badge badge-success">في المسار الصحيح 🟢</span>
                 </div>
                 <div style="font-size:12px; color:var(--text-muted); margin-top:2px;" id="lblRunRateSubtitle">
-                  بناءً على وتيرة المبيعات في الأيام المنقضية ومقارنتها بالأيام المتبقية في الشهر
+                  تحليل حسابي دقيق لمعدل البيع المطلوب يومياً لإغلاق التارجت 100% بناءً على وتيرة المبيعات والأيام المتبقية
                 </div>
               </div>
             </div>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(105px, 1fr)); gap:10px; width:100%; margin-top:12px;">
-              <div style="text-align:center; background:var(--bg-card); border:1px solid var(--border-color); padding:10px 8px; border-radius:10px; box-shadow:var(--shadow-xs);">
-                <div style="font-size:11px; color:var(--text-muted); font-weight:700;" id="lblProjectedSales">المبيعات المتوقعة</div>
-                <div style="font-size:15.5px; font-weight:900; color:var(--primary); margin-top:2px;" id="valProjectedSales">0 ج.م</div>
-              </div>
-              <div style="text-align:center; background:var(--bg-card); border:1px solid var(--border-color); padding:10px 8px; border-radius:10px; box-shadow:var(--shadow-xs);">
-                <div style="font-size:11px; color:var(--text-muted); font-weight:700;" id="lblProjectedPct">نسبة الإنجاز</div>
-                <div style="font-size:15.5px; font-weight:900; color:var(--success); margin-top:2px;" id="valProjectedPct">0%</div>
-              </div>
-              <div style="text-align:center; background:var(--bg-card); border:1px solid var(--border-color); padding:10px 8px; border-radius:10px; box-shadow:var(--shadow-xs);">
-                <div style="font-size:11px; color:var(--text-muted); font-weight:700;" id="lblRequiredDailyPace">المطلوب يومياً</div>
-                <div style="font-size:15.5px; font-weight:900; color:var(--warning); margin-top:2px;" id="valRequiredDailyPace">0 ج.م / يوم</div>
-              </div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-purple btn-sm" onclick="sendGapPlanWhatsApp()" title="إرسال خطة سد الفجوة وتارجت اليوم للمشرفين عبر الواتساب" style="font-weight:800;">
+                <span>📲</span> خطة سد الفجوة للمشرفين
+              </button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="openBoardroomReportModal()" title="توليد تقرير الإغلاق المالي لمجلس الإدارة" style="font-weight:800;">
+                <span>🏢</span> تقرير مجلس الإدارة
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Main Metric Indicators -->
+          <div class="gap-metric-grid">
+            <div class="gap-metric-box">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">المبيعات المحققة</div>
+              <div style="font-size:16px; font-weight:900; color:var(--primary); margin-top:3px;" id="valActualSalesSoFar">0 ج.م</div>
+              <div style="font-size:10.5px; color:var(--primary); font-weight:800; margin-top:2px;" id="valProjectedPct">0% إنجاز</div>
+            </div>
+
+            <div class="gap-metric-box">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">الفجوة المتبقية للتارجت</div>
+              <div style="font-size:16px; font-weight:900; color:var(--danger); margin-top:3px;" id="valGapRemaining">0 ج.م</div>
+              <div style="font-size:10.5px; color:var(--text-muted); font-weight:700; margin-top:2px;" id="valRemainingDaysCount">متبقي -- يوم</div>
+            </div>
+
+            <div class="gap-metric-box">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">المطلوب بيعه يومياً</div>
+              <div style="font-size:16px; font-weight:900; color:var(--warning); margin-top:3px;" id="valRequiredDailyPace">0 ج.م / يوم</div>
+              <div style="font-size:10.5px; color:var(--text-muted); font-weight:700; margin-top:2px;">لتحقيق 100%</div>
+            </div>
+
+            <div class="gap-metric-box">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">المبيعات المتوقعة لنهاية الشهر</div>
+              <div style="font-size:16px; font-weight:900; color:var(--success); margin-top:3px;" id="valProjectedSales">0 ج.م</div>
+              <div style="font-size:10.5px; color:var(--text-muted); font-weight:700; margin-top:2px;" id="valPaceRatio">وتيرة البيع الحالية</div>
+            </div>
+          </div>
+
+          <!-- Supervisor-by-Supervisor Daily Pace & Target Recovery Table -->
+          <div id="gapSupervisorBreakdownSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed rgba(79,70,229,0.2);">
+            <div style="font-size:12.5px; font-weight:800; color:var(--text-main); margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+              <span>📊 معدل البيع المطلوب يومياً من كل مشرف لسد فجوته:</span>
+              <span style="font-size:11px; color:var(--primary); font-weight:700;" id="gapRemainingDaysSubtext"></span>
+            </div>
+            <div id="gapSupervisorsListContainer">
+              <!-- Dynamically populated by renderRunRateAnalytics() -->
             </div>
           </div>
         </div>
@@ -3692,6 +3909,10 @@ html[dir="ltr"] .notif-dropdown-menu {
         <span class="fab-option-icon" style="background:var(--primary-light); color:var(--primary);">💰</span>
         <span id="fabOptSaleText">تسجيل بيع جديد</span>
       </button>
+      <button class="fab-option-chip" onclick="openVoiceAiModal('sale'); toggleFabMenu();">
+        <span class="fab-option-icon" style="background:#fee2e2; color:#ef4444;">🎙️</span>
+        <span id="fabOptVoiceText">إدخال صوتي ذكي (AI)</span>
+      </button>
       <button class="fab-option-chip" onclick="openVisitModal(); toggleFabMenu();">
         <span class="fab-option-icon" style="background:var(--success-light); color:var(--success);">🚗</span>
         <span id="fabOptVisitText">تقرير زيارة ميدانية</span>
@@ -3722,6 +3943,16 @@ html[dir="ltr"] .notif-dropdown-menu {
         <button onclick="closeMobileMoreSheet()" style="background:none; border:none; font-size:20px; color:var(--text-muted); cursor:pointer; padding:4px;">✕</button>
       </div>
       <div class="sheet-grid">
+        <div class="sheet-action-card" onclick="openVoiceAiModal('sale'); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#fee2e2; color:#ef4444;">🎙️</div>
+          <div class="sheet-action-title">المساعد الصوتي</div>
+          <div class="sheet-action-sub">تسجيل بالصوت المباشر</div>
+        </div>
+        <div class="sheet-action-card" onclick="openBoardroomReportModal(); closeMobileMoreSheet();">
+          <div class="sheet-action-icon" style="background:#eff6ff; color:#3b82f6;">🏢</div>
+          <div class="sheet-action-title">تقرير مجلس الإدارة</div>
+          <div class="sheet-action-sub">تصدير PDF والواتساب</div>
+        </div>
         <div class="sheet-action-card" onclick="openShareLinksModal(); closeMobileMoreSheet();">
           <div class="sheet-action-icon" style="background:#ecfdf5; color:#10b981;">📲</div>
           <div class="sheet-action-title" id="sheetCardWaLinks">روابط المشرفين</div>
@@ -3892,7 +4123,10 @@ html[dir="ltr"] .notif-dropdown-menu {
   <div class="modal-overlay" id="saleModal">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title" id="saleModalTitle">تسجيل عملية بيع جديدة 💰</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="modal-title" id="saleModalTitle">تسجيل عملية بيع جديدة 💰</div>
+          <button type="button" class="btn btn-outline btn-xs" onclick="openVoiceAiModal('sale')" style="border-radius:20px; font-size:11px; padding:3px 8px; color:#ef4444; border-color:rgba(239,68,68,0.3);">🎙️ إدخال صوتي</button>
+        </div>
         <button class="modal-close" onclick="closeModal('saleModal')">&times;</button>
       </div>
       <form id="saleForm" onsubmit="handleSaveSale(event)">
@@ -3975,7 +4209,10 @@ html[dir="ltr"] .notif-dropdown-menu {
   <div class="modal-overlay" id="visitModal">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title" id="visitModalTitle">تسجيل تقرير زيارة ميدانية 🚗</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="modal-title" id="visitModalTitle">تسجيل تقرير زيارة ميدانية 🚗</div>
+          <button type="button" class="btn btn-outline btn-xs" onclick="openVoiceAiModal('visit')" style="border-radius:20px; font-size:11px; padding:3px 8px; color:#ef4444; border-color:rgba(239,68,68,0.3);">🎙️ إدخال صوتي</button>
+        </div>
         <button class="modal-close" onclick="closeModal('visitModal')">&times;</button>
       </div>
       <form id="visitForm" onsubmit="handleSaveVisit(event)">
@@ -4891,6 +5128,97 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div style="display:flex; justify-content:center; gap:8px;">
           <button type="button" class="btn btn-primary" onclick="saveQuickPin()">حفظ رمز PIN</button>
           <button type="button" class="btn btn-outline" onclick="removeQuickPin()">إلغاء تفعيل الـ PIN</button>
+        </div>
+      </div>
+    </div>
+  <!-- Modal: AI Voice Assistant Dictation -->
+  <div class="modal-overlay" id="voiceEntryModal">
+    <div class="modal-dialog" style="max-width: 520px; text-align: center;">
+      <div class="modal-header">
+        <div class="modal-title" id="voiceModalTitle">🎙️ المساعد الصوتي الذكي (AI Voice Entry)</div>
+        <button class="modal-close" onclick="closeVoiceAiModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 22px 18px;">
+        <button type="button" class="voice-mic-circle" id="voiceAiMicBtn" onclick="toggleVoiceAiRecording()">
+          <span id="voiceMicIcon">🎙️</span>
+        </button>
+        <div id="voiceAiStatusText" style="font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">
+          اضغط على الميكروفون وتحدث بصوتك مباشرة
+        </div>
+        <div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;" id="voiceAiHelperText">
+          مثال: "سجلت بيع 25 ألف لفرع الهرم كاش شواحن" أو "زيارة ميدانية لمعرض أكتوبر متابعة ستاند العرض"
+        </div>
+
+        <div class="voice-wave-container" id="voiceWaveContainer" style="display: none;">
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; min-height: 52px; font-size: 13px; color: var(--text-main); text-align: right; margin-bottom: 12px; line-height: 1.4;" id="voiceLiveTranscript">
+          <span style="color: var(--text-subtle); font-style: italic;">النص المنطوق سيظهر هنا لحظياً أثناء التحدث...</span>
+        </div>
+
+        <div class="voice-ai-preview-card" id="voiceParsedPreview" style="display: none;">
+          <div style="font-weight: 900; font-size: 13px; color: var(--primary); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span>✨ البيانات المستخرجة بالذكاء الاصطناعي:</span>
+            <span class="badge badge-primary" id="voiceParsedTypeBadge">بيع جديد 💰</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; margin-bottom: 12px;">
+            <div><strong>الفرع / العميل:</strong> <span id="voiceFieldBranch" style="color: var(--text-main); font-weight: 700;">-</span></div>
+            <div><strong>القيمة الإجمالية:</strong> <span id="voiceFieldAmount" style="color: var(--success); font-weight: 900;">-</span></div>
+            <div><strong>التصنيف:</strong> <span id="voiceFieldCategory" style="color: var(--text-main);">-</span></div>
+            <div><strong>المشرف:</strong> <span id="voiceFieldSupervisor" style="color: var(--text-main);">-</span></div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-primary btn-sm" style="flex: 1;" onclick="confirmAndSaveVoiceData()">
+              ✅ تأكيد وحفظ العملية فوراً
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="editVoiceDataInModal()">
+              ✏️ تعديل في النموذج
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Executive Boardroom Report -->
+  <div class="modal-overlay" id="boardroomReportModal">
+    <div class="modal-dialog" style="max-width: 900px; max-height: 92vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(67,56,202,0.1), rgba(2,132,199,0.08)); border-bottom: 1.5px solid rgba(67,56,202,0.25);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 22px;">🏢</span>
+          <div>
+            <div class="modal-title" style="font-size: 15.5px;">تقرير الإغلاق التنفيذي لمجلس الإدارة (Executive Boardroom Report)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">وثيقة رسمية عالية الدقة موجهة للإدارة العليا ورئيس قطاع المبيعات</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('boardroomReportModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; background: var(--bg-card); padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border-color);">
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
+            📄 تقرير شهر <span id="brMonthYearLabel" style="color:var(--text-main); font-weight:900;">أكتوبر 2026</span> - قطاع الجيزة الكبرى والصعيد
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="printBoardroomReport()">
+              🖨️ طباعة / حفظ كـ PDF رسمي
+            </button>
+            <button type="button" class="btn btn-success btn-sm" onclick="sendBoardroomReportWhatsApp()" style="background:#25d366; border-color:#25d366; color:#fff;">
+              📲 إرسال للواتساب التنفيذي
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="copyBoardroomText()">
+              📋 نسخ النص
+            </button>
+          </div>
+        </div>
+
+        <div class="boardroom-paper" id="boardroomPrintArea">
+          <!-- Populated dynamically by renderBoardroomReport() -->
         </div>
       </div>
     </div>
@@ -11847,7 +12175,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       );
     }
 
-    // Feature 2: Sales Intelligence & Forecasting
+    // =========================================================================
+    // FEATURE 1: GAP-TO-TARGET RECOVERY ENGINE & FORECASTING
+    // =========================================================================
     function renderRunRateAnalytics() {
       const card = document.getElementById('runRateAnalyticsCard');
       if (!card) return;
@@ -11865,7 +12195,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         const sup = AppState.supervisors.find(s => Number(s.id) === activeSupId);
         targetVal = sup ? Number(sup.target || 0) : 0;
       } else {
-        targetVal = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0);
+        targetVal = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0) || (AppState.manager && AppState.manager.target) || 2500000;
       }
 
       const actualSales = salesSet.reduce((sum, s) => sum + Number(s.amount || 0), 0);
@@ -11877,14 +12207,27 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const dailyPace = actualSales / currentDay;
       const projectedSales = Math.round(dailyPace * totalDaysInMonth);
       const projectedPct = targetVal > 0 ? ((projectedSales / targetVal) * 100).toFixed(1) : 0;
+      const actualPct = targetVal > 0 ? ((actualSales / targetVal) * 100).toFixed(1) : 0;
       const remainingToTarget = Math.max(0, targetVal - actualSales);
       const requiredDailyPace = Math.round(remainingToTarget / remainingDays);
+
+      const elAct = document.getElementById('valActualSalesSoFar');
+      if (elAct) elAct.textContent = formatCurrency(actualSales);
+
+      const elGap = document.getElementById('valGapRemaining');
+      if (elGap) elGap.textContent = formatCurrency(remainingToTarget);
+
+      const elRemDays = document.getElementById('valRemainingDaysCount');
+      if (elRemDays) elRemDays.textContent = isEn ? `${remainingDays} days left (${currentDay}/${totalDaysInMonth})` : `متبقي ${remainingDays} يوم (اليوم ${currentDay} من ${totalDaysInMonth})`;
 
       const elProjSales = document.getElementById('valProjectedSales');
       if (elProjSales) elProjSales.textContent = formatCurrency(projectedSales);
 
       const elProjPct = document.getElementById('valProjectedPct');
-      if (elProjPct) elProjPct.textContent = `${projectedPct}%`;
+      if (elProjPct) elProjPct.textContent = `${actualPct}% ${isEn ? 'achieved' : 'محقق'}`;
+
+      const elPaceRatio = document.getElementById('valPaceRatio');
+      if (elPaceRatio) elPaceRatio.textContent = isEn ? `Current Pace: ${formatCurrency(Math.round(dailyPace))}/day` : `الوتيرة الحالية: ${formatCurrency(Math.round(dailyPace))}/يوم`;
 
       const elReqPace = document.getElementById('valRequiredDailyPace');
       if (elReqPace) elReqPace.textContent = formatCurrency(requiredDailyPace) + (isEn ? ' / day' : ' / يوم');
@@ -11898,11 +12241,744 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         } else if (numPct >= 80) {
           badge.className = 'badge badge-primary';
           badge.textContent = isEn ? '🟢 On Track' : '🟢 في المسار الصحيح';
-        } else {
+        } else if (numPct >= 50) {
           badge.className = 'badge badge-warning';
           badge.textContent = isEn ? '⚠️ Needs Acceleration' : '⚠️ يحتاج تسريع الوتيرة';
+        } else {
+          badge.className = 'badge badge-danger';
+          badge.textContent = isEn ? '🚨 Critical Gap' : '🚨 فجوة حرجة';
         }
       }
+
+      // Populate Supervisor-by-Supervisor Daily Pace & Recovery breakdown
+      const container = document.getElementById('gapSupervisorsListContainer');
+      const subtext = document.getElementById('gapRemainingDaysSubtext');
+      if (subtext) {
+        subtext.textContent = isEn ? `Target End: Day ${totalDaysInMonth} (${remainingDays} days remaining)` : `نهاية الدورة البيعية: يوم ${totalDaysInMonth} (متبقي ${remainingDays} يوم)`;
+      }
+
+      if (container) {
+        let html = '';
+        AppState.supervisors.forEach((sup, idx) => {
+          const sSales = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+          const sTgt = Number(sup.target || 0);
+          const sGap = Math.max(0, sTgt - sSales);
+          const sReqDaily = Math.round(sGap / remainingDays);
+          const sCurDaily = Math.round(sSales / currentDay);
+          const sPct = sTgt > 0 ? ((sSales / sTgt) * 100).toFixed(1) : 0;
+          const sProj = Math.round(sCurDaily * totalDaysInMonth);
+          const sProjPct = sTgt > 0 ? ((sProj / sTgt) * 100).toFixed(1) : 0;
+
+          let statusBadge = '<span class="badge badge-success" style="font-size:10px;">🟢 مسار ممتاز</span>';
+          if (sProjPct < 60) statusBadge = '<span class="badge badge-danger" style="font-size:10px;">🚨 عجز حرج</span>';
+          else if (sProjPct < 85) statusBadge = '<span class="badge badge-warning" style="font-size:10px;">⚠️ يحتاج تسريع</span>';
+
+          html += `
+            <div class="gap-sup-card">
+              <div style="display:flex; align-items:center; gap:10px; min-width:200px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:var(--primary-light); color:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px;">
+                  ${idx + 1}
+                </div>
+                <div>
+                  <div style="font-weight:800; font-size:13px; color:var(--text-main);">${escapeHtml(sup.name)}</div>
+                  <div style="font-size:11px; color:var(--text-muted);">${escapeHtml(sup.area || 'القطاع الميداني')}</div>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+                <div style="text-align:center;">
+                  <div style="font-size:10.5px; color:var(--text-muted);">المحقق / التارجت</div>
+                  <div style="font-size:12.5px; font-weight:800; color:var(--text-main);">${formatCurrency(sSales)} <span style="font-size:11px; color:var(--text-muted);">/ ${formatCurrency(sTgt)}</span></div>
+                </div>
+
+                <div style="text-align:center;">
+                  <div style="font-size:10.5px; color:var(--text-muted);">الفجوة المتبقية</div>
+                  <div style="font-size:12.5px; font-weight:900; color:var(--danger);">${formatCurrency(sGap)}</div>
+                </div>
+
+                <div style="text-align:center; background:var(--bg-subtle); padding:4px 10px; border-radius:8px; border:1px solid var(--border-color);">
+                  <div style="font-size:10.5px; color:var(--warning); font-weight:700;">المطلوب يومياً</div>
+                  <div style="font-size:13px; font-weight:900; color:var(--warning);">${formatCurrency(sReqDaily)} / يوم</div>
+                </div>
+
+                <div style="text-align:center;">
+                  ${statusBadge}
+                  <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">نسبة ${sPct}%</div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      }
+    }
+
+    function sendGapPlanWhatsApp() {
+      const now = new Date();
+      const currentDay = Math.max(1, now.getDate());
+      const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const remainingDays = Math.max(1, totalDays - currentDay);
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || (AppState.manager && AppState.manager.target) || 2500000;
+      const totalGap = Math.max(0, totalTarget - totalSales);
+      const totalReqDaily = Math.round(totalGap / remainingDays);
+
+      let supDetails = '';
+      AppState.supervisors.forEach(sup => {
+        const sSales = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+        const sTgt = Number(sup.target || 0);
+        const sGap = Math.max(0, sTgt - sSales);
+        const sReqDaily = Math.round(sGap / remainingDays);
+        const sPct = sTgt > 0 ? ((sSales / sTgt) * 100).toFixed(1) : 0;
+        supDetails += `\n👤 *${sup.name}* (${sup.area || 'المشرف'}):\n` +
+          `   🎯 التارجت: ${formatCurrency(sTgt)} | المحقق: ${formatCurrency(sSales)} (${sPct}%)\n` +
+          `   🔻 الفجوة المتبقية: ${formatCurrency(sGap)}\n` +
+          `   ⚡ *المطلوب يومياً لتقفيل التارجت:* ${formatCurrency(sReqDaily)} / يوم\n`;
+      });
+
+      const msg = `🎯 *خطة سد الفجوة وتوزيع معدل البيع اليومي (Daily Target Recovery)*\n` +
+        `📅 *التاريخ:* ${now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n` +
+        `⏳ *الوقت المتبقي:* ${remainingDays} أيام على نهاية الشهر (يوم ${currentDay} من ${totalDays})\n` +
+        `👨‍💼 *إشراف وتوجيه:* أ / عبدالله أحمد إبراهيم (مدير عام القطاع)\n` +
+        `══════════════════\n` +
+        `💰 *إجمالي مبيعات القطاع المحققة:* ${formatCurrency(totalSales)}\n` +
+        `🎯 *إجمالي تارجت القطاع:* ${formatCurrency(totalTarget)}\n` +
+        `🔻 *إجمالي الفجوة المتبقية:* ${formatCurrency(totalGap)}\n` +
+        `🔥 *معدل القطاع المطلوب يومياً:* ${formatCurrency(totalReqDaily)} / يوم\n` +
+        `══════════════════\n` +
+        `📊 *توزيع الهدف اليومي المطلوب على السادة المشرفين:*` +
+        supDetails +
+        `══════════════════\n` +
+        `🚀 *التوجيه التنفيذي:* الالتزام الكامل بالنزول الميداني والتركيز على كبار العملاء لتغطية المعدل اليومي المطلوب فورياً.\n` +
+        `📱 المنظومة التنفيذية الذكية لمبيعات الجيزة والصعيد`;
+
+      const encoded = encodeURIComponent(msg);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+      showToast('جاري فتح الواتساب لمشاركة خطة سد الفجوة... 📲', 'success', 3000);
+    }
+
+    // =========================================================================
+    // FEATURE 2: AI VOICE ASSISTANT SYSTEM (VOICE-TO-SALE & VOICE-TO-VISIT)
+    // =========================================================================
+    let _voiceAiRecognition = null;
+    let _voiceAiType = 'sale';
+    let _voiceAiParsed = null;
+    let _isVoiceAiRecording = false;
+
+    function openVoiceAiModal(type = 'sale') {
+      _voiceAiType = type;
+      _voiceAiParsed = null;
+      _isVoiceAiRecording = false;
+
+      const title = document.getElementById('voiceModalTitle');
+      if (title) {
+        title.textContent = type === 'visit' 
+          ? '🎙️ المساعد الصوتي لتسجيل الزيارات (Voice Visit Entry)' 
+          : '🎙️ المساعد الصوتي لتسجيل المبيعات (Voice Sales Entry)';
+      }
+
+      const helper = document.getElementById('voiceAiHelperText');
+      if (helper) {
+        helper.textContent = type === 'visit'
+          ? 'مثال: "زيارة ميدانية لمعرض الهرم التزام بالستاند وتدريب المروج"'
+          : 'مثال: "سجلت بيع 25 ألف لفرع الهرم كاش شواحن" أو "بيع 15000 لمعرض فيصل كابلات"';
+      }
+
+      const transcriptBox = document.getElementById('voiceLiveTranscript');
+      if (transcriptBox) {
+        transcriptBox.innerHTML = '<span style="color:var(--text-subtle); font-style:italic;">اضغط على الميكروفون وتحدث بصوتك مباشرة...</span>';
+      }
+
+      const preview = document.getElementById('voiceParsedPreview');
+      if (preview) preview.style.display = 'none';
+
+      const waves = document.getElementById('voiceWaveContainer');
+      if (waves) waves.style.display = 'none';
+
+      const micBtn = document.getElementById('voiceAiMicBtn');
+      if (micBtn) micBtn.style.animation = 'none';
+
+      const stText = document.getElementById('voiceAiStatusText');
+      if (stText) stText.textContent = 'اضغط على الميكروفون وتحدث بصوتك مباشرة';
+
+      const m = document.getElementById('voiceEntryModal');
+      if (m) m.classList.add('open');
+    }
+
+    function closeVoiceAiModal() {
+      if (_voiceAiRecognition && _isVoiceAiRecording) {
+        try { _voiceAiRecognition.stop(); } catch(e){}
+      }
+      _isVoiceAiRecording = false;
+      const m = document.getElementById('voiceEntryModal');
+      if (m) m.classList.remove('open');
+    }
+
+    function toggleVoiceAiRecording() {
+      if (_isVoiceAiRecording) {
+        stopVoiceAiRecording();
+      } else {
+        startVoiceAiRecording();
+      }
+    }
+
+    function startVoiceAiRecording() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast('المتصفح لا يدعم التسجيل الصوتي المباشر، يرجى استخدام متصفح حديث (Chrome/Edge/Safari)', 'warning', 4000);
+        return;
+      }
+
+      try {
+        _voiceAiRecognition = new SpeechRecognition();
+        _voiceAiRecognition.lang = AppState.lang === 'en' ? 'en-US' : 'ar-EG';
+        _voiceAiRecognition.continuous = false;
+        _voiceAiRecognition.interimResults = true;
+
+        const micBtn = document.getElementById('voiceAiMicBtn');
+        const stText = document.getElementById('voiceAiStatusText');
+        const waves = document.getElementById('voiceWaveContainer');
+        const transcriptBox = document.getElementById('voiceLiveTranscript');
+
+        if (micBtn) micBtn.style.animation = 'voiceMicGlow 1.5s infinite';
+        if (stText) stText.textContent = '🔴 جاري الاستماع... تحدث الآن بكل وضوح';
+        if (waves) waves.style.display = 'flex';
+        _isVoiceAiRecording = true;
+
+        _voiceAiRecognition.onresult = (event) => {
+          let text = '';
+          for (let i = 0; i < event.results.length; i++) {
+            text += event.results[i][0].transcript;
+          }
+          if (transcriptBox) {
+            transcriptBox.innerHTML = `<strong>🗣️ المنطوق:</strong> ${escapeHtml(text)}`;
+          }
+          if (event.results[0].isFinal) {
+            handleVoiceAiFinalTranscript(text);
+          }
+        };
+
+        _voiceAiRecognition.onerror = (err) => {
+          console.error('Speech error:', err);
+          stopVoiceAiRecording();
+          if (stText) stText.textContent = 'حدث خطأ في الميكروفون، اضغط للمحاولة مرة أخرى';
+          showToast('تنبيه الميكروفون: تأكد من منح إذن الصوت للمتصفح', 'warning', 3500);
+        };
+
+        _voiceAiRecognition.onend = () => {
+          stopVoiceAiRecording();
+        };
+
+        _voiceAiRecognition.start();
+      } catch (err) {
+        console.error('Voice start error:', err);
+        stopVoiceAiRecording();
+      }
+    }
+
+    function stopVoiceAiRecording() {
+      _isVoiceAiRecording = false;
+      const micBtn = document.getElementById('voiceAiMicBtn');
+      const stText = document.getElementById('voiceAiStatusText');
+      const waves = document.getElementById('voiceWaveContainer');
+
+      if (micBtn) micBtn.style.animation = 'none';
+      if (waves) waves.style.display = 'none';
+      if (stText && !_voiceAiParsed) {
+        stText.textContent = 'انتهى الاستماع. اضغط على الميكروفون للتحدث مجدداً';
+      }
+    }
+
+    function parseArabicVoiceSalesCommand(text, defaultType = 'sale') {
+      if (!text) return null;
+      const clean = text.trim();
+
+      // 1. Amount extraction: digits or spoken words
+      let amount = 0;
+      const digitMatch = clean.match(/(\d+[\d,.]*)/);
+      if (digitMatch) {
+        amount = parseFloat(digitMatch[1].replace(/,/g, ''));
+      }
+
+      const arabicNumberWords = [
+        { word: 'مليون', val: 1000000 },
+        { word: 'نصف مليون', val: 500000 },
+        { word: 'ميتين ألف', val: 200000 },
+        { word: 'مائتي ألف', val: 200000 },
+        { word: 'مائة وخمسين ألف', val: 150000 },
+        { word: 'مية وخمسين ألف', val: 150000 },
+        { word: 'مائة ألف', val: 100000 },
+        { word: 'مية ألف', val: 100000 },
+        { word: 'تسعين ألف', val: 90000 },
+        { word: 'ثمانين ألف', val: 80000 },
+        { word: 'سبعين ألف', val: 70000 },
+        { word: 'ستين ألف', val: 60000 },
+        { word: 'خمسين ألف', val: 50000 },
+        { word: 'أربعين ألف', val: 40000 },
+        { word: 'تلاتين ألف', val: 30000 },
+        { word: 'ثلاثين ألف', val: 30000 },
+        { word: 'خمسة وعشرين ألف', val: 25000 },
+        { word: 'عشرين ألف', val: 20000 },
+        { word: 'خمسة عشر ألف', val: 15000 },
+        { word: 'خمستاشر ألف', val: 15000 },
+        { word: 'عشرة آلاف', val: 10000 },
+        { word: 'عشر آلاف', val: 10000 },
+        { word: 'سبعة آلاف', val: 7000 },
+        { word: 'خمسة آلاف', val: 5000 },
+        { word: 'أربعة آلاف', val: 4000 },
+        { word: 'تلاتة آلاف', val: 3000 },
+        { word: 'ثلاثة آلاف', val: 3000 },
+        { word: 'ألفين', val: 2000 },
+        { word: 'ألف', val: 1000 }
+      ];
+
+      if (!amount || amount === 0) {
+        for (const num of arabicNumberWords) {
+          if (clean.includes(num.word)) {
+            amount = num.val;
+            break;
+          }
+        }
+      }
+
+      // 2. Branch matching
+      let matchedBranch = null;
+      const branches = AppState.branches || [];
+      for (const b of branches) {
+        const bName = b.name.toLowerCase();
+        const parts = bName.split(/\s+/).filter(p => p.length >= 3);
+        for (const p of parts) {
+          if (clean.toLowerCase().includes(p)) {
+            matchedBranch = b;
+            break;
+          }
+        }
+        if (matchedBranch) break;
+      }
+
+      if (!matchedBranch) {
+        const commonNames = ['الهرم', 'فيصل', 'أكتوبر', 'الشيخ زايد', 'بني سويف', 'المنيا', 'سوهاج', 'أسيوط', 'مول العرب', 'مول مصر'];
+        for (const name of commonNames) {
+          if (clean.includes(name)) {
+            matchedBranch = { name: 'فرع ' + name, supervisorId: 1 };
+            break;
+          }
+        }
+      }
+
+      // 3. Category matching
+      let category = 'شواحن وكابلات';
+      if (clean.includes('هاتف') || clean.includes('موبايل') || clean.includes('هواتف')) category = 'هواتف ذكية';
+      else if (clean.includes('سماع') || clean.includes('ايربودز')) category = 'سماعات وايرلس';
+      else if (clean.includes('باور') || clean.includes('بنك')) category = 'باور بانك';
+      else if (clean.includes('سكرين') || clean.includes('جراب') || clean.includes('حماية')) category = 'حماية شاشات وجرابات';
+      else if (clean.includes('ساع')) category = 'ساعات ذكية';
+      else if (clean.includes('إكسسوار') || clean.includes('اكسسوار')) category = 'شواحن وكابلات';
+
+      // 4. Supervisor resolution
+      let supervisorId = 1;
+      if (matchedBranch && matchedBranch.supervisorId) {
+        supervisorId = Number(matchedBranch.supervisorId);
+      } else if (AppState.currentUser && AppState.currentUser.role === 'supervisor') {
+        supervisorId = Number(AppState.currentUser.supervisorId || 1);
+      } else if (AppState.activeSupervisorId && AppState.activeSupervisorId !== 'MANAGER' && AppState.activeSupervisorId !== 'ALL') {
+        supervisorId = Number(AppState.activeSupervisorId);
+      }
+
+      return {
+        rawText: clean,
+        type: defaultType,
+        amount: amount || 5000,
+        branchName: matchedBranch ? matchedBranch.name : 'فرع الهرم الرئيسي',
+        category: category,
+        supervisorId: supervisorId,
+        date: new Date().toISOString().split('T')[0],
+        qty: 1
+      };
+    }
+
+    function handleVoiceAiFinalTranscript(text) {
+      _voiceAiParsed = parseArabicVoiceSalesCommand(text, _voiceAiType);
+      if (!_voiceAiParsed) return;
+
+      const stText = document.getElementById('voiceAiStatusText');
+      if (stText) stText.textContent = '✨ تم استخراج تفاصيل العملية بنجاح!';
+
+      const preview = document.getElementById('voiceParsedPreview');
+      const bBadge = document.getElementById('voiceParsedTypeBadge');
+      const fBranch = document.getElementById('voiceFieldBranch');
+      const fAmount = document.getElementById('voiceFieldAmount');
+      const fCat = document.getElementById('voiceFieldCategory');
+      const fSup = document.getElementById('voiceFieldSupervisor');
+
+      if (bBadge) bBadge.textContent = _voiceAiType === 'visit' ? 'تقرير زيارة 🚗' : 'بيع جديد 💰';
+      if (fBranch) fBranch.textContent = _voiceAiParsed.branchName;
+      if (fAmount) fAmount.textContent = _voiceAiType === 'visit' ? 'تمت الزيارة' : formatCurrency(_voiceAiParsed.amount);
+      if (fCat) fCat.textContent = _voiceAiParsed.category;
+
+      const supObj = AppState.supervisors.find(s => Number(s.id) === Number(_voiceAiParsed.supervisorId));
+      if (fSup) fSup.textContent = supObj ? supObj.name : `مشرف ${_voiceAiParsed.supervisorId}`;
+
+      if (preview) preview.style.display = 'block';
+      showToast('تم تحليل الأمر الصوتي بالذكاء الاصطناعي 🧠', 'success', 2500);
+    }
+
+    function confirmAndSaveVoiceData() {
+      if (!_voiceAiParsed) return;
+      if (_voiceAiType === 'visit') {
+        const newVisit = {
+          id: Date.now(),
+          supervisorId: _voiceAiParsed.supervisorId,
+          date: _voiceAiParsed.date,
+          branch: _voiceAiParsed.branchName,
+          purpose: 'متابعة ميدانية وحصر مبيعات',
+          rating: 'ممتاز',
+          sales: 0,
+          notes: `[تسجيل صوتي ذكي]: ${_voiceAiParsed.rawText}`,
+          lat: '',
+          lng: ''
+        };
+        AppState.visits.unshift(newVisit);
+        saveState();
+        syncStateToGoogleSheets();
+        renderAll();
+        closeVoiceAiModal();
+        showToast('تم حفظ الزيارة الميدانية بنجاح! 🚗', 'success', 3000);
+      } else {
+        const newSale = {
+          id: Date.now(),
+          date: _voiceAiParsed.date,
+          supervisorId: _voiceAiParsed.supervisorId,
+          branch: _voiceAiParsed.branchName,
+          promoter: 'مروج معتمد',
+          category: _voiceAiParsed.category,
+          qty: 1,
+          amount: _voiceAiParsed.amount,
+          invoice: 'VOICE-' + Date.now().toString().slice(-4),
+          notes: `[تسجيل صوتي ذكي]: ${_voiceAiParsed.rawText}`
+        };
+        AppState.sales.unshift(newSale);
+        saveState();
+        syncStateToGoogleSheets();
+        renderAll();
+        closeVoiceAiModal();
+        showToast(`تم حفظ عملية البيع بقيمة ${formatCurrency(_voiceAiParsed.amount)} بنجاح! 💰`, 'success', 3000);
+      }
+    }
+
+    function editVoiceDataInModal() {
+      if (!_voiceAiParsed) return;
+      closeVoiceAiModal();
+      if (_voiceAiType === 'visit') {
+        openVisitModal();
+        setTimeout(() => {
+          const sup = document.getElementById('modalVisitSup');
+          const date = document.getElementById('modalVisitDate');
+          const branch = document.getElementById('modalVisitBranch');
+          const notes = document.getElementById('modalVisitNotes');
+          if (sup) sup.value = _voiceAiParsed.supervisorId;
+          if (date) date.value = _voiceAiParsed.date;
+          if (branch) branch.value = _voiceAiParsed.branchName;
+          if (notes) notes.value = _voiceAiParsed.rawText;
+        }, 100);
+      } else {
+        openSaleModal();
+        setTimeout(() => {
+          const sup = document.getElementById('modalSaleSup');
+          const date = document.getElementById('modalSaleDate');
+          const branch = document.getElementById('modalSaleBranch');
+          const amount = document.getElementById('modalSaleAmount');
+          const cat = document.getElementById('modalSaleCategory');
+          const notes = document.getElementById('modalSaleNotes');
+          if (sup) sup.value = _voiceAiParsed.supervisorId;
+          if (date) date.value = _voiceAiParsed.date;
+          if (branch) branch.value = _voiceAiParsed.branchName;
+          if (amount) amount.value = _voiceAiParsed.amount;
+          if (cat) cat.value = _voiceAiParsed.category;
+          if (notes) notes.value = _voiceAiParsed.rawText;
+        }, 100);
+      }
+    }
+
+    // =========================================================================
+    // FEATURE 3: EXECUTIVE BOARDROOM REPORT GENERATOR & EXPORT
+    // =========================================================================
+    function openBoardroomReportModal() {
+      renderBoardroomReport();
+      const m = document.getElementById('boardroomReportModal');
+      if (m) m.classList.add('open');
+    }
+
+    function renderBoardroomReport() {
+      const area = document.getElementById('boardroomPrintArea');
+      if (!area) return;
+
+      const now = new Date();
+      const currentDay = Math.max(1, now.getDate());
+      const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const remainingDays = Math.max(1, totalDays - currentDay);
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || (AppState.manager && AppState.manager.target) || 2500000;
+      const totalGap = Math.max(0, totalTarget - totalSales);
+      const dailyPace = totalSales / currentDay;
+      const projectedSales = Math.round(dailyPace * totalDays);
+      const totalPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : 0;
+      const projPct = totalTarget > 0 ? ((projectedSales / totalTarget) * 100).toFixed(1) : 0;
+      const reqDaily = Math.round(totalGap / remainingDays);
+
+      const monthName = now.toLocaleDateString('ar-EG', { month: 'long', year: 'numeric' });
+      const fullDate = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const mgrName = (AppState.manager && AppState.manager.name) || "أ / عبدالله أحمد إبراهيم";
+      const mgrTitle = (AppState.manager && AppState.manager.title) || "مدير عام قطاع الجيزة الكبرى والصعيد";
+
+      const brLabel = document.getElementById('brMonthYearLabel');
+      if (brLabel) brLabel.textContent = monthName;
+
+      // Supervisors sorted by achievement percentage (Leaderboard)
+      const sortedSups = AppState.supervisors.map(sup => {
+        const sSales = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+        const sTgt = Number(sup.target || 0);
+        const sGap = Math.max(0, sTgt - sSales);
+        const sPct = sTgt > 0 ? ((sSales / sTgt) * 100) : 0;
+        const sReq = Math.round(sGap / remainingDays);
+        return { ...sup, sSales, sTgt, sGap, sPct, sReq };
+      }).sort((a, b) => b.sPct - a.sPct);
+
+      let supRows = '';
+      const medals = ['🥇 المركز الأول', '🥈 المركز الثاني', '🥉 المركز الثالث'];
+      sortedSups.forEach((sup, idx) => {
+        const medal = medals[idx] || `المركز ${idx + 1}`;
+        let evalTag = '<span style="color:#059669; font-weight:800;">ممتاز 🌟</span>';
+        if (sup.sPct < 50) evalTag = '<span style="color:#dc2626; font-weight:800;">يحتاج دعم عاجل ⚠️</span>';
+        else if (sup.sPct < 80) evalTag = '<span style="color:#d97706; font-weight:800;">متوسط / قيد التقدم</span>';
+
+        supRows += `
+          <tr>
+            <td style="font-weight:800;">${idx + 1}</td>
+            <td style="font-weight:900; color:#4338ca;">${escapeHtml(sup.name)}</td>
+            <td>${escapeHtml(sup.area || 'القطاع')}</td>
+            <td style="font-weight:700;">${formatCurrency(sup.sTgt)}</td>
+            <td style="font-weight:900; color:#059669;">${formatCurrency(sup.sSales)}</td>
+            <td style="font-weight:900; color:${sup.sPct >= 80 ? '#059669' : '#d97706'};">${sup.sPct.toFixed(1)}%</td>
+            <td style="font-weight:800; color:#dc2626;">${formatCurrency(sup.sGap)}</td>
+            <td style="font-weight:800; color:#b45309;">${formatCurrency(sup.sReq)} / يوم</td>
+            <td>${medal}</td>
+            <td>${evalTag}</td>
+          </tr>
+        `;
+      });
+
+      // VIP branches Pareto 80/20
+      const branchTotals = {};
+      AppState.sales.forEach(s => {
+        const b = s.branch || 'أخرى';
+        branchTotals[b] = (branchTotals[b] || 0) + Number(s.amount || 0);
+      });
+      const topBranches = Object.entries(branchTotals)
+        .map(([name, total]) => ({ name, total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 5);
+
+      let branchRows = '';
+      topBranches.forEach((b, idx) => {
+        const sharePct = totalSales > 0 ? ((b.total / totalSales) * 100).toFixed(1) : 0;
+        branchRows += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td style="font-weight:800;">${escapeHtml(b.name)}</td>
+            <td style="font-weight:900; color:#059669;">${formatCurrency(b.total)}</td>
+            <td style="font-weight:800;">${sharePct}%</td>
+            <td><span class="badge badge-success" style="font-size:10px;">⭐ كبار الموزعين (VIP)</span></td>
+          </tr>
+        `;
+      });
+
+      area.innerHTML = `
+        <div class="boardroom-header">
+          <div>
+            <div style="font-size:20px; font-weight:900; color:#1e1b4b; letter-spacing:-0.5px;">
+              شركة بي تو بي للتوزيع والتوكيلات التجارية | 2B & Devia Egypt
+            </div>
+            <div style="font-size:13px; color:#475569; font-weight:700; margin-top:3px;">
+              التقرير التنفيذي الشامل لمبيعات وإغلاق قطاع الجيزة الكبرى ومحافظات الصعيد
+            </div>
+          </div>
+          <div style="text-align:left;">
+            <div class="boardroom-seal">وثيقة رسمية معتمدة ✅</div>
+            <div style="font-size:11px; color:#64748b; margin-top:4px;">تاريخ الصدور: ${fullDate}</div>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 16px; margin-bottom:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12.5px;">
+          <div><strong>المسؤول التنفيذي:</strong> ${mgrName} (${mgrTitle})</div>
+          <div><strong>دورة التقرير:</strong> شهر ${monthName} (${currentDay} أيام منقضية / ${remainingDays} أيام متبقية)</div>
+          <div><strong>نظام المتابعة:</strong> المنظومة السحابية المركزية المباشرة</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:22px;">
+          <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:11px; color:#64748b; font-weight:800;">المستهدف الكلي للقطاع</div>
+            <div style="font-size:17px; font-weight:900; color:#4338ca; margin-top:3px;">${formatCurrency(totalTarget)}</div>
+            <div style="font-size:10px; color:#64748b;">100% Target Base</div>
+          </div>
+
+          <div style="background:#ecfdf5; border:1.5px solid #a7f3d0; border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:11px; color:#065f46; font-weight:800;">المبيعات الفعلية المحققة</div>
+            <div style="font-size:17px; font-weight:900; color:#059669; margin-top:3px;">${formatCurrency(totalSales)}</div>
+            <div style="font-size:10px; color:#059669; font-weight:800;">نسبة الإنجاز: ${totalPct}%</div>
+          </div>
+
+          <div style="background:#fffbeb; border:1.5px solid #fde68a; border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:11px; color:#92400e; font-weight:800;">المطلوب يومياً للإغلاق 100%</div>
+            <div style="font-size:17px; font-weight:900; color:#d97706; margin-top:3px;">${formatCurrency(reqDaily)} / يوم</div>
+            <div style="font-size:10px; color:#92400e;">لـ ${remainingDays} يوم متبقية</div>
+          </div>
+
+          <div style="background:#fef2f2; border:1.5px solid #fecaca; border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:11px; color:#991b1b; font-weight:800;">الفجوة المتبقية (The Gap)</div>
+            <div style="font-size:17px; font-weight:900; color:#dc2626; margin-top:3px;">${formatCurrency(totalGap)}</div>
+            <div style="font-size:10px; color:#991b1b; font-weight:800;">توقع الإغلاق: ${projPct}%</div>
+          </div>
+        </div>
+
+        <div style="font-size:14px; font-weight:900; color:#1e293b; margin-bottom:8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">
+          1. تقرير الأداء الميداني وجدول ترتيب السادة المشرفين (Supervisors Leaderboard)
+        </div>
+        <table class="boardroom-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>المشرف المسؤول</th>
+              <th>الآريا / المحافظات</th>
+              <th>التارجت المستهدف</th>
+              <th>المبيعات المحققة</th>
+              <th>نسبة الإنجاز</th>
+              <th>الفجوة</th>
+              <th>المطلوب يومياً</th>
+              <th>الترتيب</th>
+              <th>التقييم العام</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${supRows}
+          </tbody>
+        </table>
+
+        <div style="font-size:14px; font-weight:900; color:#1e293b; margin:22px 0 8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">
+          2. تحليل كبار الموزعين والفروع الأعلى مساهمة (Pareto Top 5 Clients)
+        </div>
+        <table class="boardroom-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>اسم العميل / الفرع</th>
+              <th>إجمالي المسحوبات المحققة</th>
+              <th>الوزن النسبي من القطاع</th>
+              <th>تصنيف العميل</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${branchRows || '<tr><td colspan="5" style="text-align:center;">لا توجد مبيعات مسجلة حتى الآن</td></tr>'}
+          </tbody>
+        </table>
+
+        <div style="font-size:14px; font-weight:900; color:#1e293b; margin:22px 0 8px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">
+          3. التوجيهات التنفيذية وخطة العمل للأيام القادمة
+        </div>
+        <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:12px 16px; font-size:12px; line-height:1.7; color:#334155;">
+          • تكثيف الزيارات الميدانية الصباحية على كبار عملاء الجملة والتجزئة في مناطق الهرم وفيصل وسوهاج لرفع معدل التحصيل اليومي.<br>
+          • حل فوري لنواقص بضاعة الشواحن وكابلات الشحن السريع في معارض أكتوبر لتعويض الفجوة المستهدفة.<br>
+          • الالتزام الصارم بتسجيل كافة فواتير البيع اليومية على المنظومة قبل الساعة العاشرة مساءً لضمان دقة الرن-ريت اللحظي.
+        </div>
+
+        <div style="margin-top:36px; padding-top:20px; border-top:1.5px solid #94a3b8; display:flex; justify-content:space-between; align-items:flex-end;">
+          <div style="text-align:center;">
+            <div style="font-size:12px; color:#64748b; font-weight:700;">إعداد ومصادقة مدير عام القطاع:</div>
+            <div style="font-size:15px; font-weight:900; color:#1e1b4b; margin:10px 0 4px;">${mgrName}</div>
+            <div style="font-size:11px; color:#64748b;">مدير عام قطاع الجيزة الكبرى والصعيد</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:12px; color:#64748b; font-weight:700;">خاتم الاعتماد الإداري:</div>
+            <div style="width:110px; height:60px; border:2px dashed #94a3b8; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:11px; margin:8px auto 0;">
+              اعتماد الإدارة العليا
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function printBoardroomReport() {
+      window.print();
+    }
+
+    function sendBoardroomReportWhatsApp() {
+      const now = new Date();
+      const currentDay = Math.max(1, now.getDate());
+      const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const remainingDays = Math.max(1, totalDays - currentDay);
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || (AppState.manager && AppState.manager.target) || 2500000;
+      const totalGap = Math.max(0, totalTarget - totalSales);
+      const totalPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : 0;
+      const reqDaily = Math.round(totalGap / remainingDays);
+      const mgrName = (AppState.manager && AppState.manager.name) || "أ / عبدالله أحمد إبراهيم";
+
+      let supSummary = '';
+      const sortedSups = AppState.supervisors.map(sup => {
+        const sSales = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+        const sTgt = Number(sup.target || 0);
+        const sPct = sTgt > 0 ? ((sSales / sTgt) * 100).toFixed(1) : 0;
+        return { name: sup.name, sSales, sPct, area: sup.area || 'المنطقة' };
+      }).sort((a,b) => b.sSales - a.sSales);
+
+      sortedSups.forEach((s, idx) => {
+        supSummary += `   ${idx + 1}. *${s.name}* (${s.area}): ${formatCurrency(s.sSales)} [${s.sPct}%]\n`;
+      });
+
+      const report = `🏢 *تقرير الإغلاق التنفيذي لمجلس الإدارة - قطاع الجيزة والصعيد*\n` +
+        `📅 *التاريخ:* ${now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n` +
+        `👨‍💼 *إشراف وتوقيع:* ${mgrName} (مدير عام القطاع)\n` +
+        `══════════════════════\n` +
+        `💎 *المستهدف الكلي المطلوب:* ${formatCurrency(totalTarget)}\n` +
+        `💰 *إجمالي المبيعات المحققة:* ${formatCurrency(totalSales)}\n` +
+        `🎯 *نسبة الإنجاز الفعلية:* ${totalPct}%\n` +
+        `🔻 *الفجوة المتبقية للإغلاق 100%:* ${formatCurrency(totalGap)}\n` +
+        `⚡ *المعدل المطلوب يومياً:* ${formatCurrency(reqDaily)} / يوم (متبقي ${remainingDays} أيام)\n` +
+        `══════════════════════\n` +
+        `🏆 *ترتيب السادة المشرفين الميدانيين:*\n` +
+        supSummary +
+        `══════════════════════\n` +
+        `📌 *التوصية التنفيذية:* خطة التعويض قيد التنفيذ الميداني المكثف لضمان تقفيل تارجت الشهر بنسبة 100% بإذن الله.\n` +
+        `📱 المنظومة التنفيذية المعتمدة - 2B & Devia`;
+
+      const encoded = encodeURIComponent(report);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+      showToast('جاري تحويل التقرير التنفيذي للواتساب... 📲', 'success', 3000);
+    }
+
+    function copyBoardroomText() {
+      const now = new Date();
+      const currentDay = Math.max(1, now.getDate());
+      const totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const remainingDays = Math.max(1, totalDays - currentDay);
+      const totalSales = AppState.sales.reduce((s, sale) => s + (Number(sale.amount) || 0), 0);
+      const totalTarget = AppState.supervisors.reduce((s, sup) => s + (Number(sup.target) || 0), 0) || (AppState.manager && AppState.manager.target) || 2500000;
+      const totalGap = Math.max(0, totalTarget - totalSales);
+      const totalPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : 0;
+      const reqDaily = Math.round(totalGap / remainingDays);
+      const mgrName = (AppState.manager && AppState.manager.name) || "أ / عبدالله أحمد إبراهيم";
+
+      const text = `🏢 تقرير الإغلاق التنفيذي لمجلس الإدارة\n` +
+        `المسؤول: ${mgrName}\n` +
+        `التاريخ: ${now.toLocaleDateString('ar-EG')}\n` +
+        `المستهدف: ${formatCurrency(totalTarget)}\n` +
+        `المحقق: ${formatCurrency(totalSales)} (${totalPct}%)\n` +
+        `الفجوة المتبقية: ${formatCurrency(totalGap)}\n` +
+        `المطلوب يومياً: ${formatCurrency(reqDaily)} / يوم (متبقي ${remainingDays} أيام)`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('تم نسخ التقرير التنفيذي للحافظة بنجاح! 📋', 'success', 2500);
+      });
     }
 
     function renderVipWholesalers() {
@@ -12634,7 +13710,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261011v10').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261013v1').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
