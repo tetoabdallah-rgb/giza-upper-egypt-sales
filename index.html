@@ -133,7 +133,7 @@ body {
 
 /* Sidebar Layout */
 .sidebar {
-  width: 290px;
+  width: 260px;
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
   display: flex;
@@ -143,28 +143,29 @@ body {
   top: 0;
   height: 100vh;
   z-index: 100;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
   border-inline-end: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-header {
-  padding: 20px 18px 16px;
+  padding: 16px 14px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .brand-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
 }
 
 .app-logo {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   border-radius: 12px;
   display: flex;
@@ -176,18 +177,26 @@ body {
 }
 
 .brand-title {
-  font-size: 15.5px;
+  font-size: 14.5px;
   font-weight: 800;
   line-height: 1.25;
   color: #ffffff;
   letter-spacing: -0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 175px;
 }
 
 .brand-sub {
-  font-size: 11px;
+  font-size: 10.5px;
   color: #94a3b8;
   font-weight: 500;
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 175px;
 }
 
 /* Hierarchy Box / View Switcher in Sidebar */
@@ -255,16 +264,25 @@ body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  gap: 11px;
+  padding: 9px 12px;
   border-radius: 10px;
   color: #94a3b8;
   cursor: pointer;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   transition: all 0.2s ease;
   position: relative;
   user-select: none;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.nav-item span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .nav-item:hover {
@@ -351,30 +369,41 @@ html[dir="ltr"] .nav-item.active::after {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  min-width: 0 !important;
+  width: calc(100% - 260px);
+  max-width: 100%;
   min-height: 100vh;
+  overflow-x: clip !important;
 }
 
 /* Top Header */
 .top-header {
   background: var(--glass-bg);
   border-bottom: 1px solid var(--border-color);
-  padding: 12px 28px;
+  padding: 0 24px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 90;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  gap: 12px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .mobile-menu-toggle {
@@ -391,6 +420,7 @@ html[dir="ltr"] .nav-item.active::after {
 .page-title-wrap {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .breadcrumbs {
@@ -401,6 +431,10 @@ html[dir="ltr"] .nav-item.active::after {
   align-items: center;
   gap: 6px;
   margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
 }
 .breadcrumbs .active {
   color: var(--primary);
@@ -408,17 +442,110 @@ html[dir="ltr"] .nav-item.active::after {
 }
 
 .page-title {
-  font-size: 18px;
+  font-size: 16.5px;
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   flex-wrap: nowrap;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+/* Header Dropdowns (Quick Actions & User Session) */
+.header-actions-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.header-actions-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 250px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.35);
+  z-index: 999;
+  overflow: hidden;
+  display: none;
+  padding: 6px;
+  animation: fadeInDown 0.15s ease-out;
+}
+html[dir="ltr"] .header-actions-dropdown-menu {
+  left: auto;
+  right: 0;
+}
+.header-actions-dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.header-action-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: start;
+  transition: all 0.15s ease;
+}
+.header-action-menu-item:hover {
+  background: var(--bg-card-hover);
+  color: var(--primary);
+  transform: translateX(-2px);
+}
+html[dir="ltr"] .header-action-menu-item:hover {
+  transform: translateX(2px);
+}
+.header-action-menu-item.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+.header-action-menu-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 4px 6px;
+}
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 230px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.35);
+  z-index: 999;
+  overflow: hidden;
+  display: none;
+  padding: 6px;
+  animation: fadeInDown 0.15s ease-out;
+}
+html[dir="ltr"] .user-menu-dropdown {
+  left: auto;
+  right: 0;
+}
+.user-menu-dropdown.show {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .header-icon-btn {
@@ -1602,6 +1729,35 @@ html[dir="ltr"] .fab-speed-dial {
   }
 }
 
+@media (min-width: 993px) and (max-width: 1250px) {
+  .sidebar {
+    width: 240px !important;
+  }
+  .main-wrapper {
+    width: calc(100% - 240px) !important;
+  }
+  .top-header {
+    padding: 0 16px !important;
+  }
+  .header-btn-text {
+    display: none !important;
+  }
+  #cloudSyncText {
+    display: none !important;
+  }
+  .page-title {
+    font-size: 14.5px !important;
+    max-width: 180px !important;
+  }
+  .breadcrumbs {
+    font-size: 10px !important;
+    max-width: 180px !important;
+  }
+  #sessionUserName {
+    max-width: 90px !important;
+  }
+}
+
 @media (max-width: 992px) {
   html {
     width: 100% !important;
@@ -1701,10 +1857,13 @@ html[dir="ltr"] .fab-speed-dial {
   #btnHeaderAddVisit,
   #btnHeaderExport,
   #btnPwaInstall,
+  #btnHeaderMoreDropdown,
+  #headerMoreActionsWrapper,
   #langToggleBtn,
   #cloudSyncText,
   #sessionUserName,
   #sessionUserRoleBadge,
+  #userSessionBadge svg,
   .user-session-badge .header-icon-btn {
     display: none !important;
   }
@@ -2949,6 +3108,325 @@ html[dir="ltr"] .notif-dropdown-menu {
     color: #000 !important;
   }
 }
+  /* =========================================================================
+     ENTERPRISE PILLARS STYLES: TIME FILTER, CHURN, COPILOT, C360, TV MODE, AUDIT
+     ========================================================================= */
+  /* Pillar 3: Time Filter Quick Selector */
+  .time-filter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .time-filter-wrap::-webkit-scrollbar { display: none; }
+  .time-filter-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 7px 12px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 800;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .time-filter-btn:hover {
+    color: var(--text-main);
+    background: rgba(79,70,229,0.06);
+  }
+  .time-filter-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.35);
+  }
+
+  /* Pillar 1: Churn & Inactivity Risk Alert Card */
+  .churn-alert-card {
+    background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(245,158,11,0.04));
+    border: 1.5px solid rgba(239,68,68,0.3);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .churn-alert-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #ef4444, #f59e0b);
+  }
+  .churn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .churn-title-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .churn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .churn-row {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .churn-row:hover {
+    border-color: rgba(239,68,68,0.4);
+    box-shadow: 0 2px 8px rgba(239,68,68,0.08);
+  }
+
+  /* Pillar 1: Conversational AI Copilot Chat Styles */
+  .copilot-chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 200px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 12px;
+    background: var(--bg-subtle);
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+  }
+  .copilot-msg-user {
+    align-self: flex-start;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 14px 14px 2px 14px;
+    max-width: 80%;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.25);
+  }
+  .copilot-msg-bot {
+    align-self: flex-end;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 12px 14px;
+    border-radius: 14px 14px 14px 2px;
+    max-width: 90%;
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .copilot-chips-wrap {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    margin-bottom: 12px;
+  }
+  .copilot-chip {
+    background: rgba(124,58,237,0.08);
+    color: var(--purple);
+    border: 1px solid rgba(124,58,237,0.25);
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .copilot-chip:hover {
+    background: var(--purple);
+    color: #fff;
+  }
+
+  /* Pillar 2: Customer 360 Profile Styles */
+  .c360-header-card {
+    background: linear-gradient(135deg, rgba(79,70,229,0.08), rgba(2,132,199,0.05));
+    border: 1px solid rgba(79,70,229,0.2);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .c360-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .c360-stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+  }
+  .c360-stat-val {
+    font-size: 17px;
+    font-weight: 900;
+    margin-top: 3px;
+  }
+
+  /* Pillar 3: Boardroom Command Center / TV Mode */
+  .boardroom-tv-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #090d16;
+    color: #f8fafc;
+    display: none;
+    flex-direction: column;
+    padding: 24px;
+    overflow-y: auto;
+    font-family: inherit;
+  }
+  .boardroom-tv-overlay.active {
+    display: flex;
+  }
+  .tv-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+  }
+  .tv-digital-clock {
+    font-family: monospace;
+    font-size: 26px;
+    font-weight: 900;
+    color: #38bdf8;
+    text-shadow: 0 0 12px rgba(56,189,248,0.5);
+    letter-spacing: 2px;
+  }
+  .tv-kpi-banner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .tv-kpi-card {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+  .tv-kpi-val {
+    font-size: 28px;
+    font-weight: 900;
+    margin-top: 6px;
+  }
+  .tv-podium-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .tv-podium-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tv-marquee-bar {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(56,189,248,0.3);
+    border-radius: 12px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+  }
+  .tv-marquee-content {
+    white-space: nowrap;
+    animation: tvMarquee 25s linear infinite;
+    display: flex;
+    gap: 28px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+  @keyframes tvMarquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* Pillar 5: Audit Trail Table Styles */
+  .audit-log-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .audit-badge-sales { background: rgba(16,185,129,0.15); color: #10b981; }
+  .audit-badge-visits { background: rgba(56,189,248,0.15); color: #0284c7; }
+  .audit-badge-targets { background: rgba(245,158,11,0.15); color: #d97706; }
+  .audit-badge-security { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .audit-badge-system { background: rgba(124,58,237,0.15); color: #7c3aed; }
+
+  /* Offline Floating Status Badge */
+  .offline-network-badge {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    z-index: 9999;
+    padding: 8px 14px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 800;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    animation: pulse 2s infinite;
+  }
+  .offline-network-badge.offline {
+    display: flex;
+    background: #f59e0b;
+    color: #000;
+  }
+  .offline-network-badge.online-restored {
+    display: flex;
+    background: #10b981;
+    color: #fff;
+  }
 </style>
 </head>
 <body>
@@ -3071,11 +3549,12 @@ html[dir="ltr"] .notif-dropdown-menu {
   <div class="main-wrapper">
 
     <!-- Version Update Alert Bar (Appears when new version is detected or cache cleared) -->
-    <div id="appVersionUpdateBar" style="display:none; background:linear-gradient(135deg, #4f46e5, #0284c7); color:#fff; padding:10px 14px; text-align:center; font-size:12.5px; font-weight:800; z-index:999999; box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+    <div id="appVersionUpdateBar" style="display:none; background:linear-gradient(135deg, #4f46e5, #0284c7); color:#fff; padding:8px 14px; text-align:center; font-size:12px; font-weight:800; z-index:999999; box-shadow:0 4px 15px rgba(0,0,0,0.2); position:relative;">
       <span>🚀 إصدار المنظومة المحدث (v4.0 Multi-National) جاهز — </span>
-      <button type="button" onclick="forceAppUpdateAndClearCache()" style="background:#fff; color:#4338ca; border:none; padding:4px 12px; border-radius:9999px; font-weight:900; font-size:12px; cursor:pointer; margin-inline-start:6px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      <button type="button" onclick="forceAppUpdateAndClearCache()" style="background:#fff; color:#4338ca; border:none; padding:4px 12px; border-radius:9999px; font-weight:900; font-size:11.5px; cursor:pointer; margin-inline-start:6px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
         تحديث الشاشة الآن 🔄
       </button>
+      <button type="button" onclick="document.getElementById('appVersionUpdateBar').style.display='none'" style="background:transparent; border:none; color:#fff; font-size:15px; cursor:pointer; margin-inline-start:12px; opacity:0.8; vertical-align:middle;" title="إغلاق">✕</button>
     </div>
 
     <!-- Top Header -->
@@ -3087,7 +3566,7 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div class="page-title-wrap">
           <div class="breadcrumbs">
             <span id="breadcrumbRoot">المنظومة التنفيذية</span>
-            <span style="opacity:0.35;">/</span>
+            <span style="opacity:0.35;">›</span>
             <span class="active" id="headerBreadcrumbsActive">لوحة القيادة والمتابعة</span>
           </div>
           <h1 class="page-title" id="pageTitleText">لوحة قيادة مدير الآريتين</h1>
@@ -3099,40 +3578,77 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div id="cloudSyncBadge" class="sync-badge" onclick="openCloudDiagnosticsModal()" style="cursor:pointer;" title="حالة الاتصال السحابي المباشر - اضغط هنا لتفاصيل الاتصال">
           <span id="cloudSyncDot" class="sync-dot pulse"></span>
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
-          <span id="cloudSyncText">مزامنة سحابية لحظية</span>
+          <span id="cloudSyncText">سحابي متصل</span>
         </div>
 
-        <!-- WhatsApp Links Button for Supervisors -->
-        <button class="btn btn-outline btn-sm" id="btnHeaderShareLinks" onclick="openShareLinksModal()" title="إرسال روابط المشرفين المباشرة عبر الواتساب" style="border-color:rgba(16,185,129,0.3); color:var(--success);">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-          <span id="btnHeaderShareLinksText">روابط المشرفين 📲</span>
+        <!-- Primary CTA: Quick Sale Entry -->
+        <button class="btn btn-primary" id="btnHeaderAddSale" onclick="openSaleModal()">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          <span id="btnHeaderAddSaleText">تسجيل بيع</span>
         </button>
 
         <!-- AI Executive Sales Copilot -->
         <button class="btn btn-purple btn-sm" id="btnHeaderAiCopilot" onclick="openAiCopilotModal()" title="المساعد التنفيذي الذكي والتنبؤات (AI Copilot)" style="background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; font-weight:800; border:none; box-shadow:0 2px 8px rgba(124,58,237,0.35);">
           <span>🧠</span>
-          <span id="btnHeaderAiCopilotText">الذكاء الاصطناعي</span>
+          <span id="btnHeaderAiCopilotText" class="header-btn-text">الذكاء الاصطناعي</span>
         </button>
 
         <!-- WhatsApp Daily Broadcast -->
         <button class="btn btn-success btn-sm" id="btnHeaderDailyWhatsApp" onclick="openDailyWhatsAppModal()" title="تقرير الواتساب اليومي الفوري لجروب المشرفين" style="background:linear-gradient(135deg, #25d366, #128c7e); color:#fff; font-weight:800; border:none; box-shadow:0 2px 8px rgba(37,211,102,0.35);">
           <span>📲</span>
-          <span id="btnHeaderDailyWhatsAppText">تقرير الواتساب</span>
+          <span id="btnHeaderDailyWhatsAppText" class="header-btn-text">تقرير الواتساب</span>
         </button>
 
-        <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تبديل اللغة">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-          <span id="langToggleBtnText">English</span>
-        </button>
+        <!-- More Actions Dropdown (Secondary Tools) -->
+        <div class="header-actions-dropdown-wrapper" id="headerMoreActionsWrapper">
+          <button class="btn btn-outline btn-sm" id="btnHeaderMoreDropdown" onclick="toggleHeaderMoreDropdown(event)" title="المزيد من الأدوات والتقارير" style="font-weight:800; gap:5px;">
+            <span>⚡ إجراءات</span>
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="headerMoreDropdownMenu" class="header-actions-dropdown-menu">
+            <button type="button" class="header-action-menu-item" id="btnHeaderAddVisit" onclick="openVisitModal()">
+              <span style="font-size:15px;">📋</span>
+              <span id="btnHeaderAddVisitText">تسجيل تقرير زيارة</span>
+            </button>
+            <button type="button" class="header-action-menu-item" id="btnHeaderShareLinks" onclick="openShareLinksModal()">
+              <span style="font-size:15px;">🔗</span>
+              <span id="btnHeaderShareLinksText">روابط المشرفين بالواتساب</span>
+            </button>
+            <button type="button" class="header-action-menu-item" id="btnHeaderExport" onclick="exportMasterDataCSV()">
+              <span style="font-size:15px;">📊</span>
+              <span id="btnHeaderExportText">تصدير إكسيل شامل (CSV)</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="openBoardroomReportModal()">
+              <span style="font-size:15px;">🏢</span>
+              <span>تقرير مجلس الإدارة التنفيذي</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="openBoardroomTvMode()">
+              <span style="font-size:15px;">📺</span>
+              <span>شاشة قاعات الاجتماعات (TV Mode)</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="openDailyBeatModal()">
+              <span style="font-size:15px;">📍</span>
+              <span>خط السير اليومي للمشرفين</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="document.getElementById('auditTrailModal').classList.add('open'); renderAuditTrail();">
+              <span style="font-size:15px;">🔐</span>
+              <span>سجل تدقيق العمليات (Audit Trail)</span>
+            </button>
+            <div class="header-action-menu-divider"></div>
+            <button type="button" class="header-action-menu-item" id="btnPwaInstall" onclick="triggerPwaInstall()" style="display:none;">
+              <span style="font-size:15px;">📲</span>
+              <span id="btnPwaInstallText">تثبيت التطبيق على جهازك</span>
+            </button>
+            <button type="button" class="header-action-menu-item" id="btnHeaderForceUpdateMobile" onclick="forceAppUpdateAndClearCache()">
+              <span style="font-size:15px;">🔄</span>
+              <span>تحديث فوري ومسح الكاش</span>
+            </button>
+          </div>
+        </div>
 
-        <!-- Mobile/Desktop Quick AI Voice Assistant Button -->
+        <!-- Quick AI Voice Assistant Button -->
         <button class="header-icon-btn" id="btnHeaderVoiceAiMobile" onclick="openVoiceAiModal('sale')" title="المساعد الصوتي الذكي (AI Voice)" style="color:#7c3aed; background:rgba(124,58,237,0.1); border-color:rgba(124,58,237,0.3);">
           <span style="font-size:14px;">🎙️</span>
-        </button>
-
-        <!-- Force Update & Fresh Cache Reload Button -->
-        <button class="header-icon-btn" id="btnHeaderForceUpdateMobile" onclick="forceAppUpdateAndClearCache()" title="تحديث فوري للنظام ومسح الكاش" style="color:#0284c7; background:rgba(2,132,199,0.1); border-color:rgba(2,132,199,0.3);">
-          <span style="font-size:13px;">🔄</span>
         </button>
 
         <!-- Smart Notifications Bell -->
@@ -3152,38 +3668,45 @@ html[dir="ltr"] .notif-dropdown-menu {
           </div>
         </div>
 
-        <!-- PWA Mobile App Install Button -->
-        <button class="btn btn-outline btn-sm" id="btnPwaInstall" onclick="triggerPwaInstall()" style="display:none;" title="تثبيت التطبيق على جهازك">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-          <span id="btnPwaInstallText">تثبيت التطبيق 📲</span>
-        </button>
-        <button class="btn btn-primary" id="btnHeaderAddSale" onclick="openSaleModal()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-          <span id="btnHeaderAddSaleText">تسجيل بيع</span>
-        </button>
-        <button class="btn btn-success" id="btnHeaderAddVisit" onclick="openVisitModal()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0zm-8-3h4m3 0a2 2 0 002-2V9a2 2 0 00-2-2h-3l-2-3H8L6 7H4a2 2 0 00-2 2v3a2 2 0 002 2h2"/></svg>
-          <span id="btnHeaderAddVisitText">تقرير زيارة</span>
-        </button>
-        <button class="btn btn-outline btn-sm" id="btnHeaderExport" onclick="exportMasterDataCSV()" title="تصدير كل داتا المنظومة بملف إكسيل شامل">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span id="btnHeaderExportText">تصدير</span>
-        </button>
-        <div class="user-session-badge" id="userSessionBadge">
-          <div class="session-user-avatar-chip" id="sessionUserAvatar">👨‍💼</div>
-          <div style="display:flex; flex-direction:column; line-height:1.2; text-align:start;">
-            <strong id="sessionUserName" style="font-size:12px; font-weight:800;">أ / عبدالله أحمد إبراهيم</strong>
-            <span id="sessionUserRoleBadge" style="font-size:10px; color:var(--primary); font-weight:700;">مدير الإدارة</span>
+        <!-- Manager Profile & Settings Chip Dropdown -->
+        <div class="header-actions-dropdown-wrapper" id="userSessionBadgeWrapper">
+          <div class="user-session-badge" id="userSessionBadge" onclick="toggleUserDropdown(event)" title="قائمة الحساب والمنطقة">
+            <div class="session-user-avatar-chip" id="sessionUserAvatar">👨‍💼</div>
+            <div class="user-session-info" style="display:flex; flex-direction:column; line-height:1.2; text-align:start;">
+              <strong id="sessionUserName" style="font-size:12px; font-weight:800; max-width:125px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">أ / عبدالله أحمد إبراهيم</strong>
+              <span id="sessionUserRoleBadge" style="font-size:10px; color:var(--primary); font-weight:700;">مدير الإدارة</span>
+            </div>
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color:var(--text-muted); opacity:0.7; margin-inline-start:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </div>
-          <div style="display:flex; align-items:center; gap:4px; margin-inline-start:4px;">
-            <button class="header-icon-btn" id="btnEditProfileHeader" onclick="openEditManagerModal()" title="تعديل البيانات الشخصية وكلمة المرور">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          <div id="userDropdownMenu" class="user-menu-dropdown">
+            <button type="button" class="header-action-menu-item" id="btnEditProfileHeader" onclick="openEditManagerModal()">
+              <span style="font-size:14px;">⚙️</span>
+              <span>تعديل البيانات والمنطقة</span>
             </button>
-            <button class="header-icon-btn btn-logout" id="btnLogoutBtn" onclick="handleLogout()" title="تسجيل الخروج">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            <button type="button" class="header-action-menu-item" onclick="openEditTargetsModal()">
+              <span style="font-size:14px;">🎯</span>
+              <span>تعديل التارجت المالي</span>
+            </button>
+            <button type="button" class="header-action-menu-item" id="langToggleBtn" onclick="toggleLanguage()">
+              <span style="font-size:14px;">🌐</span>
+              <span id="langToggleBtnText">English / العربية</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="toggleTheme()">
+              <span style="font-size:14px;">🌙</span>
+              <span>تبديل الوضع الليلي / النهاري</span>
+            </button>
+            <div class="header-action-menu-divider"></div>
+            <button type="button" class="header-action-menu-item" onclick="openNewAreaWizardModal()" style="color:var(--primary);">
+              <span style="font-size:14px;">🏢</span>
+              <span>تهيئة منطقة بيعية جديدة</span>
+            </button>
+            <button type="button" class="header-action-menu-item btn-logout" id="btnLogoutBtn" onclick="handleLogout()" style="color:var(--danger);">
+              <span style="font-size:14px;">🚪</span>
+              <span>تسجيل الخروج</span>
             </button>
           </div>
         </div>
+
       </div>
     </header>
 
@@ -3254,46 +3777,89 @@ html[dir="ltr"] .notif-dropdown-menu {
           </div>
         </div>
 
-        <!-- Enterprise 3-in-1 Executive Feature Command Bar -->
+        <!-- Enterprise Executive Operations Command Deck -->
         <div class="exec-hero-card" id="executiveCommandHero">
           <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px;">
-            <span>⚡ الميزات التنفيذية الذكية (Executive Operations Deck)</span>
-            <span style="font-size:10px; background:rgba(79,70,229,0.15); color:var(--primary); padding:2px 8px; border-radius:9999px; font-weight:800;">إصدار الشركات v4.0</span>
+            <span>⚡ الميزات التنفيذية والذكاء الاصطناعي (Enterprise AI & Ops Deck)</span>
+            <span style="font-size:10px; background:rgba(79,70,229,0.15); color:var(--primary); padding:2px 8px; border-radius:9999px; font-weight:800;">إصدار الشركات v4.5 Enterprise</span>
           </div>
-          <div class="exec-hero-grid">
-            <!-- Feature 1: AI Voice Entry -->
-            <button type="button" class="exec-hero-btn" onclick="openVoiceAiModal('sale')">
+          <div class="exec-hero-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <!-- Feature 1: AI Conversational Copilot -->
+            <button type="button" class="exec-hero-btn" onclick="openAiCopilotModal()">
               <div class="exec-hero-icon" style="background:linear-gradient(135deg, #7c3aed, #4f46e5); color:#fff; box-shadow:0 3px 10px rgba(124,58,237,0.35);">
-                🎙️
+                🧠
               </div>
               <div class="exec-hero-text">
-                <div class="exec-hero-title">المساعد الصوتي الذكي (AI)</div>
-                <div class="exec-hero-sub">إملاء العمليات صوتياً بالعامية</div>
+                <div class="exec-hero-title">المساعد الحواري الذكي (AI)</div>
+                <div class="exec-hero-sub">سؤال وجواب صوتي بالعامية المصرية</div>
               </div>
             </button>
 
-            <!-- Feature 2: Gap-to-Target Recovery Engine -->
+            <!-- Feature 2: Boardroom TV Mode -->
+            <button type="button" class="exec-hero-btn" onclick="openBoardroomTvMode()">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #090d16, #1e293b); color:#38bdf8; border:1px solid #38bdf8; box-shadow:0 3px 10px rgba(56,189,248,0.35);">
+                📺
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">شاشة قاعات الاجتماعات (TV)</div>
+                <div class="exec-hero-sub">عرض مباشر كامل وتصنيف المشرفين</div>
+              </div>
+            </button>
+
+            <!-- Feature 3: Gap-to-Target Recovery Engine -->
             <button type="button" class="exec-hero-btn" onclick="document.getElementById('runRateAnalyticsCard').scrollIntoView({behavior:'smooth'});">
               <div class="exec-hero-icon" style="background:linear-gradient(135deg, #059669, #10b981); color:#fff; box-shadow:0 3px 10px rgba(16,185,129,0.35);">
                 🎯
               </div>
               <div class="exec-hero-text">
                 <div class="exec-hero-title">محرك سد الفجوة وتارجت اليوم</div>
-                <div class="exec-hero-sub">معدل البيع المطلوب لإغلاق 100%</div>
+                <div class="exec-hero-sub">معدل البيع اليومي المطلوب للـ 100%</div>
               </div>
             </button>
 
-            <!-- Feature 3: Executive Boardroom Report -->
+            <!-- Feature 4: Daily Route / Beat Planning -->
+            <button type="button" class="exec-hero-btn" onclick="openDailyBeatModal()">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #ea580c, #f97316); color:#fff; box-shadow:0 3px 10px rgba(249,115,22,0.35);">
+                📍
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">خط السير اليومي الذكي</div>
+                <div class="exec-hero-sub">ترتيب زيارات الفروع حسب الأولوية</div>
+              </div>
+            </button>
+
+            <!-- Feature 5: Executive Boardroom Report -->
             <button type="button" class="exec-hero-btn" onclick="openBoardroomReportModal()">
               <div class="exec-hero-icon" style="background:linear-gradient(135deg, #0284c7, #38bdf8); color:#fff; box-shadow:0 3px 10px rgba(2,132,199,0.35);">
                 🏢
               </div>
               <div class="exec-hero-text">
-                <div class="exec-hero-title">تقرير مجلس الإدارة التنفيذي</div>
-                <div class="exec-hero-sub">وثيقة الإغلاق الرسمي وواتساب الإدارة</div>
+                <div class="exec-hero-title">تقرير الإغلاق الرسمي والمختوم</div>
+                <div class="exec-hero-sub">وثيقة PDF معتمدة وواتساب الإدارة</div>
               </div>
             </button>
           </div>
+        </div>
+
+        <!-- Pillar 3: Time Period Quick Selector Bar -->
+        <div class="time-filter-wrap" id="timePeriodFilterBar">
+          <button type="button" class="time-filter-btn active" data-period="MONTH" onclick="setTimePeriodFilter('MONTH')">
+            <span>📅</span> <span id="lblTimeFilterMonth">الشهر الحالي (افتراضي)</span>
+          </button>
+          <button type="button" class="time-filter-btn" data-period="TODAY" onclick="setTimePeriodFilter('TODAY')">
+            <span>⚡</span> <span id="lblTimeFilterToday">اليوم فقط</span>
+          </button>
+          <button type="button" class="time-filter-btn" data-period="WEEK" onclick="setTimePeriodFilter('WEEK')">
+            <span>📊</span> <span id="lblTimeFilterWeek">هذا الأسبوع (7 أيام)</span>
+          </button>
+          <button type="button" class="time-filter-btn" data-period="QUARTER" onclick="setTimePeriodFilter('QUARTER')">
+            <span>📈</span> <span id="lblTimeFilterQuarter">الربع السنوي (QTD)</span>
+          </button>
+        </div>
+
+        <!-- Pillar 1: Churn & Inactivity Risk Alert Card -->
+        <div class="churn-alert-card" id="churnRiskAlertCard" style="display:none;">
+          <!-- Dynamically populated by renderChurnAlerts() -->
         </div>
 
         <!-- Quick KPIs -->
@@ -5480,22 +6046,73 @@ html[dir="ltr"] .notif-dropdown-menu {
     </div>
   </div>
 
-  <!-- Modal: AI Area Sales Copilot & Predictive Forecast -->
+  <!-- Modal: AI Area Sales Copilot & Conversational Egyptian Assistant -->
   <div class="modal-overlay" id="aiCopilotModal">
-    <div class="modal-dialog" style="max-width: 860px; max-height: 90vh; display: flex; flex-direction: column;">
+    <div class="modal-dialog" style="max-width: 880px; max-height: 92vh; display: flex; flex-direction: column;">
       <div class="modal-header" style="background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(79,70,229,0.1)); border-bottom: 1.5px solid rgba(124,58,237,0.25);">
         <div class="modal-title" style="display:flex; align-items:center; gap:10px; color:var(--purple); font-weight:900;">
           <span style="font-size:26px;">🧠</span>
           <div>
-            <div id="aiCopilotModalTitle">المساعد التنفيذي الذكي ورادار التنبؤات (AI Area Copilot)</div>
-            <div style="font-size:11px; color:var(--text-muted); font-weight:normal;" id="aiCopilotSubtitle">تحليل الأداء اللحظي، التنبؤ بالإغلاق الشهري، وكشف الفجوات لقطاع الجيزة والصعيد</div>
+            <div id="aiCopilotModalTitle">المساعد التنفيذي الصوتي والحواري (AI Conversational Copilot)</div>
+            <div style="font-size:11px; color:var(--text-muted); font-weight:normal;" id="aiCopilotSubtitle">اسأل بالعامية المصرية أو تصفح التحليلات التنبؤية ورادار الإغلاق</div>
           </div>
         </div>
         <button class="modal-close" onclick="closeModal('aiCopilotModal')">&times;</button>
       </div>
-      <div class="modal-body" style="padding: 20px; overflow-y: auto;" id="aiCopilotBody">
-        <!-- Rendered dynamically by renderAiCopilot() -->
+      
+      <!-- Sub-Tabs for Copilot -->
+      <div style="display:flex; border-bottom:1px solid var(--border-color); background:var(--bg-card); padding:8px 16px 0; gap:8px;">
+        <button type="button" class="tab-link active" id="btnCopilotTabChat" onclick="switchCopilotSubTab('chat')" style="padding:8px 14px; font-weight:800; font-size:12.5px;">
+          💬 المحادثة الصوتية الذكية
+        </button>
+        <button type="button" class="tab-link" id="btnCopilotTabAnalytics" onclick="switchCopilotSubTab('analytics')" style="padding:8px 14px; font-weight:800; font-size:12.5px;">
+          📊 رادار التنبؤ بالإغلاق والفجوة
+        </button>
       </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y: auto;">
+        <!-- Pane 1: Conversational Chat Mode -->
+        <div id="copilotChatPane">
+          <div class="copilot-chips-wrap">
+            <span style="font-size:11px; font-weight:800; color:var(--text-muted); align-self:center;">⚡ أسئلة سريعة:</span>
+            <button type="button" class="copilot-chip" onclick="askCopilotQuick('مين المشرف اللي متأخر في تارجته؟')">مين المشرف المتأخر في تارجته؟</button>
+            <button type="button" class="copilot-chip" onclick="askCopilotQuick('إيه أكتر فرع عمل مبيعات الشهر دا؟')">إيه أكتر فرع عمل مبيعات؟</button>
+            <button type="button" class="copilot-chip" onclick="askCopilotQuick('مين المشرف المتصدر المركز الأول؟')">مين المشرف المتصدر؟</button>
+            <button type="button" class="copilot-chip" onclick="askCopilotQuick('مين العملاء الخاملين اللي ما طلبوش بقالهم 7 أيام؟')">العملاء الخاملين (خطر التسرب)</button>
+            <button type="button" class="copilot-chip" onclick="askCopilotQuick('توقع الإغلاق بنهاية الشهر ومعدل السد اليومي')">توقع الإغلاق وسد الفجوة</button>
+          </div>
+
+          <!-- Chat Conversation Log -->
+          <div class="copilot-chat-box" id="copilotChatBox">
+            <div class="copilot-msg-bot">
+              <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <span style="font-size:16px;">🤖</span>
+                <strong style="color:var(--purple); font-size:12.5px;">مساعد قطاع الجيزة والصعيد الذكي:</strong>
+              </div>
+              أهلاً بحضرتك يا فندم! أنا مساعدك الذكي لمتابعة مبيعات القطاع. تقدر تسألني بصوتك المباشر أو كتابة بالعامية المصرية عن المشرفين، الفروع، التارجت، أو التوقعات وأنا هحلل الداتا فوراً وأرد عليك صوتياً وكتابياً!
+            </div>
+          </div>
+
+          <!-- Voice / Text Input Box -->
+          <div style="display:flex; gap:8px; margin-top:12px; align-items:center;">
+            <button type="button" class="btn btn-purple" id="btnCopilotVoiceMic" onclick="toggleCopilotVoiceListening()" title="تحدث بصوتك بالعامية" style="width:44px; height:44px; border-radius:50%; padding:0; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">
+              🎙️
+            </button>
+            <input type="text" id="copilotInputText" class="form-control" placeholder="اسأل بالعامية: مين المشرف المتأخر؟ أو إيه أكتر فرع بيعاً؟..." onkeydown="if(event.key==='Enter') submitCopilotQuery()" style="flex:1; height:44px; font-size:13px; border-radius:12px;">
+            <button type="button" class="btn btn-primary" onclick="submitCopilotQuery()" style="height:44px; padding:0 18px; border-radius:12px; font-weight:800;">
+              إرسال 🚀
+            </button>
+          </div>
+        </div>
+
+        <!-- Pane 2: Predictive Analytics (existing container) -->
+        <div id="copilotAnalyticsPane" style="display:none;">
+          <div id="aiCopilotBody">
+            <!-- Rendered dynamically by renderAiCopilot() -->
+          </div>
+        </div>
+      </div>
+
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button type="button" class="btn btn-outline btn-sm" id="btnAiAudioBriefing" onclick="playAiAudioBriefing()">
@@ -5510,26 +6127,46 @@ html[dir="ltr"] .notif-dropdown-menu {
     </div>
   </div>
 
-  <!-- Modal: 1-Click WhatsApp Daily Executive Broadcast -->
+  <!-- Modal: 1-Click WhatsApp Daily Executive Broadcast & Individual Dispatch -->
   <div class="modal-overlay" id="dailyWhatsAppModal">
-    <div class="modal-dialog" style="max-width: 680px; max-height: 90vh; display: flex; flex-direction: column;">
+    <div class="modal-dialog" style="max-width: 720px; max-height: 92vh; display: flex; flex-direction: column;">
       <div class="modal-header" style="background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(16,185,129,0.08)); border-bottom: 1.5px solid rgba(37,211,102,0.3);">
         <div class="modal-title" style="display:flex; align-items:center; gap:10px; color:#128c7e; font-weight:900;">
           <span style="font-size:26px;">📲</span>
           <div>
-            <div id="whatsAppModalTitle">تقرير مبيعات الواتساب اليومي الفوري (1-Click Broadcast)</div>
-            <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">جاهز للإرسال بضغطة زر لجروب المشرفين أو الإدارة العليا</div>
+            <div id="whatsAppModalTitle">منظومة رسائل الواتساب الذكية (WhatsApp Dispatch Engine)</div>
+            <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">برودكاست مجمع لجروب الإدارة أو رسائل فردية موجهة لكل مشرف على حدة</div>
           </div>
         </div>
         <button class="modal-close" onclick="closeModal('dailyWhatsAppModal')">&times;</button>
       </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div style="display:flex; border-bottom:1px solid var(--border-color); background:var(--bg-card); padding:8px 16px 0; gap:8px;">
+        <button type="button" class="tab-link active" id="btnWaModeGroup" onclick="switchWhatsAppMode('group')" style="padding:8px 14px; font-weight:800; font-size:12.5px;">
+          📢 تقرير جروب الإدارة العام
+        </button>
+        <button type="button" class="tab-link" id="btnWaModeIndividual" onclick="switchWhatsAppMode('individual')" style="padding:8px 14px; font-weight:800; font-size:12.5px;">
+          👤 تقرير فردي مخصص لكل مشرف
+        </button>
+      </div>
+
       <div class="modal-body" style="padding: 18px; overflow-y: auto;">
+        <!-- Individual Supervisor Selector (visible in individual mode) -->
+        <div id="waIndividualSupervisorRow" style="display:none; margin-bottom:14px; background:var(--bg-card); border:1px solid var(--border-color); padding:10px 14px; border-radius:12px;">
+          <label style="font-size:12px; font-weight:800; display:block; margin-bottom:6px; color:var(--text-main);">اختر المشرف لإرسال تقريره الفردي المباشر:</label>
+          <select id="waSupervisorSelect" class="form-control" onchange="updateIndividualWhatsAppText()" style="font-weight:700; font-size:13px;">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
           <span style="font-size:12px; font-weight:800; color:var(--text-main);">معاينة نص الرسالة المنسق للواتساب:</span>
           <span class="badge badge-success" style="background:#25d366; color:#fff;">جاهز للإرسال ⚡</span>
         </div>
-        <textarea id="whatsAppReportText" class="form-control" rows="14" style="font-family:monospace; font-size:12.5px; line-height:1.6; direction:rtl; text-align:right; border-color:rgba(37,211,102,0.4); background:var(--bg-subtle);"></textarea>
+        <textarea id="whatsAppReportText" class="form-control" rows="12" style="font-family:monospace; font-size:12.5px; line-height:1.6; direction:rtl; text-align:right; border-color:rgba(37,211,102,0.4); background:var(--bg-subtle);"></textarea>
       </div>
+
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <button type="button" class="btn btn-outline" onclick="closeModal('dailyWhatsAppModal')">إلغاء</button>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -5717,6 +6354,232 @@ html[dir="ltr"] .notif-dropdown-menu {
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- =========================================================================
+       ENTERPRISE MODALS: CUSTOMER 360, BOARDROOM TV, BEAT ROUTE, AUDIT TRAIL
+       ========================================================================= -->
+  <!-- Pillar 2: Customer 360° Profile Modal -->
+  <div class="modal-overlay" id="customer360Modal">
+    <div class="modal-dialog" style="max-width: 860px; max-height: 92vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(2,132,199,0.08)); border-bottom: 1.5px solid rgba(79,70,229,0.25);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:26px;">🏬</span>
+          <div>
+            <div class="modal-title" id="c360BranchName" style="font-size:16px; font-weight:900;">ملف العميل المتكامل (Customer 360° Profile)</div>
+            <div style="font-size:11px; color:var(--text-muted);" id="c360BranchSubtitle">كشف حساب تاريخي، مؤشرات الشراء، وسجل الزيارات الميدانية</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('customer360Modal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y: auto;" id="c360ModalBody">
+        <!-- Dynamically populated by renderCustomer360(branchName) -->
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;" id="c360QuickActionsFooter">
+          <!-- Populated dynamically with 1-click Call, WhatsApp, Add Sale, Record Visit -->
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('customer360Modal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pillar 3: Boardroom Command Center / Fullscreen TV Mode -->
+  <div class="boardroom-tv-overlay" id="boardroomTvModal">
+    <div class="tv-header-bar">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div style="width:46px; height:46px; border-radius:12px; background:linear-gradient(135deg, #0284c7, #38bdf8); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 0 16px rgba(56,189,248,0.5);">
+          📺
+        </div>
+        <div>
+          <div style="font-size:20px; font-weight:900; color:#f8fafc; letter-spacing:0.5px;">شاشة قاعات الاجتماعات والقيادة الميدانية (Command Center)</div>
+          <div style="font-size:12px; color:#94a3b8;">قطاع مبيعات الجيزة الكبرى ومحافظات الصعيد - بث مباشر لحظي</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div class="tv-digital-clock" id="tvDigitalClock">00:00:00</div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="toggleTvFullscreen()" style="color:#38bdf8; border-color:#38bdf8; font-weight:800;">
+          ⛶ ملء الشاشة
+        </button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeBoardroomTvMode()" style="color:#ef4444; border-color:#ef4444; font-weight:800;">
+          ✕ خروج
+        </button>
+      </div>
+    </div>
+
+    <!-- Top KPI Grid -->
+    <div class="tv-kpi-banner">
+      <div class="tv-kpi-card" style="border-top:3px solid #38bdf8;">
+        <div style="font-size:12px; font-weight:800; color:#94a3b8;">إجمالي المبيعات المحققة للقطاع</div>
+        <div class="tv-kpi-val" style="color:#38bdf8;" id="tvKpiTotalSales">0 ج.م</div>
+        <div style="font-size:12px; color:#64748b; margin-top:4px;" id="tvKpiSalesSub">نسبة التحقيق: 0%</div>
+      </div>
+
+      <div class="tv-kpi-card" style="border-top:3px solid #a855f7;">
+        <div style="font-size:12px; font-weight:800; color:#94a3b8;">تارجت القطاع المطلوب</div>
+        <div class="tv-kpi-val" style="color:#c084fc;" id="tvKpiTotalTarget">0 ج.م</div>
+        <div style="font-size:12px; color:#64748b; margin-top:4px;" id="tvKpiTargetSub">المتبقي: 0 ج.م</div>
+      </div>
+
+      <div class="tv-kpi-card" style="border-top:3px solid #10b981;">
+        <div style="font-size:12px; font-weight:800; color:#94a3b8;">معدل البيع اليومي المطلوب للـ 100%</div>
+        <div class="tv-kpi-val" style="color:#34d399;" id="tvKpiDailyRate">0 ج.م / يوم</div>
+        <div style="font-size:12px; color:#64748b; margin-top:4px;" id="tvKpiDaysLeft">متبقي 0 يوم</div>
+      </div>
+
+      <div class="tv-kpi-card" style="border-top:3px solid #f59e0b;">
+        <div style="font-size:12px; font-weight:800; color:#94a3b8;">حركة العمليات والزيارات</div>
+        <div class="tv-kpi-val" style="color:#fbbf24;" id="tvKpiOpsCount">0</div>
+        <div style="font-size:12px; color:#64748b; margin-top:4px;" id="tvKpiOpsSub">فاتورة بيع وزيارة</div>
+      </div>
+    </div>
+
+    <!-- Center Section: Giant SVG Gauge & Supervisor Podium -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:20px; margin-bottom:20px; align-items:center;">
+      <!-- Circular Progress Gauge Card -->
+      <div style="background:rgba(30,41,59,0.7); border:1px solid rgba(255,255,255,0.1); border-radius:18px; padding:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <div style="font-size:14px; font-weight:900; color:#e2e8f0; margin-bottom:12px;">مؤشر الإنجاز الكلي لقطاع الجيزة والصعيد</div>
+        <div style="position:relative; width:190px; height:190px; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 36 36" style="width:100%; height:100%; transform: rotate(-90deg);">
+            <path stroke="rgba(255,255,255,0.1)" stroke-width="3.2" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path id="tvRadialGaugePath" stroke="#38bdf8" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="0, 100" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <div style="position:absolute; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <span id="tvRadialGaugeText" style="font-size:32px; font-weight:900; color:#38bdf8;">0%</span>
+            <span style="font-size:11px; color:#94a3b8; font-weight:700;">من التارجت</span>
+          </div>
+        </div>
+        <div style="margin-top:14px; font-size:12.5px; color:#94a3b8;" id="tvForecastStatusText">
+          جاري قراءة وتيرة التحقيق...
+        </div>
+      </div>
+
+      <!-- Supervisor Leaderboard Podium -->
+      <div>
+        <div style="font-size:15px; font-weight:900; color:#e2e8f0; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+          <span>🏆</span> <span>ترتيب المشرفين الميداني (Leaderboard)</span>
+        </div>
+        <div class="tv-podium-wrap" id="tvSupervisorCardsWrap">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Sales Ticker / Marquee at the bottom -->
+    <div class="tv-marquee-bar">
+      <div style="background:#0284c7; color:#fff; padding:4px 10px; border-radius:6px; font-size:11.5px; font-weight:900; display:flex; align-items:center; gap:6px; flex-shrink:0;">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#fff; animation:pulse 1.5s infinite;"></span>
+        <span>بث العمليات اللحظي</span>
+      </div>
+      <div class="tv-marquee-content" id="tvMarqueeTicker">
+        <!-- Populated dynamically with latest sales -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Pillar 2: Daily Beat & Route Planning Modal -->
+  <div class="modal-overlay" id="dailyBeatModal">
+    <div class="modal-dialog" style="max-width: 760px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(234,88,12,0.12), rgba(249,115,22,0.06)); border-bottom: 1.5px solid rgba(234,88,12,0.25);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:26px;">📍</span>
+          <div>
+            <div class="modal-title" style="font-size:15.5px; font-weight:900; color:#ea580c;">خط السير اليومي الذكي للمشرفين (Beat & Route Planning)</div>
+            <div style="font-size:11px; color:var(--text-muted);">جدولة وترتيب الفروع المستهدفة اليوم حسب أولوية الزيارة وخطر التسرب</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('dailyBeatModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 18px; overflow-y: auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <label style="font-size:12px; font-weight:800; display:block; margin-bottom:4px;">حدد المشرف:</label>
+            <select id="beatSupervisorSelect" class="form-control" onchange="renderDailyBeatRoute()" style="font-weight:700; font-size:13px; min-width:220px;">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div style="font-size:12px; color:var(--text-muted); background:var(--bg-card); padding:8px 12px; border-radius:10px; border:1px solid var(--border-color);">
+            📅 خط سير اليوم: <strong style="color:var(--text-main);" id="beatDateToday">--</strong>
+          </div>
+        </div>
+
+        <div id="beatRouteList" style="display:flex; flex-direction:column; gap:10px;">
+          <!-- Dynamically populated by renderDailyBeatRoute() -->
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="printDailyBeatSheet()">🖨️ طباعة خط السير</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('dailyBeatModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pillar 5: Executive Audit Trail Modal -->
+  <div class="modal-overlay" id="auditTrailModal">
+    <div class="modal-dialog" style="max-width: 920px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(79,70,229,0.1), rgba(124,58,237,0.08)); border-bottom: 1.5px solid rgba(79,70,229,0.2);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:24px;">🔐</span>
+          <div>
+            <div class="modal-title" style="font-size:15.5px; font-weight:900;">سجل تدقيق العمليات والرقابة (Executive Audit Trail Log)</div>
+            <div style="font-size:11px; color:var(--text-muted);">سجل مفصل لكل عملية تسجيل، تعديل، حذف، تغيير تارجت، أو مزامنة بالمنظومة</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('auditTrailModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y: auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+          <input type="text" id="auditSearchInput" class="form-control" placeholder="بحث في سجل العمليات بالاسم أو نوع الحركة..." oninput="filterAuditTrail()" style="max-width:300px; font-size:12.5px;">
+          <div style="display:flex; gap:8px;">
+            <select id="auditCategoryFilter" class="form-control" onchange="filterAuditTrail()" style="font-size:12.5px; font-weight:700;">
+              <option value="ALL">جميع الأقسام</option>
+              <option value="SALES">المبيعات والفواتير</option>
+              <option value="VISITS">الزيارات الميدانية</option>
+              <option value="TARGETS">المستهدفات والتارجت</option>
+              <option value="SECURITY">الأمان والصلاحيات</option>
+              <option value="SYSTEM">المنظومة والمزامنة</option>
+            </select>
+            <button type="button" class="btn btn-success btn-sm" onclick="exportAuditLogCSV()" style="font-weight:800;">
+              📊 تصدير CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive" style="max-height: 440px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 12px;">
+          <table class="table" style="font-size:12px; margin:0;">
+            <thead>
+              <tr style="position:sticky; top:0; background:var(--bg-card); z-index:2;">
+                <th>التاريخ والوقت</th>
+                <th>المستخدم</th>
+                <th>الصلاحية</th>
+                <th>القسم</th>
+                <th>نوع الحركة</th>
+                <th>التفاصيل والبيانات</th>
+              </tr>
+            </thead>
+            <tbody id="auditTrailTableBody">
+              <!-- Dynamically populated by renderAuditTrail() -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:11.5px; color:var(--text-muted);" id="auditTotalCountLabel">إجمالي العمليات المسجلة: 0</span>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('auditTrailModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offline Status Floating Notification Badge -->
+  <div class="offline-network-badge" id="offlineFloatingBadge">
+    <span id="offlineIcon">📴</span>
+    <span id="offlineText">وضع العمل بدون إنترنت (تم حفظ البيانات محلياً)</span>
   </div>
 
   <!-- Application Logic -->
@@ -6892,7 +7755,10 @@ html[dir="ltr"] .notif-dropdown-menu {
       tasks: [],
       dismissedNotifs: [],
       activeSupervisorId: 'MANAGER', // 'MANAGER' | 'ALL' | 1 | 2 | 3
-      lang: 'ar'
+      lang: 'ar',
+      timeFilter: 'MONTH', // 'TODAY' | 'WEEK' | 'MONTH' | 'QUARTER'
+      auditLog: [], // [{ id, timestamp, user, role, action, category, details }]
+      offlineQueue: [] // [{ id, type, payload, timestamp }]
     };
 
     function loadState() {
@@ -6993,6 +7859,13 @@ html[dir="ltr"] .notif-dropdown-menu {
           };
           localStorage.setItem('giza_saeed_current_user', JSON.stringify(AppState.currentUser));
         }
+        const storedTimeFilter = localStorage.getItem('giza_saeed_time_filter');
+        AppState.timeFilter = storedTimeFilter || 'MONTH';
+        const storedAudit = localStorage.getItem('giza_saeed_audit_log');
+        AppState.auditLog = storedAudit ? JSON.parse(storedAudit) : [];
+        const storedQueue = localStorage.getItem('giza_saeed_offline_queue');
+        AppState.offlineQueue = storedQueue ? JSON.parse(storedQueue) : [];
+
         const storedTs = localStorage.getItem('giza_saeed_last_sync_timestamp');
         window._lastLocalSaveTimestamp = storedTs ? Number(storedTs) : 0;
       } catch (e) {
@@ -7746,6 +8619,9 @@ function doPost(e) {
         localStorage.setItem('giza_saeed_tasks', JSON.stringify(AppState.tasks || []));
         localStorage.setItem('giza_saeed_dismissed_notifs', JSON.stringify(AppState.dismissedNotifs || []));
         localStorage.setItem('giza_saeed_active_sup', AppState.activeSupervisorId);
+        localStorage.setItem('giza_saeed_time_filter', AppState.timeFilter || 'MONTH');
+        localStorage.setItem('giza_saeed_audit_log', JSON.stringify((AppState.auditLog || []).slice(0, 200)));
+        localStorage.setItem('giza_saeed_offline_queue', JSON.stringify(AppState.offlineQueue || []));
         if (AppState.currentUser) {
           localStorage.setItem('giza_saeed_current_user', JSON.stringify(AppState.currentUser));
         } else {
@@ -9272,11 +10148,1005 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     }
 
     /* =========================================================================
+       ENTERPRISE PILLARS ENGINES & FUNCTIONS (PILLARS 1 TO 5)
+       ========================================================================= */
+    // --- PILLAR 3: TIME PERIOD FILTERING ENGINE ---
+    function filterSalesByTime(salesArr) {
+      const arr = salesArr || AppState.sales || [];
+      const filter = AppState.timeFilter || 'MONTH';
+      const now = new Date();
+      const todayISO = now.toISOString().split('T')[0];
+      const yearMonth = todayISO.slice(0, 7);
+
+      if (filter === 'TODAY') {
+        return arr.filter(s => s.date === todayISO);
+      }
+      if (filter === 'WEEK') {
+        const weekAgo = new Date(now.getTime() - 7 * 86400000);
+        return arr.filter(s => new Date(s.date) >= weekAgo);
+      }
+      if (filter === 'QUARTER') {
+        const quarterAgo = new Date(now.getTime() - 90 * 86400000);
+        return arr.filter(s => new Date(s.date) >= quarterAgo);
+      }
+      // Default: current month
+      return arr.filter(s => s.date && s.date.startsWith(yearMonth));
+    }
+
+    function setTimePeriodFilter(period) {
+      AppState.timeFilter = period;
+      saveStateLocalOnly();
+      renderTimeFilterBar();
+      renderKPIs();
+      renderCharts();
+      renderRunRateAnalytics();
+      showToast(`تم تطبيق فلتر الفترة: ${getPeriodLabel(period)} ⏱️`, 'info', 2000);
+    }
+
+    function getPeriodLabel(period) {
+      if (period === 'TODAY') return 'اليوم';
+      if (period === 'WEEK') return 'هذا الأسبوع';
+      if (period === 'QUARTER') return 'الربع السنوي';
+      return 'الشهر الحالي';
+    }
+
+    function renderTimeFilterBar() {
+      const current = AppState.timeFilter || 'MONTH';
+      document.querySelectorAll('.time-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-period') === current) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    // --- PILLAR 5: AUDIT LOGGING & CSV EXPORT ENGINE ---
+    function logAuditAction(action, details, category = 'SYSTEM') {
+      try {
+        const user = AppState.currentUser ? (AppState.currentUser.name || AppState.currentUser.username || 'System') : 'المدير العام';
+        const role = (AppState.currentUser && AppState.currentUser.role) || 'manager';
+        const entry = {
+          id: 'AUD_' + Date.now() + '_' + Math.floor(Math.random()*1000),
+          timestamp: new Date().toISOString(),
+          user: user,
+          role: role,
+          action: action,
+          details: details || '',
+          category: category // 'SALES' | 'VISITS' | 'TARGETS' | 'SECURITY' | 'SYSTEM'
+        };
+        if (!Array.isArray(AppState.auditLog)) AppState.auditLog = [];
+        AppState.auditLog.unshift(entry);
+        if (AppState.auditLog.length > 200) AppState.auditLog = AppState.auditLog.slice(0, 200);
+        localStorage.setItem('giza_saeed_audit_log', JSON.stringify(AppState.auditLog));
+      } catch(e) {
+        console.error("Audit log error:", e);
+      }
+    }
+
+    function renderAuditTrail() {
+      const tbody = document.getElementById('auditTrailTableBody');
+      if (!tbody) return;
+      const countLbl = document.getElementById('auditTotalCountLabel');
+      const cat = document.getElementById('auditCategoryFilter') ? document.getElementById('auditCategoryFilter').value : 'ALL';
+      const query = document.getElementById('auditSearchInput') ? document.getElementById('auditSearchInput').value.trim().toLowerCase() : '';
+
+      let list = AppState.auditLog || [];
+      if (cat !== 'ALL') list = list.filter(item => item.category === cat);
+      if (query) {
+        list = list.filter(item => 
+          (item.user && item.user.toLowerCase().includes(query)) ||
+          (item.action && item.action.toLowerCase().includes(query)) ||
+          (item.details && item.details.toLowerCase().includes(query))
+        );
+      }
+
+      if (countLbl) countLbl.textContent = `إجمالي العمليات المسجلة: ${list.length}`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--text-muted);">لا توجد حركات تدقيق مطابقة حتى الآن</td></tr>`;
+        return;
+      }
+
+      const categoryMap = {
+        SALES: { label: 'المبيعات', cls: 'audit-badge-sales' },
+        VISITS: { label: 'الزيارات', cls: 'audit-badge-visits' },
+        TARGETS: { label: 'التارجت', cls: 'audit-badge-targets' },
+        SECURITY: { label: 'الأمان', cls: 'audit-badge-security' },
+        SYSTEM: { label: 'المنظومة', cls: 'audit-badge-system' }
+      };
+
+      tbody.innerHTML = list.map(item => {
+        const d = new Date(item.timestamp);
+        const dateStr = d.toLocaleDateString('ar-EG') + ' ' + d.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
+        const catInfo = categoryMap[item.category] || { label: item.category || 'عام', cls: 'audit-badge-system' };
+        return `
+          <tr>
+            <td style="font-family:monospace; direction:ltr; text-align:right;">${dateStr}</td>
+            <td><strong>${escapeHtml(item.user)}</strong></td>
+            <td><span class="badge" style="font-size:10.5px;">${escapeHtml(item.role)}</span></td>
+            <td><span class="audit-log-badge ${catInfo.cls}">${catInfo.label}</span></td>
+            <td style="font-weight:700; color:var(--primary);">${escapeHtml(item.action)}</td>
+            <td style="max-width:280px; font-size:11.5px; color:var(--text-main);">${escapeHtml(item.details)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterAuditTrail() {
+      renderAuditTrail();
+    }
+
+    function exportAuditLogCSV() {
+      const list = AppState.auditLog || [];
+      if (list.length === 0) {
+        showToast('لا توجد بيانات تدقيق للتصدير', 'warning');
+        return;
+      }
+      let csv = "\uFEFFالتاريخ,الوقت,المستخدم,الصلاحية,القسم,نوع الحركة,التفاصيل\r\n";
+      list.forEach(item => {
+        const d = new Date(item.timestamp);
+        const date = d.toLocaleDateString('en-GB');
+        const time = d.toLocaleTimeString('en-US');
+        csv += `"${date}","${time}","${item.user || ''}","${item.role || ''}","${item.category || ''}","${item.action || ''}","${(item.details || '').replace(/"/g, '""')}"\r\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Audit_Log_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('تم تصدير سجل التدقيق بنجاح 📊', 'success');
+    }
+
+    // --- PILLAR 1: CHURN & INACTIVITY RISK ENGINE ---
+    function detectInactiveBranches(daysThreshold = 7) {
+      const now = new Date();
+      const results = [];
+      (AppState.branches || []).forEach(b => {
+        const branchSales = (AppState.sales || []).filter(s => s.branch && s.branch.trim().toLowerCase() === (b.name || '').trim().toLowerCase());
+        if (branchSales.length === 0) {
+          results.push({
+            branch: b.name,
+            supervisorId: b.supervisorId,
+            daysInactive: 999,
+            lastDate: 'لا يوجد مشتريات مسجلة',
+            lastAmount: 0,
+            phone: b.phone || '',
+            area: b.area || b.governorate || ''
+          });
+        } else {
+          const sorted = [...branchSales].sort((a,b) => new Date(b.date) - new Date(a.date));
+          const latest = sorted[0];
+          const diffMs = now - new Date(latest.date);
+          const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+          if (diffDays >= daysThreshold) {
+            results.push({
+              branch: b.name,
+              supervisorId: b.supervisorId,
+              daysInactive: diffDays,
+              lastDate: latest.date,
+              lastAmount: Number(latest.amount || 0),
+              phone: b.phone || '',
+              area: b.area || b.governorate || ''
+            });
+          }
+        }
+      });
+      return results.sort((a,b) => b.daysInactive - a.daysInactive);
+    }
+
+    function renderChurnAlerts() {
+      const card = document.getElementById('churnRiskAlertCard');
+      if (!card) return;
+      const inactives = detectInactiveBranches(7);
+
+      if (inactives.length === 0) {
+        card.style.display = 'none';
+        return;
+      }
+
+      card.style.display = 'block';
+      const isEn = AppState.lang === 'en';
+
+      card.innerHTML = `
+        <div class="churn-header">
+          <div class="churn-title-block">
+            <span style="font-size:22px;">⚠️</span>
+            <div>
+              <strong style="color:var(--danger); font-size:14px;">رادار كشف العملاء في خطر التسرب والركود (Churn Risk Alert)</strong>
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">
+                تم رصد <strong style="color:var(--danger);">${inactives.length}</strong> فروع لم تسجل أي حركة مشتريات منذ أكثر من 7 أيام. موصى بزيارات تنشيطية فورية.
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline btn-xs" onclick="openDailyBeatModal()" style="color:var(--danger); border-color:rgba(239,68,68,0.4); font-weight:800;">
+            📍 إضافة الفروع لخط السير اليومي
+          </button>
+        </div>
+        <div class="churn-list">
+          ${inactives.slice(0, 6).map(item => {
+            const sup = AppState.supervisors.find(s => Number(s.id) === Number(item.supervisorId));
+            const supName = sup ? sup.name : 'غير محدد';
+            const daysText = item.daysInactive >= 999 ? 'لم يطلب أي حركة حتى الآن' : `متوقف منذ ${item.daysInactive} يوم`;
+            return `
+              <div class="churn-row">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-weight:900; font-size:13px; color:var(--text-main); cursor:pointer;" onclick="openCustomer360Modal('${escapeHtml(item.branch)}')">${escapeHtml(item.branch)}</span>
+                    <span class="badge badge-danger" style="font-size:10.5px;">${daysText}</span>
+                  </div>
+                  <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">
+                    المشرف: <strong style="color:var(--text-main);">${escapeHtml(supName)}</strong> • آخر طلب: ${item.lastDate} (${formatCurrency(item.lastAmount)})
+                  </div>
+                </div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  ${item.phone ? `<a href="https://wa.me/${item.phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent('مرحباً من إدارة مبيعات 2B، نود الاطمئنان على سير العمل واحتياجاتكم من الإكسسوارات هذا الأسبوع')}" target="_blank" class="btn btn-success btn-xs" style="background:#25d366; color:#fff; font-weight:700;">💬 واتساب</a>` : ''}
+                  <button type="button" class="btn btn-primary btn-xs" onclick="quickScheduleVisitForBranch('${escapeHtml(item.branch)}', ${item.supervisorId})" style="font-weight:700;">
+                    📍 زيارة عاجلة
+                  </button>
+                  <button type="button" class="btn btn-outline btn-xs" onclick="openCustomer360Modal('${escapeHtml(item.branch)}')">
+                    🏬 360°
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function quickScheduleVisitForBranch(branchName, supervisorId) {
+      const m = document.getElementById('visitModal');
+      if (!m) return;
+      const bInput = document.getElementById('modalVisitBranch');
+      const supSelect = document.getElementById('modalVisitSup');
+      const dateInput = document.getElementById('modalVisitDate');
+      const purSelect = document.getElementById('modalVisitPurpose');
+
+      if (bInput) bInput.value = branchName;
+      if (supSelect && supervisorId) supSelect.value = supervisorId;
+      if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+      if (purSelect) purSelect.value = 'تنشيط مبيعات وحل مشاكل';
+
+      m.classList.add('open');
+    }
+
+    // --- PILLAR 2: GPS GEOFENCING DISTANCE CALCULATOR ---
+    function calculateDistanceMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371e3; // metres
+      const φ1 = lat1 * Math.PI/180;
+      const φ2 = lat2 * Math.PI/180;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // --- PILLAR 2: CUSTOMER 360° PROFILE MODAL ENGINE ---
+    function openCustomer360Modal(branchName) {
+      const b = AppState.branches.find(x => x.name && x.name.trim().toLowerCase() === (branchName || '').trim().toLowerCase()) || { name: branchName, target: 100000, supervisorId: 1 };
+      const sup = AppState.supervisors.find(s => Number(s.id) === Number(b.supervisorId));
+      const branchSales = AppState.sales.filter(s => s.branch && s.branch.trim().toLowerCase() === (branchName || '').trim().toLowerCase());
+      const branchVisits = AppState.visits.filter(v => v.branch && v.branch.trim().toLowerCase() === (branchName || '').trim().toLowerCase());
+
+      const totalSales = branchSales.reduce((acc, s) => acc + Number(s.amount || 0), 0);
+      const target = Number(b.target || 0);
+      const pct = target > 0 ? ((totalSales / target) * 100).toFixed(1) : 0;
+      const aov = branchSales.length > 0 ? Math.round(totalSales / branchSales.length) : 0;
+
+      const catMap = {};
+      branchSales.forEach(s => {
+        const c = s.category || 'إكسسوارات متنوعة';
+        catMap[c] = (catMap[c] || 0) + Number(s.amount || 0);
+      });
+      const topCategories = Object.entries(catMap).sort((a,b) => b[1] - a[1]);
+
+      const modal = document.getElementById('customer360Modal');
+      const title = document.getElementById('c360BranchName');
+      const subtitle = document.getElementById('c360BranchSubtitle');
+      const body = document.getElementById('c360ModalBody');
+      const footer = document.getElementById('c360QuickActionsFooter');
+
+      if (title) title.textContent = `ملف العميل: ${b.name}`;
+      if (subtitle) subtitle.textContent = `المشرف المسؤول: ${sup ? sup.name : '-'} • المنطقة: ${b.area || b.governorate || 'الجيزة والصعيد'}`;
+
+      if (body) {
+        body.innerHTML = `
+          <div class="c360-header-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <div style="font-size:18px; font-weight:900; color:var(--text-main);">${escapeHtml(b.name)}</div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                  📍 ${escapeHtml(b.area || b.address || 'فرع معتمد')} • 👔 ${escapeHtml(sup ? sup.name : 'مشرف المنطقة')} • 📞 ${escapeHtml(b.phone || 'غير مسجل')}
+                </div>
+              </div>
+              <span class="badge ${pct >= 100 ? 'badge-success' : 'badge-primary'}" style="font-size:12px; font-weight:800; padding:6px 12px;">
+                نسبة تحقيق التارجت: ${pct}%
+              </span>
+            </div>
+          </div>
+
+          <!-- KPI Stat Grid -->
+          <div class="c360-stat-grid">
+            <div class="c360-stat-card">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">المبيعات المحققة</div>
+              <div class="c360-stat-val" style="color:var(--primary);">${formatCurrency(totalSales)}</div>
+            </div>
+            <div class="c360-stat-card">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">تارجت الفرع</div>
+              <div class="c360-stat-val" style="color:var(--purple);">${formatCurrency(target)}</div>
+            </div>
+            <div class="c360-stat-card">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">متوسط الفاتورة (AOV)</div>
+              <div class="c360-stat-val" style="color:var(--success);">${formatCurrency(aov)}</div>
+            </div>
+            <div class="c360-stat-card">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">عدد الفواتير</div>
+              <div class="c360-stat-val" style="color:var(--text-main);">${branchSales.length} فاتورة</div>
+            </div>
+            <div class="c360-stat-card">
+              <div style="font-size:11px; color:var(--text-muted); font-weight:700;">الزيارات الميدانية</div>
+              <div class="c360-stat-val" style="color:#0284c7;">${branchVisits.length} زيارة</div>
+            </div>
+          </div>
+
+          <!-- Top Categories -->
+          <div style="margin-bottom:16px;">
+            <h4 style="font-size:13px; font-weight:800; color:var(--text-main); margin-bottom:8px;">📦 الأصناف الأكثر طلباً لدى العميل</h4>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              ${topCategories.length > 0 ? topCategories.map(([cat, amt]) => `
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:6px 12px; font-size:12px;">
+                  <strong>${escapeHtml(cat)}</strong>: <span style="color:var(--success); font-weight:800;">${formatCurrency(amt)}</span>
+                </div>
+              `).join('') : '<div style="font-size:12px; color:var(--text-muted);">لا توجد مبيعات تفصيلية مسجلة بعد</div>'}
+            </div>
+          </div>
+
+          <!-- Historical Sales Table -->
+          <div style="margin-bottom:16px;">
+            <h4 style="font-size:13px; font-weight:800; color:var(--text-main); margin-bottom:8px;">🧾 سجل الفواتير والمشتريات</h4>
+            <div class="table-responsive" style="max-height:180px; overflow-y:auto; border:1px solid var(--border-color); border-radius:10px;">
+              <table class="table" style="font-size:11.5px; margin:0;">
+                <thead><tr><th>التاريخ</th><th>الفاتورة</th><th>التصنيف</th><th>القيمة</th></tr></thead>
+                <tbody>
+                  ${branchSales.length > 0 ? branchSales.map(s => `
+                    <tr>
+                      <td>${s.date}</td>
+                      <td><strong>${s.invoice || '-'}</strong></td>
+                      <td>${s.category || '-'}</td>
+                      <td style="color:var(--success); font-weight:800;">${formatCurrency(s.amount)}</td>
+                    </tr>
+                  `).join('') : '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">لا توجد فواتير مسجلة</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Visits History -->
+          <div>
+            <h4 style="font-size:13px; font-weight:800; color:var(--text-main); margin-bottom:8px;">📍 سجل الزيارات الميدانية للفرع</h4>
+            <div class="table-responsive" style="max-height:160px; overflow-y:auto; border:1px solid var(--border-color); border-radius:10px;">
+              <table class="table" style="font-size:11.5px; margin:0;">
+                <thead><tr><th>التاريخ</th><th>المشرف</th><th>الغرض</th><th>مبيعات الزيارة</th><th>ملاحظات</th></tr></thead>
+                <tbody>
+                  ${branchVisits.length > 0 ? branchVisits.map(v => `
+                    <tr>
+                      <td>${v.date}</td>
+                      <td>${v.supervisorId ? (AppState.supervisors.find(s=>Number(s.id)===Number(v.supervisorId))||{}).name : '-'}</td>
+                      <td><span class="badge badge-primary">${v.purpose || '-'}</span></td>
+                      <td>${formatCurrency(v.sales || 0)}</td>
+                      <td>${v.notes || '-'}</td>
+                    </tr>
+                  `).join('') : '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">لا توجد زيارات مسجلة لهذا الفرع</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      if (footer) {
+        footer.innerHTML = `
+          ${b.phone ? `<a href="tel:${b.phone}" class="btn btn-outline btn-sm">📞 اتصال</a>` : ''}
+          ${b.phone ? `<a href="https://wa.me/${b.phone.replace(/[^0-9]/g,'')}" target="_blank" class="btn btn-success btn-sm" style="background:#25d366; color:#fff; font-weight:800;">💬 واتساب</a>` : ''}
+          <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('customer360Modal'); openSaleModalForBranch('${escapeHtml(b.name)}', ${b.supervisorId});">
+            ➕ إضافة فاتورة بيع
+          </button>
+          <button type="button" class="btn btn-purple btn-sm" onclick="closeModal('customer360Modal'); quickScheduleVisitForBranch('${escapeHtml(b.name)}', ${b.supervisorId});">
+            📍 تسجيل زيارة ميدانية
+          </button>
+        `;
+      }
+
+      if (modal) modal.classList.add('open');
+    }
+
+    function openSaleModalForBranch(branchName, supervisorId) {
+      openAddSaleModal();
+      const bInput = document.getElementById('modalSaleBranch');
+      const sSelect = document.getElementById('modalSaleSup');
+      if (bInput) bInput.value = branchName;
+      if (sSelect && supervisorId) sSelect.value = supervisorId;
+    }
+
+    // --- PILLAR 3: BOARDROOM COMMAND CENTER / TV MODE ENGINE ---
+    let _tvClockInterval = null;
+
+    function openBoardroomTvMode() {
+      const overlay = document.getElementById('boardroomTvModal');
+      if (!overlay) return;
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      renderBoardroomTv();
+      if (_tvClockInterval) clearInterval(_tvClockInterval);
+      _tvClockInterval = setInterval(() => {
+        updateTvClock();
+      }, 1000);
+      updateTvClock();
+
+      logAuditAction('عرض شاشة غرف الاجتماعات', 'فتح شاشة Command Center TV Mode', 'SYSTEM');
+    }
+
+    function closeBoardroomTvMode() {
+      const overlay = document.getElementById('boardroomTvModal');
+      if (overlay) overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      if (_tvClockInterval) {
+        clearInterval(_tvClockInterval);
+        _tvClockInterval = null;
+      }
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(()=>{});
+      }
+    }
+
+    function toggleTvFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log('Fullscreen failed:', err);
+        });
+      } else {
+        document.exitFullscreen().catch(()=>{});
+      }
+    }
+
+    function updateTvClock() {
+      const clockEl = document.getElementById('tvDigitalClock');
+      if (!clockEl) return;
+      const now = new Date();
+      clockEl.textContent = now.toLocaleTimeString('en-GB');
+    }
+
+    function renderBoardroomTv() {
+      const totalTarget = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0) || 6000000;
+      const totalSales = AppState.sales.reduce((sum, s) => sum + Number(s.amount || 0), 0);
+      const totalPct = totalTarget > 0 ? Math.round((totalSales / totalTarget) * 100) : 0;
+      const remaining = Math.max(0, totalTarget - totalSales);
+
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const currentDay = now.getDate();
+      const remainingDays = Math.max(1, (daysInMonth - currentDay) + 1);
+      const dailyRequired = remaining > 0 ? Math.ceil(remaining / remainingDays) : 0;
+
+      const salesEl = document.getElementById('tvKpiTotalSales');
+      if (salesEl) salesEl.textContent = formatCurrency(totalSales);
+      const salesSub = document.getElementById('tvKpiSalesSub');
+      if (salesSub) salesSub.textContent = `نسبة التحقيق الكلية: ${totalPct}%`;
+
+      const tgtEl = document.getElementById('tvKpiTotalTarget');
+      if (tgtEl) tgtEl.textContent = formatCurrency(totalTarget);
+      const tgtSub = document.getElementById('tvKpiTargetSub');
+      if (tgtSub) tgtSub.textContent = `المتبقي للهدف: ${formatCurrency(remaining)}`;
+
+      const rateEl = document.getElementById('tvKpiDailyRate');
+      if (rateEl) rateEl.textContent = `${formatCurrency(dailyRequired)} / يوم`;
+      const daysEl = document.getElementById('tvKpiDaysLeft');
+      if (daysEl) daysEl.textContent = `متبقي ${remainingDays} يوم حتى نهاية الشهر`;
+
+      const opsEl = document.getElementById('tvKpiOpsCount');
+      if (opsEl) opsEl.textContent = `${AppState.sales.length} مبيعات • ${AppState.visits.length} زيارة`;
+
+      // Radial Progress Gauge
+      const gaugePath = document.getElementById('tvRadialGaugePath');
+      const gaugeText = document.getElementById('tvRadialGaugeText');
+      const clamped = Math.min(100, Math.max(0, totalPct));
+      if (gaugePath) {
+        gaugePath.setAttribute('stroke-dasharray', `${clamped}, 100`);
+        gaugePath.setAttribute('stroke', totalPct >= 100 ? '#10b981' : (totalPct >= 70 ? '#38bdf8' : '#f59e0b'));
+      }
+      if (gaugeText) {
+        gaugeText.textContent = `${totalPct}%`;
+        gaugeText.style.color = totalPct >= 100 ? '#10b981' : (totalPct >= 70 ? '#38bdf8' : '#f59e0b');
+      }
+
+      const forecastEl = document.getElementById('tvForecastStatusText');
+      if (forecastEl) {
+        const runRateTotal = currentDay > 0 ? Math.round((totalSales / currentDay) * daysInMonth) : 0;
+        const runRatePct = totalTarget > 0 ? Math.round((runRateTotal / totalTarget) * 100) : 0;
+        forecastEl.textContent = `بالوتيرة الحالية: متوقع إغلاق الشهر على ${formatCurrency(runRateTotal)} (${runRatePct}%)`;
+      }
+
+      // Supervisor Podium
+      const podiumWrap = document.getElementById('tvSupervisorCardsWrap');
+      if (podiumWrap) {
+        const supsWithSales = AppState.supervisors.map(sup => {
+          const actual = AppState.sales.filter(s => Number(s.supervisorId) === Number(sup.id)).reduce((acc, s) => acc + Number(s.amount || 0), 0);
+          const tgt = Number(sup.target || 1);
+          const pct = Math.round((actual / tgt) * 100);
+          return { sup, actual, tgt, pct };
+        }).sort((a,b) => b.actual - a.actual);
+
+        const medals = ['🥇 المركز الأول', '🥈 المركز الثاني', '🥉 المركز الثالث'];
+        const colors = ['#facc15', '#94a3b8', '#cd7f32'];
+
+        podiumWrap.innerHTML = supsWithSales.map((item, idx) => `
+          <div class="tv-podium-card" style="border-color:${colors[idx] || 'rgba(255,255,255,0.1)'};">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:#f8fafc; font-size:14px;">${escapeHtml(item.sup.name)}</strong>
+              <span style="font-size:12px; font-weight:900; color:${colors[idx] || '#fff'};">${medals[idx] || `#${idx+1}`}</span>
+            </div>
+            <div style="font-size:18px; font-weight:900; color:#38bdf8;">${formatCurrency(item.actual)}</div>
+            <div style="font-size:11px; color:#94a3b8; display:flex; justify-content:space-between;">
+              <span>التارجت: ${formatCurrency(item.tgt)}</span>
+              <span style="font-weight:800; color:${colors[idx] || '#38bdf8'};">${item.pct}%</span>
+            </div>
+            <div style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+              <div style="width:${Math.min(100, item.pct)}%; height:100%; background:${colors[idx] || '#38bdf8'}; border-radius:3px;"></div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Live Sales Ticker
+      const ticker = document.getElementById('tvMarqueeTicker');
+      if (ticker) {
+        const latest = [...AppState.sales].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+        ticker.innerHTML = latest.map(s => `
+          <span>💳 ${escapeHtml(s.branch)}: <strong style="color:#10b981;">${formatCurrency(s.amount)}</strong> (${s.date})</span>
+        `).join(' • ');
+      }
+    }
+
+    // --- PILLAR 2: DAILY BEAT & ROUTE PLANNING ENGINE ---
+    function openDailyBeatModal() {
+      const m = document.getElementById('dailyBeatModal');
+      if (!m) return;
+      const supSelect = document.getElementById('beatSupervisorSelect');
+      const dateEl = document.getElementById('beatDateToday');
+
+      if (dateEl) dateEl.textContent = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      if (supSelect) {
+        supSelect.innerHTML = AppState.supervisors.map(s => `
+          <option value="${s.id}">${escapeHtml(s.name)} - ${escapeHtml(s.title || '')}</option>
+        `).join('');
+      }
+
+      renderDailyBeatRoute();
+      m.classList.add('open');
+    }
+
+    function renderDailyBeatRoute() {
+      const listEl = document.getElementById('beatRouteList');
+      const supSelect = document.getElementById('beatSupervisorSelect');
+      if (!listEl) return;
+      const supId = supSelect ? Number(supSelect.value) : (AppState.supervisors[0] ? AppState.supervisors[0].id : 1);
+
+      const supBranches = AppState.branches.filter(b => Number(b.supervisorId) === supId);
+      if (supBranches.length === 0) {
+        listEl.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد فروع مسجلة لهذا المشرف بعد</div>`;
+        return;
+      }
+
+      const scored = supBranches.map(b => {
+        const sales = AppState.sales.filter(s => s.branch && s.branch.trim().toLowerCase() === b.name.trim().toLowerCase());
+        const sorted = [...sales].sort((a,b) => new Date(b.date) - new Date(a.date));
+        const lastDate = sorted[0] ? sorted[0].date : null;
+        const daysSince = lastDate ? Math.floor((new Date() - new Date(lastDate)) / (86400000)) : 999;
+        const totalSales = sales.reduce((acc, s) => acc + Number(s.amount || 0), 0);
+        const target = Number(b.target || 100000);
+        const remaining = Math.max(0, target - totalSales);
+
+        let priority = 'عادية';
+        let priorityColor = '#3b82f6';
+        let reason = 'متابعة دورية وتوفير النواقص';
+
+        if (daysSince >= 7) {
+          priority = 'عاجلة جداً (خطر تسرب)';
+          priorityColor = '#ef4444';
+          reason = `متوقف عن الشراء منذ ${daysSince === 999 ? 'فترة طويلة' : daysSince + ' يوم'}`;
+        } else if (remaining >= 50000) {
+          priority = 'أولوية مبيعات';
+          priorityColor = '#f59e0b';
+          reason = `متبقي على تارجته ${formatCurrency(remaining)}`;
+        }
+
+        return { branch: b, daysSince, remaining, priority, priorityColor, reason };
+      }).sort((a,b) => b.daysSince - a.daysSince);
+
+      listEl.innerHTML = scored.slice(0, 6).map((item, idx) => `
+        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--purple)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; flex-shrink:0;">
+              ${idx + 1}
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <strong style="font-size:13.5px; color:var(--text-main); cursor:pointer;" onclick="openCustomer360Modal('${escapeHtml(item.branch.name)}')">${escapeHtml(item.branch.name)}</strong>
+                <span class="badge" style="background:${item.priorityColor}22; color:${item.priorityColor}; font-weight:800; font-size:11px;">${item.priority}</span>
+              </div>
+              <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">
+                📍 ${escapeHtml(item.branch.area || item.branch.governorate || 'الفرع')} • 💡 ${item.reason}
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('dailyBeatModal'); quickScheduleVisitForBranch('${escapeHtml(item.branch.name)}', ${supId});" style="font-weight:800; font-size:11.5px;">
+              📍 ابدأ الزيارة الآن
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openCustomer360Modal('${escapeHtml(item.branch.name)}')" style="font-size:11.5px;">
+              🏬 360°
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function printDailyBeatSheet() {
+      window.print();
+    }
+
+    // --- PILLAR 1: CONVERSATIONAL EGYPTIAN ARABIC AI COPILOT ---
+    let _copilotVoiceActive = false;
+    let _copilotSpeechRec = null;
+
+    function switchCopilotSubTab(tab) {
+      const chatBtn = document.getElementById('btnCopilotTabChat');
+      const analyticsBtn = document.getElementById('btnCopilotTabAnalytics');
+      const chatPane = document.getElementById('copilotChatPane');
+      const analyticsPane = document.getElementById('copilotAnalyticsPane');
+
+      if (tab === 'chat') {
+        if (chatBtn) chatBtn.classList.add('active');
+        if (analyticsBtn) analyticsBtn.classList.remove('active');
+        if (chatPane) chatPane.style.display = 'block';
+        if (analyticsPane) analyticsPane.style.display = 'none';
+      } else {
+        if (chatBtn) chatBtn.classList.remove('active');
+        if (analyticsBtn) analyticsBtn.classList.add('active');
+        if (chatPane) chatPane.style.display = 'none';
+        if (analyticsPane) analyticsPane.style.display = 'block';
+        renderAiCopilot();
+      }
+    }
+
+    function askCopilotQuick(text) {
+      const input = document.getElementById('copilotInputText');
+      if (input) input.value = text;
+      submitCopilotQuery();
+    }
+
+    function submitCopilotQuery() {
+      const input = document.getElementById('copilotInputText');
+      if (!input) return;
+      const q = input.value.trim();
+      if (!q) return;
+      input.value = '';
+
+      appendCopilotMessage(q, 'user');
+      setTimeout(() => {
+        askConversationalAi(q);
+      }, 300);
+    }
+
+    function appendCopilotMessage(text, sender, richHtml = '') {
+      const box = document.getElementById('copilotChatBox');
+      if (!box) return;
+      const div = document.createElement('div');
+      div.className = sender === 'user' ? 'copilot-msg-user' : 'copilot-msg-bot';
+
+      if (sender === 'user') {
+        div.textContent = text;
+      } else {
+        div.innerHTML = `
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+            <span style="font-size:16px;">🤖</span>
+            <strong style="color:var(--purple); font-size:12.5px;">المساعد الذكي:</strong>
+          </div>
+          <div>${text}</div>
+          ${richHtml ? `<div style="margin-top:8px;">${richHtml}</div>` : ''}
+        `;
+      }
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function toggleCopilotVoiceListening() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast('المتصفح لا يدعم التسجيل الصوتي المباشر، يرجى كتابة السؤال نصياً', 'warning', 3500);
+        return;
+      }
+
+      const micBtn = document.getElementById('btnCopilotVoiceMic');
+
+      if (_copilotVoiceActive) {
+        if (_copilotSpeechRec) try { _copilotSpeechRec.stop(); } catch(e){}
+        _copilotVoiceActive = false;
+        if (micBtn) {
+          micBtn.style.background = '';
+          micBtn.textContent = '🎙️';
+        }
+        return;
+      }
+
+      try {
+        _copilotSpeechRec = new SpeechRecognition();
+        _copilotSpeechRec.lang = 'ar-EG';
+        _copilotSpeechRec.interimResults = false;
+        _copilotSpeechRec.continuous = false;
+
+        _copilotVoiceActive = true;
+        if (micBtn) {
+          micBtn.style.background = '#ef4444';
+          micBtn.textContent = '🔴';
+        }
+        showToast('جاري الاستماع لصوتك بالعامية... تحدث الآن 🎙️', 'info', 2500);
+
+        _copilotSpeechRec.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          const input = document.getElementById('copilotInputText');
+          if (input) input.value = transcript;
+          _copilotVoiceActive = false;
+          if (micBtn) {
+            micBtn.style.background = '';
+            micBtn.textContent = '🎙️';
+          }
+          submitCopilotQuery();
+        };
+
+        _copilotSpeechRec.onerror = () => {
+          _copilotVoiceActive = false;
+          if (micBtn) {
+            micBtn.style.background = '';
+            micBtn.textContent = '🎙️';
+          }
+        };
+
+        _copilotSpeechRec.start();
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    function askConversationalAi(queryText) {
+      const q = queryText.toLowerCase();
+      const totalTarget = AppState.supervisors.reduce((sum, sup) => sum + Number(sup.target || 0), 0) || 6000000;
+      const totalSales = AppState.sales.reduce((sum, s) => sum + Number(s.amount || 0), 0);
+      const totalPct = totalTarget > 0 ? Math.round((totalSales / totalTarget) * 100) : 0;
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const currentDay = now.getDate();
+      const remainingDays = Math.max(1, (daysInMonth - currentDay) + 1);
+
+      let replyText = '';
+      let speakText = '';
+      let richHtml = '';
+
+      // 1. Lagging supervisor
+      if (q.includes('متأخر') || q.includes('متأخرين') || q.includes('اقل') || q.includes('أقل') || q.includes('عجز') || q.includes('lagging')) {
+        const sups = AppState.supervisors.map(s => {
+          const act = AppState.sales.filter(x => Number(x.supervisorId) === Number(s.id)).reduce((acc, x) => acc + Number(x.amount || 0), 0);
+          const tgt = Number(s.target || 1);
+          const pct = Math.round((act / tgt) * 100);
+          const rem = Math.max(0, tgt - act);
+          const dailyNeeded = Math.ceil(rem / remainingDays);
+          return { sup: s, act, tgt, pct, rem, dailyNeeded };
+        }).sort((a,b) => a.pct - b.pct);
+
+        const lagging = sups[0];
+        if (lagging) {
+          replyText = `المشرف الأكثر تأخراً في تارجته حالياً هو **أ/ ${lagging.sup.name}** بنسبة تحقيق **${lagging.pct}%** فقط. محقق ${formatCurrency(lagging.act)} من أصل تارجت ${formatCurrency(lagging.tgt)}، ومتبقي عليه **${formatCurrency(lagging.rem)}** (يحتاج للبيع بمعدل ${formatCurrency(lagging.dailyNeeded)} يومياً للوصول إلى 100%).`;
+          speakText = `يا فندم، المشرف المتأخر في تارجته هو أستاذ ${lagging.sup.name}، محقق ${lagging.pct} في المية بس، ومتبقي عليه ${formatCurrency(lagging.rem)} ولازم يبيع بمعدل ${formatCurrency(lagging.dailyNeeded)} جنيه يومياً علشان يقفل تارجته.`;
+          richHtml = `
+            <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--danger);">${lagging.sup.name}</strong>
+                <div style="font-size:11px; color:var(--text-muted);">المتبقي: ${formatCurrency(lagging.rem)} • المطلوب يومياً: ${formatCurrency(lagging.dailyNeeded)}</div>
+              </div>
+              <button type="button" class="btn btn-outline btn-xs" onclick="openDailyBeatModal()">📍 خط سير المشرف</button>
+            </div>
+          `;
+        }
+      }
+      // 2. Top Branch
+      else if (q.includes('فرع') || q.includes('معرض') || q.includes('تاجر')) {
+        const branchMap = {};
+        AppState.sales.forEach(s => {
+          if (s.branch) {
+            branchMap[s.branch] = (branchMap[s.branch] || 0) + Number(s.amount || 0);
+          }
+        });
+        const sorted = Object.entries(branchMap).sort((a,b) => b[1] - a[1]);
+        if (sorted.length > 0) {
+          const topB = sorted[0];
+          replyText = `أعلى فرع مسجل مبيعات بالقطاع هو **${topB[0]}** بإجمالي مبيعات **${formatCurrency(topB[1])}**، ويليه فرع **${sorted[1] ? sorted[1][0] : '-'}** بإجمالي **${sorted[1] ? formatCurrency(sorted[1][1]) : '0'}**.`;
+          speakText = `أكتر فرع عمل مبيعات هو ${topB[0]} بإجمالي ${formatCurrency(topB[1])}.`;
+          richHtml = `
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-xs" onclick="openCustomer360Modal('${escapeHtml(topB[0])}')">🏬 فتح ملف 360° لفرع ${escapeHtml(topB[0])}</button>
+            </div>
+          `;
+        }
+      }
+      // 3. Top Supervisor
+      else if (q.includes('متصدر') || q.includes('المركز الاول') || q.includes('المركز الأول') || q.includes('اعلى مشرف') || q.includes('أعلى مشرف')) {
+        const sups = AppState.supervisors.map(s => {
+          const act = AppState.sales.filter(x => Number(x.supervisorId) === Number(s.id)).reduce((acc, x) => acc + Number(x.amount || 0), 0);
+          const tgt = Number(s.target || 1);
+          const pct = Math.round((act / tgt) * 100);
+          return { sup: s, act, tgt, pct };
+        }).sort((a,b) => b.act - a.act);
+
+        const topSup = sups[0];
+        if (topSup) {
+          replyText = `المشرف المتصدر بالمركز الأول حالياً هو **أ/ ${topSup.sup.name}** بمبيعات بلغت **${formatCurrency(topSup.act)}** وبنسبة إنجاز **${topSup.pct}%** من تارجته.`;
+          speakText = `المشرف المتصدر حالياً هو أستاذ ${topSup.sup.name} بمبيعات ${formatCurrency(topSup.act)} وبنسبة إنجاز ${topSup.pct} في المية. عاش جداً!`;
+        }
+      }
+      // 4. Inactive / Churn
+      else if (q.includes('خامل') || q.includes('تسرب') || q.includes('ما طلب') || q.includes('ما اشتر') || q.includes('ركود')) {
+        const inactives = detectInactiveBranches(7);
+        replyText = `تم رصد **${inactives.length}** فروع لم تسجل مشتريات منذ أكثر من 7 أيام. أبرزهم: **${inactives.slice(0,3).map(x=>x.branch).join('، ')}**. موصى بزيارات تنشيطية فورية.`;
+        speakText = `فيه ${inactives.length} فروع متوقفين عن الشراء بقالهم أكتر من 7 أيام، ومحتاجين زيارات تنشيطية عاجلة.`;
+        richHtml = `<button type="button" class="btn btn-danger btn-xs" onclick="document.getElementById('churnRiskAlertCard').scrollIntoView({behavior:'smooth'})">عرض رادار التسرب</button>`;
+      }
+      // 5. Forecast / Run-rate
+      else if (q.includes('اغلاق') || q.includes('إغلاق') || q.includes('توقع') || q.includes('run') || q.includes('هنقفل') || q.includes('نوصل')) {
+        const runRateTotal = currentDay > 0 ? Math.round((totalSales / currentDay) * daysInMonth) : 0;
+        const runRatePct = totalTarget > 0 ? Math.round((runRateTotal / totalTarget) * 100) : 0;
+        const gap = Math.max(0, totalTarget - runRateTotal);
+        const dailyGapNeeded = Math.ceil((totalTarget - totalSales) / remainingDays);
+
+        replyText = `بالوتيرة الحالية ستصل المبيعات بنهاية الشهر إلى **${formatCurrency(runRateTotal)}** بنسبة **${runRatePct}%** من التارجت. لسد الفجوة وتفادي العجز (${formatCurrency(gap)})، تحتاج لرفع وتيرة مبيعات القطاع بمعدل **${formatCurrency(dailyGapNeeded)} يومياً**.`;
+        speakText = `بالوتيرة الحالية هنتوقع نقفل على ${runRatePct} في المية بس بنهاية الشهر.. محتاجين نزود مبيعاتنا بـ ${formatCurrency(dailyGapNeeded)} جنيه يومياً لتفادي العجز وتحقيق الـ 100%.`;
+      }
+      // Default general summary
+      else {
+        replyText = `موقف قطاع الجيزة والصعيد اللحظي: إجمالي المحقق **${formatCurrency(totalSales)}** بنسبة إنجاز **${totalPct}%** من تارجت القطاع (${formatCurrency(totalTarget)}). متبقي **${remainingDays}** يوم حتى نهاية الشهر.`;
+        speakText = `إجمالي مبيعات القطاع حتى الآن ${formatCurrency(totalSales)} بنسبة تحقيق ${totalPct} في المية من التارجت، ومتبقي ${remainingDays} يوم في الشهر.`;
+      }
+
+      appendCopilotMessage(replyText, 'bot', richHtml);
+
+      if ('speechSynthesis' in window && speakText) {
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(speakText);
+          u.lang = 'ar-EG';
+          u.rate = 1.0;
+          window.speechSynthesis.speak(u);
+        } catch(e){}
+      }
+    }
+
+    // --- PILLAR 4: INDIVIDUAL SUPERVISOR WHATSAPP DISPATCH ---
+    function switchWhatsAppMode(mode) {
+      const btnGroup = document.getElementById('btnWaModeGroup');
+      const btnIndiv = document.getElementById('btnWaModeIndividual');
+      const supRow = document.getElementById('waIndividualSupervisorRow');
+      const title = document.getElementById('whatsAppModalTitle');
+
+      if (mode === 'individual') {
+        if (btnGroup) btnGroup.classList.remove('active');
+        if (btnIndiv) btnIndiv.classList.add('active');
+        if (supRow) supRow.style.display = 'block';
+        if (title) title.textContent = 'تقرير واتساب الفردي للمشرف (Individual WhatsApp Dispatch)';
+
+        const select = document.getElementById('waSupervisorSelect');
+        if (select) {
+          select.innerHTML = AppState.supervisors.map(s => `
+            <option value="${s.id}">${escapeHtml(s.name)} - ${escapeHtml(s.title || '')}</option>
+          `).join('');
+        }
+        updateIndividualWhatsAppText();
+      } else {
+        if (btnGroup) btnGroup.classList.add('active');
+        if (btnIndiv) btnIndiv.classList.remove('active');
+        if (supRow) supRow.style.display = 'none';
+        if (title) title.textContent = 'تقرير مبيعات الواتساب اليومي الفوري (1-Click Broadcast)';
+        openDailyWhatsAppModal();
+      }
+    }
+
+    function updateIndividualWhatsAppText() {
+      const select = document.getElementById('waSupervisorSelect');
+      const supId = select ? Number(select.value) : (AppState.supervisors[0] ? AppState.supervisors[0].id : 1);
+      const sup = AppState.supervisors.find(s => Number(s.id) === supId);
+      if (!sup) return;
+
+      const area = document.getElementById('whatsAppReportText');
+      if (!area) return;
+
+      const actual = AppState.sales.filter(s => Number(s.supervisorId) === supId).reduce((acc, s) => acc + Number(s.amount || 0), 0);
+      const target = Number(sup.target || 1);
+      const pct = Math.round((actual / target) * 100);
+      const remaining = Math.max(0, target - actual);
+
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const currentDay = now.getDate();
+      const remainingDays = Math.max(1, (daysInMonth - currentDay) + 1);
+      const dailyNeeded = Math.ceil(remaining / remainingDays);
+
+      const todayISO = now.toISOString().split('T')[0];
+      const todaySales = AppState.sales.filter(s => Number(s.supervisorId) === supId && s.date === todayISO).reduce((acc, s) => acc + Number(s.amount || 0), 0);
+
+      const text = `السلام عليكم ورحمة الله وبركاته يا أستاذ *${sup.name}* 🤝\n` +
+        `موجز أدائك ومبيعاتك بقطاع الجيزة والصعيد اليوم:\n\n` +
+        `💰 *مبيعاتك اليوم:* ${formatCurrency(todaySales)}\n` +
+        `📊 *إجمالي المحقق الشهري:* ${formatCurrency(actual)}\n` +
+        `🎯 *تارجتك المطلوب:* ${formatCurrency(target)} (نسبة الإنجاز: ${pct}%)\n` +
+        `⏳ *المتبقي للـ 100%:* ${formatCurrency(remaining)}\n` +
+        `📈 *المستهدف اليومي المطلوب:* ${formatCurrency(dailyNeeded)} / يومياً لمتبقي ${remainingDays} يوم\n\n` +
+        `نثق تماماً في قدرتك على إغلاق التارجت بنجاح وتخطي المستهدف بإذن الله! بالتوفيق دائماً 💪\n` +
+        `_إدارة مبيعات قطاع الجيزة الكبرى ومحافظات الصعيد_`;
+
+      area.value = text;
+    }
+
+    // --- PILLAR 4: OFFLINE-FIRST AUTO-SYNC ENGINE ---
+    function initOfflineAutoSync() {
+      const badge = document.getElementById('offlineFloatingBadge');
+      const icon = document.getElementById('offlineIcon');
+      const text = document.getElementById('offlineText');
+
+      window.addEventListener('offline', () => {
+        if (badge) {
+          badge.className = 'offline-network-badge offline';
+          if (icon) icon.textContent = '📴';
+          if (text) text.textContent = 'وضع العمل بدون إنترنت (تم حفظ البيانات محلياً)';
+        }
+        showToast('تم الانتقال لوضع العمل بدون إنترنت - تم تفعيل الحفظ المحلي بنسبة 100% 📴', 'warning', 4000);
+        logAuditAction('انقطاع الإنترنت', 'التحول للوضع المحلي Offline Mode', 'SYSTEM');
+      });
+
+      window.addEventListener('online', () => {
+        if (badge) {
+          badge.className = 'offline-network-badge online-restored';
+          if (icon) icon.textContent = '⚡';
+          if (text) text.textContent = 'عاد الاتصال بالإنترنت - جاري المزامنة السحابية الفورية...';
+          setTimeout(() => {
+            badge.className = 'offline-network-badge';
+          }, 4000);
+        }
+        showToast('عاد الاتصال بالإنترنت! جاري مزامنة كافة العمليات تلقائياً 🔄', 'success', 3500);
+        logAuditAction('استعادة الاتصال', 'عودة الإنترنت والمزامنة التلقائية', 'SYSTEM');
+        pushStateToCloud();
+        pushStateToGoogleSheets();
+      });
+
+      if (!navigator.onLine && badge) {
+        badge.className = 'offline-network-badge offline';
+      }
+    }
+
+    /* =========================================================================
        RENDERERS
        ========================================================================= */
     function renderAll() {
       applySupervisorPortalMode();
+      renderTimeFilterBar();
       renderKPIs();
+      renderChurnAlerts();
       renderRunRateAnalytics();
       renderTasks();
       renderSupervisorCards();
@@ -9290,6 +11160,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       renderPromotersLeaderboard();
       renderVisitsTable();
       renderReportsTab();
+      renderAuditTrail();
       updateNotifications();
       populateSelectOptions();
     }
@@ -9301,12 +11172,12 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const activeSupId = Number(mode);
       const isEn = AppState.lang === 'en';
 
-      let salesSet = AppState.sales;
+      let salesSet = filterSalesByTime(AppState.sales);
       let visitsSet = AppState.visits;
       let targetVal = 0;
 
       if (!isManager && !isAll) {
-        salesSet = AppState.sales.filter(s => Number(s.supervisorId) === activeSupId);
+        salesSet = filterSalesByTime(AppState.sales.filter(s => Number(s.supervisorId) === activeSupId));
         visitsSet = AppState.visits.filter(v => Number(v.supervisorId) === activeSupId);
         const sup = AppState.supervisors.find(s => Number(s.id) === activeSupId);
         targetVal = sup ? Number(sup.target || 0) : 0;
@@ -11058,13 +12929,26 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
           <tr>
             <td>${v.date}</td>
             <td><strong>${sup ? getSupervisorName(sup) : '-'}</strong></td>
-            <td>${v.branch}</td>
+            <td>
+              <span style="font-weight:700; color:var(--text-main); cursor:pointer; text-decoration:underline;" onclick="openCustomer360Modal('${escapeHtml(v.branch)}')">
+                ${escapeHtml(v.branch)}
+              </span>
+            </td>
             <td><span class="badge badge-primary">${v.purpose}</span></td>
             <td><span class="badge badge-success">${v.rating}</span></td>
             <td>${formatCurrency(v.sales || 0)}</td>
             <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis;" title="${v.notes || ''}">
-              <div>${v.notes || '-'}</div>
-              ${v.lat && v.lng ? `<div style="margin-top:4px;"><a href="https://maps.google.com/?q=${v.lat},${v.lng}" target="_blank" rel="noopener" style="color:var(--primary); font-size:11px; text-decoration:underline; font-weight:700; display:inline-flex; align-items:center; gap:3px;">📍 ${isEn ? 'View GPS Location' : 'موقع GPS الميداني'}</a></div>` : ''}
+              <div>${escapeHtml(v.notes || '-')}</div>
+              ${v.lat && v.lng ? `
+                <div style="margin-top:4px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                  <span class="badge ${v.isVerified ? 'badge-success' : 'badge-warning'}" style="font-size:10px; font-weight:800;">
+                    ${v.isVerified ? '✅ موثق جغرافياً' : '📍 إحداثيات مسجلة'}
+                  </span>
+                  <a href="https://maps.google.com/?q=${v.lat},${v.lng}" target="_blank" rel="noopener" style="color:var(--primary); font-size:11px; text-decoration:underline; font-weight:700; display:inline-flex; align-items:center; gap:3px;">
+                    🌍 ${isEn ? 'Google Maps' : 'خرائط جوجل'}
+                  </a>
+                </div>
+              ` : ''}
             </td>
             <td>
               <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:3px 8px; font-size:11px;" onclick="deleteVisit(${v.id})">${iconSVG('trash', 12)} ${isEn ? 'Delete' : 'حذف'}</button>
@@ -11661,6 +13545,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       };
 
       AppState.sales.unshift(newSale);
+      logAuditAction('تسجيل عملية بيع', `فاتورة ${invoice} لفرع ${branch} بقيمة ${amount} ج.م (${category})`, 'SALES');
       saveState();
       renderAll();
       closeModal('saleModal');
@@ -11680,6 +13565,17 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const latVal = document.getElementById('modalVisitLat') ? document.getElementById('modalVisitLat').value : '';
       const lngVal = document.getElementById('modalVisitLng') ? document.getElementById('modalVisitLng').value : '';
 
+      // GPS Geofencing verification
+      let isVerified = false;
+      let distanceMeters = null;
+      if (latVal && lngVal) {
+        const branchObj = AppState.branches.find(b => b.name && b.name.trim().toLowerCase() === branch.toLowerCase());
+        const bLat = branchObj && branchObj.lat ? parseFloat(branchObj.lat) : 29.9868;
+        const bLng = branchObj && branchObj.lng ? parseFloat(branchObj.lng) : 31.2185;
+        distanceMeters = Math.round(calculateDistanceMeters(parseFloat(latVal), parseFloat(lngVal), bLat, bLng));
+        isVerified = distanceMeters <= 1500; // Within 1.5 km
+      }
+
       const newVisit = {
         id: Date.now(),
         supervisorId: supId,
@@ -11690,7 +13586,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         sales,
         notes,
         lat: latVal ? parseFloat(latVal) : null,
-        lng: lngVal ? parseFloat(lngVal) : null
+        lng: lngVal ? parseFloat(lngVal) : null,
+        isVerified,
+        distanceMeters
       };
 
       AppState.visits.unshift(newVisit);
@@ -11708,13 +13606,16 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
           invoice: "VISIT-" + String(Date.now()).slice(-4),
           notes: "تم تحقيقها خلال الزيارة الميدانية"
         });
+        logAuditAction('تسجيل مبيعات زيارة', `مبيعات بقيمة ${sales} ج.م لفرع ${branch} أثناء الزيارة الميدانية`, 'SALES');
       }
+
+      logAuditAction('تسجيل زيارة ميدانية', `زيارة لفرع ${branch} (${purpose}) - ${isVerified ? '✅ موثقة جغرافياً (GPS)' : '📍 إحداثيات مسجلة'}`, 'VISITS');
 
       saveState();
       renderAll();
       closeModal('visitModal');
       document.getElementById('visitForm').reset();
-      alert('تم تسجيل تقرير الزيارة بنجاح!');
+      alert('تم تسجيل تقرير الزيارة بنجاح!' + (isVerified ? ' (تم التوثيق الجغرافي للفرع بنجاح ✅)' : ''));
     }
 
     function handleSaveTargets(e) {
@@ -11739,6 +13640,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         if (zoneInput) sup.zone = zoneInput.value.trim();
       });
 
+      logAuditAction('تعديل المستهدفات', 'تم تحديث تارجت المدير العام ومستهدفات المشرفين', 'TARGETS');
       saveState();
       updateSupervisorPortalSelectOptions();
       renderAll();
@@ -11812,7 +13714,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     function deleteSale(id) {
       if (!checkPermissionOrAlert('canDelete', 'حذف عملية بيع')) return;
       if (confirm('هل تريد حذف عملية البيع هذه؟')) {
+        const item = AppState.sales.find(s => s.id === id);
         AppState.sales = AppState.sales.filter(s => s.id !== id);
+        logAuditAction('حذف عملية بيع', `تم حذف فاتورة ${item ? item.invoice : id} بقيمة ${item ? item.amount : ''} ج.م`, 'SALES');
         saveState();
         renderAll();
       }
@@ -11821,7 +13725,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     function deleteVisit(id) {
       if (!checkPermissionOrAlert('canDelete', 'حذف تقرير زيارة')) return;
       if (confirm('هل تريد حذف تقرير الزيارة هذا؟')) {
+        const item = AppState.visits.find(v => v.id === id);
         AppState.visits = AppState.visits.filter(v => v.id !== id);
+        logAuditAction('حذف زيارة ميدانية', `تم حذف زيارة لفرع ${item ? item.branch : id}`, 'VISITS');
         saveState();
         renderAll();
       }
@@ -11830,7 +13736,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     function deleteBranch(id) {
       if (!checkPermissionOrAlert('canDelete', 'حذف عميل أو تاجر')) return;
       if (confirm('هل تريد حذف هذا العميل/الفرع من القائمة؟')) {
+        const item = AppState.branches.find(b => b.id === id);
         AppState.branches = AppState.branches.filter(b => b.id !== id);
+        logAuditAction('حذف عميل/فرع', `تم حذف الفرع ${item ? item.name : id} من المنظومة`, 'TARGETS');
         saveState();
         renderAll();
       }
@@ -13697,17 +15605,28 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
           • الالتزام الصارم بتسجيل كافة فواتير البيع اليومية على المنظومة قبل الساعة العاشرة مساءً لضمان دقة الرن-ريت اللحظي.
         </div>
 
-        <div style="margin-top:36px; padding-top:20px; border-top:1.5px solid #94a3b8; display:flex; justify-content:space-between; align-items:flex-end;">
+        <div style="margin-top:36px; padding-top:20px; border-top:1.5px solid #94a3b8; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; align-items:center;">
           <div style="text-align:center;">
             <div style="font-size:12px; color:#64748b; font-weight:700;">إعداد ومصادقة مدير عام القطاع:</div>
             <div style="font-size:15px; font-weight:900; color:#1e1b4b; margin:10px 0 4px;">${mgrName}</div>
             <div style="font-size:11px; color:#64748b;">مدير عام قطاع الجيزة الكبرى والصعيد</div>
+            <div style="margin-top:6px; font-family:cursive; font-size:14px; color:#4338ca;">Abdallah Ahmed Ibrahim</div>
           </div>
+
           <div style="text-align:center;">
-            <div style="font-size:12px; color:#64748b; font-weight:700;">خاتم الاعتماد الإداري:</div>
-            <div style="width:110px; height:60px; border:2px dashed #94a3b8; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:11px; margin:8px auto 0;">
-              اعتماد الإدارة العليا
+            <div style="font-size:12px; color:#64748b; font-weight:700;">خاتم الاعتماد الرسمي للقطاع:</div>
+            <div style="width:115px; height:68px; border:2.5px solid #1e3a8a; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#1e3a8a; font-weight:900; font-size:10px; margin:8px auto 0; background:rgba(30,58,138,0.04); box-shadow:0 0 0 1px #93c5fd inset;">
+              <span>★ 2B & DEVIA ★</span>
+              <span style="font-size:9.5px; color:#b45309; margin:2px 0;">معتمد رسمياً</span>
+              <span style="font-size:8.5px;">قطاع الجيزة والصعيد</span>
             </div>
+          </div>
+
+          <div style="text-align:center;">
+            <div style="font-size:12px; color:#64748b; font-weight:700;">اعتماد الإدارة المالية والتنفيذية:</div>
+            <div style="font-size:14px; font-weight:900; color:#1e1b4b; margin:10px 0 4px;">إدارة المراجعة والحسابات</div>
+            <div style="font-size:11px; color:#64748b;">مطابق ومراجع مالياً للأرقام المركزية</div>
+            <div style="margin-top:6px; font-size:11px; color:#059669; font-weight:800;">✓ Approved for Board Presentation</div>
           </div>
         </div>
       `;
@@ -14119,8 +16038,32 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       }
     }
 
+    window.toggleHeaderMoreDropdown = function(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('headerMoreDropdownMenu');
+      const userMenu = document.getElementById('userDropdownMenu');
+      const notifMenu = document.getElementById('notifDropdownMenu');
+      if (userMenu) userMenu.classList.remove('show');
+      if (notifMenu) notifMenu.classList.remove('open');
+      if (menu) menu.classList.toggle('show');
+    };
+
+    window.toggleUserDropdown = function(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('userDropdownMenu');
+      const moreMenu = document.getElementById('headerMoreDropdownMenu');
+      const notifMenu = document.getElementById('notifDropdownMenu');
+      if (moreMenu) moreMenu.classList.remove('show');
+      if (notifMenu) notifMenu.classList.remove('open');
+      if (menu) menu.classList.toggle('show');
+    };
+
     function toggleNotifDropdown(e) {
       if (e) e.stopPropagation();
+      const moreMenu = document.getElementById('headerMoreDropdownMenu');
+      const userMenu = document.getElementById('userDropdownMenu');
+      if (moreMenu) moreMenu.classList.remove('show');
+      if (userMenu) userMenu.classList.remove('show');
       const menu = document.getElementById('notifDropdownMenu');
       if (menu) menu.classList.toggle('open');
     }
@@ -14422,13 +16365,25 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
       }
     }
 
-    // Close notification dropdown when clicking outside
+    // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
       const notifMenu = document.getElementById('notifDropdownMenu');
       const notifBtn = document.getElementById('btnHeaderNotif');
       if (notifMenu && notifMenu.classList.contains('open')) {
         if (!notifMenu.contains(e.target) && (!notifBtn || !notifBtn.contains(e.target))) {
           notifMenu.classList.remove('open');
+        }
+      }
+      const moreMenu = document.getElementById('headerMoreDropdownMenu');
+      if (moreMenu && moreMenu.classList.contains('show')) {
+        if (!e.target.closest('#headerMoreActionsWrapper')) {
+          moreMenu.classList.remove('show');
+        }
+      }
+      const userMenu = document.getElementById('userDropdownMenu');
+      if (userMenu && userMenu.classList.contains('show')) {
+        if (!e.target.closest('#userSessionBadgeWrapper')) {
+          userMenu.classList.remove('show');
         }
       }
     });
@@ -14448,6 +16403,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         console.error('Initial renderAll note:', e);
       }
       initCloudSync();
+      initOfflineAutoSync();
 
       const btnPwa = document.getElementById('btnPwaInstall');
       if (btnPwa && !window.matchMedia('(display-mode: standalone)').matches) {
@@ -14528,7 +16484,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261014v1').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261015v4').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
