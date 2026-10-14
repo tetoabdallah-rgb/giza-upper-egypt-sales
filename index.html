@@ -4191,18 +4191,29 @@ html[dir="ltr"] .notif-dropdown-menu {
               </button>
             </div>
 
-            <!-- Option 2: Full System Wipe -->
-            <div class="kpi-card kpi-danger manager-only-wipe">
-              <div class="kpi-title" id="cardFullWipeTitle" style="color:var(--danger)">مسح الكل (تصفير جميع بيانات التطبيق تماماً)</div>
-              <p id="cardFullWipeDesc" style="font-size:12px; color:var(--text-muted); margin: 6px 0 14px;">
-                حذف شامل ونهائي لجميع المبيعات، الفواتير، الزيارات، العملاء والفروع المضافة لتبدأ من الصفر تماماً.
+            <!-- Option 2: Setup New Area Wizard -->
+            <div class="kpi-card manager-only-wipe" style="border-color: rgba(79,70,229,0.3); background: rgba(79,70,229,0.03);">
+              <div class="kpi-title" style="color:var(--primary)">🏢 تهيئة منطقة بيعية جديدة (معالج الإعداد)</div>
+              <p style="font-size:12px; color:var(--text-muted); margin: 6px 0 14px;">
+                تصفير المنظومة بالكامل وتخصيصها لآريا جديدة: إدخال اسم المنطقة والمدير العام والمستهدف وتعيين المشرفين الجدد للبدء من الصفر.
               </p>
-              <button class="btn btn-danger btn-sm" id="btnFullWipeNow" onclick="openWipeConfirmationModal()">
-                🗑️ مسح الكل وتصفير التطبيق بالكامل
+              <button class="btn btn-primary btn-sm" onclick="openNewAreaWizardModal()" style="background:linear-gradient(135deg, #4f46e5, #7c3aed); border:none; font-weight:800;">
+                🚀 فتح معالج تهيئة المنطقة الجديدة
               </button>
             </div>
 
-            <!-- Option 3: Reset to sample data -->
+            <!-- Option 3: Full Blank Slate Wipe -->
+            <div class="kpi-card kpi-danger manager-only-wipe">
+              <div class="kpi-title" id="cardFullWipeTitle" style="color:var(--danger)">تفريغ ومسح شامل لجميع البيانات (Blank Slate)</div>
+              <p id="cardFullWipeDesc" style="font-size:12px; color:var(--text-muted); margin: 6px 0 14px;">
+                حذف شامل ونهائي لجميع البيانات حتى الأساسية والمشرفين القدامى وتصفير التطبيق بالكامل ليصبح فارغاً وجاهزاً لأي آريا.
+              </p>
+              <button class="btn btn-danger btn-sm" id="btnFullWipeNow" onclick="openWipeConfirmationModal()">
+                🗑️ تصفير وتفريغ المنظومة بالكامل
+              </button>
+            </div>
+
+            <!-- Option 4: Reset to sample data -->
             <div class="kpi-card manager-only-wipe">
               <div class="kpi-title" id="cardSampleDataTitle">استعادة البيانات النموذجية الافتراضية</div>
               <p id="cardSampleDataDesc" style="font-size:12px; color:var(--text-muted); margin: 6px 0 14px;">
@@ -4345,6 +4356,11 @@ html[dir="ltr"] .notif-dropdown-menu {
           <div class="sheet-action-title" id="sheetCardProfile">بيانات المدير</div>
           <div class="sheet-action-sub">تعديل الحساب والسر</div>
         </div>
+        <div class="sheet-action-card" onclick="openNewAreaWizardModal(); closeMobileMoreSheet();" style="border: 1px solid rgba(79,70,229,0.35); background: rgba(79,70,229,0.04);">
+          <div class="sheet-action-icon" style="background:#e0e7ff; color:#4338ca;">🏢</div>
+          <div class="sheet-action-title">تهيئة منطقة جديدة</div>
+          <div class="sheet-action-sub">تصفير وإعداد آريا أخرى</div>
+        </div>
         <div class="sheet-action-card" onclick="forceAppUpdateAndClearCache(); closeMobileMoreSheet();" style="border: 1px solid rgba(239, 68, 68, 0.3);">
           <div class="sheet-action-icon" style="background:#fee2e2; color:#ef4444;">⚡</div>
           <div class="sheet-action-title" style="color:#ef4444;">تحديث ومسح الكاش</div>
@@ -4375,6 +4391,10 @@ html[dir="ltr"] .notif-dropdown-menu {
             <span>👤 البيانات الشخصية والوظيفية:</span>
           </div>
           <div class="form-grid">
+            <div class="form-group col-full">
+              <label id="lblMgrAreaName">اسم المنطقة البيعية / الآريا *</label>
+              <input type="text" id="modalMgrAreaName" class="form-control" required placeholder="مثال: قطاع الجيزة والصعيد، قطاع الإسكندرية، قطاع الدلتا...">
+            </div>
             <div class="form-group col-full">
               <label id="lblMgrName">اسم المدير بالكامل *</label>
               <input type="text" id="modalMgrName" class="form-control" required placeholder="مثال: عبدالله أحمد">
@@ -4836,28 +4856,157 @@ html[dir="ltr"] .notif-dropdown-menu {
     </div>
   </div>
 
-  <!-- Modal: Confirm Full Wipe -->
+  <!-- Modal: Confirm Full Wipe & Area Reset Options -->
   <div class="modal-overlay" id="wipeModal">
-    <div class="modal-dialog" style="max-width: 480px;">
-      <div class="modal-header">
-        <div class="modal-title" style="color:var(--danger)">⚠️ تأكيد مسح جميع بيانات التطبيق</div>
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header" style="background: rgba(239,68,68,0.06); border-bottom: 1.5px solid rgba(239,68,68,0.2);">
+        <div class="modal-title" style="color:var(--danger)">⚠️ تصفير المنظومة ومسح البيانات</div>
         <button class="modal-close" onclick="closeModal('wipeModal')">&times;</button>
       </div>
       <div class="modal-body">
         <div class="danger-box">
-          <div class="danger-box-title">🚨 تحذير: هذه العملية لا يمكن التراجع عنها!</div>
+          <div class="danger-box-title">🚨 تحذير: اختر نوع التصفير المطلوب بدقة</div>
           <div class="danger-box-text">
-            أنت على وشك مسح <strong>جميع المبيعات، الفواتير، الزيارات، العملاء والفروع</strong> المسجلة في التطبيق بالكامل وتصفير النظام من البداية.
+            يمكنك تصفير الشهر فقط (مسح المبيعات والزيارات)، أو تفريغ المنظومة بالكامل حتى البيانات الأساسية والمشرفين لتهيئة منطقة بيعية جديدة.
           </div>
         </div>
-        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">
-          إذا أردت الاحتفاظ بنسخة قبل المسح، اضغط أولاً على <strong>"حفظ نسخة JSON"</strong>.
-        </p>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+          <!-- Option A: New Area Setup Wizard -->
+          <div style="background:var(--bg-subtle); border:1.5px solid var(--primary); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div>
+              <div style="font-weight:900; font-size:13.5px; color:var(--primary); margin-bottom:3px;">🏢 تهيئة منطقة بيعية جديدة (معالج الإعداد)</div>
+              <div style="font-size:11.5px; color:var(--text-muted); line-height:1.4;">
+                تصفير المنظومة وإعادة ضبط اسم المنطقة والمدير العام وإدخال المشرفين الجدد لبدء العمل من الصفر.
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('wipeModal'); openNewAreaWizardModal();" style="white-space:nowrap; flex-shrink:0;">
+              فتح المعالج 🚀
+            </button>
+          </div>
+
+          <!-- Option B: Direct Blank Slate Wipe -->
+          <div style="background:var(--bg-subtle); border:1.5px solid rgba(239,68,68,0.3); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div>
+              <div style="font-weight:900; font-size:13.5px; color:var(--danger); margin-bottom:3px;">🗑️ تفريغ ومسح شامل فوري (Blank Slate)</div>
+              <div style="font-size:11.5px; color:var(--text-muted); line-height:1.4;">
+                مسح كل شيء فوراً: المبيعات، الزيارات، العملاء، وكافة المشرفين القدامى وتصفير تام للنظام.
+              </div>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="executeBlankSlateWipe();" style="white-space:nowrap; flex-shrink:0;">
+              مسح الكل الآن 🗑️
+            </button>
+          </div>
+
+          <!-- Option C: Monthly Reset Only -->
+          <div style="background:var(--bg-subtle); border:1px solid var(--border-color); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--text-main); margin-bottom:3px;">🧹 تصفير الشهر فقط (مبيعات وزيارات)</div>
+              <div style="font-size:11.5px; color:var(--text-muted); line-height:1.4;">
+                مسح حركات البيع والزيارات فقط لبدء شهر جديد مع الإبقاء على المشرفين والعملاء.
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('wipeModal'); confirmClearSalesOnly();" style="white-space:nowrap; flex-shrink:0;">
+              تصفير الشهر 🧹
+            </button>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="closeModal('wipeModal')">تراجع وإلغاء</button>
-        <button type="button" class="btn btn-danger" onclick="executeFullWipe()">نعم، امسح كل البيانات نهائياً 🗑️</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('wipeModal')">إغلاق وتراجع</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: New Area Onboarding & Setup Wizard -->
+  <div class="modal-overlay" id="newAreaWizardModal">
+    <div class="modal-dialog" style="max-width: 660px; max-height: 92vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(67,56,202,0.12), rgba(124,58,237,0.08)); border-bottom: 1.5px solid rgba(67,56,202,0.25);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:24px;">🏢</span>
+          <div>
+            <div class="modal-title" style="font-size:16px;">معالج إعداد وتهيئة المنطقة البيعية الجديدة (New Area Setup)</div>
+            <div style="font-size:11.5px; color:var(--text-muted);">تصفير المنظومة بالكامل وتخصيصها لمدير ومنطقة بيعية جديدة</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('newAreaWizardModal')">&times;</button>
+      </div>
+
+      <form id="newAreaWizardForm" onsubmit="handleSaveNewAreaWizard(event)" style="display:flex; flex-direction:column; overflow:hidden;">
+        <div class="modal-body" style="padding: 20px; overflow-y: auto;">
+          <div style="background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px; line-height: 1.5; color: var(--text-main);">
+            ⚠️ <strong>تنبيه تصفير النظام:</strong> عند حفظ هذه التهيئة، سيتم تفريغ كافة المبيعات والزيارات والفروع والمشرفين القدامى وتطبيق بيانات منطقتك الجديدة لبدء العمل من الصفر.
+          </div>
+
+          <!-- Section 1: Area & Manager Details -->
+          <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>📍 1. بيانات المنطقة البيعية والمدير العام:</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label>اسم المنطقة البيعية / القطاع *</label>
+              <input type="text" id="wizardAreaName" class="form-control" placeholder="مثال: قطاع الإسكندرية والساحل، قطاع الدلتا، مبيعات الصعيد..." required>
+            </div>
+            <div class="form-group">
+              <label>اسم مدير المنطقة بالكامل *</label>
+              <input type="text" id="wizardMgrName" class="form-control" placeholder="مثال: أ / أحمد محمود" required>
+            </div>
+            <div class="form-group">
+              <label>المسمى الوظيفي *</label>
+              <input type="text" id="wizardMgrTitle" class="form-control" placeholder="مثال: مدير عام القطاع (Area Sales Manager)" required>
+            </div>
+            <div class="form-group">
+              <label>رقم هاتف المدير</label>
+              <input type="text" id="wizardMgrPhone" class="form-control" placeholder="01xxxxxxxxx">
+            </div>
+            <div class="form-group">
+              <label>البريد الإلكتروني الرسمي</label>
+              <input type="email" id="wizardMgrEmail" class="form-control" placeholder="manager@company.com">
+            </div>
+            <div class="form-group col-full">
+              <label>🎯 إجمالي المستهدف البيعي الشهري للمنطقة (ج.م) *</label>
+              <input type="number" id="wizardMgrTarget" class="form-control" min="0" step="1000" placeholder="مثال: 2000000" required>
+            </div>
+          </div>
+
+          <!-- Section 2: Manager Admin Login -->
+          <div style="font-size: 13px; font-weight: 800; color: var(--purple); margin: 16px 0 10px; padding-top: 14px; border-top: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px;">
+            <span>🔐 2. بيانات تسجيل دخول المدير العام (Master Admin):</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>اسم المستخدم (Username) *</label>
+              <input type="text" id="wizardMgrUsername" class="form-control" value="manager" required autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label>كلمة المرور (Password) *</label>
+              <input type="text" id="wizardMgrPassword" class="form-control" value="123" required autocomplete="new-password">
+            </div>
+          </div>
+
+          <!-- Section 3: Initial Supervisors Structure -->
+          <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin: 16px 0 10px; padding-top: 14px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <span>👔 3. المشرفين الميدانيين للمنطقة (اختياري الآن):</span>
+            <button type="button" class="btn btn-outline btn-xs" onclick="addWizardSupervisorRow()" style="border-radius:20px; font-size:11.5px;">+ إضافة مشرف</button>
+          </div>
+
+          <div id="wizardSupervisorsContainer" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+            <!-- Dynamic rows -->
+          </div>
+
+          <div style="font-size: 11px; color: var(--text-muted);">
+            💡 يمكنك إضافة مشرف أو أكثر الآن، أو تخطي هذه الخطوة وإضافة المشرفين لاحقاً في أي وقت من زر "+ إضافة مشرف" داخل التطبيق.
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 14px 20px; border-top: 1px solid var(--border-color); background: var(--bg-card); display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('newAreaWizardModal')">إلغاء</button>
+          <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; font-weight: 800;">
+            🚀 تصفير البيانات واعتماد المنطقة الجديدة
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -5576,6 +5725,7 @@ html[dir="ltr"] .notif-dropdown-menu {
        DEFAULT DATA INITIALIZATION (AREA MANAGER + 3 SUPERVISORS)
        ========================================================================= */
     const DEFAULT_MANAGER = {
+      areaName: "قطاع الجيزة الكبرى والصعيد",
       name: "أ / عبدالله أحمد إبراهيم",
       title: "مدير عام قطاع الجيزة الكبرى والصعيد (Area Sales Manager)",
       target: 2500000,
@@ -6364,10 +6514,22 @@ html[dir="ltr"] .notif-dropdown-menu {
       if (btnLogout) btnLogout.title = isEn ? 'Logout' : 'تسجيل الخروج';
 
       // Sidebar Brand & Navigation
+      const customArea = AppState.areaManager && AppState.areaManager.areaName;
       const bTitle = document.getElementById('brandTitle');
-      if (bTitle) bTitle.textContent = isEn ? 'Giza & Upper Egypt Sales System' : 'مبيعات الجيزة والصعيد';
+      if (bTitle) {
+        bTitle.textContent = customArea || (isEn ? 'Sales Management System' : 'مبيعات الجيزة والصعيد');
+      }
       const bSub = document.getElementById('brandSub');
-      if (bSub) bSub.textContent = isEn ? 'Integrated Sales & Field Operations' : 'المنظومة التنفيذية للإدارة والمشرفين';
+      if (bSub) {
+        bSub.textContent = isEn ? 'Integrated Sales & Field Operations' : 'المنظومة التنفيذية للإدارة والمشرفين';
+      }
+      const bRoot = document.getElementById('breadcrumbRoot');
+      if (bRoot) {
+        bRoot.textContent = customArea || (isEn ? 'Sales Operations' : 'المنظومة التنفيذية');
+      }
+      try {
+        document.title = (customArea || (isEn ? 'Sales Management System' : 'منظومة مبيعات القطاع')) + ' | ' + (AppState.areaManager?.name || 'الإدارة العامة');
+      } catch(e){}
 
       const vLbl = document.getElementById('viewSwitcherLabelText');
       if (vLbl) vLbl.textContent = isEn ? '👤 Current View / Portal:' : '👤 وضع العرض الحالي:';
@@ -6721,6 +6883,8 @@ html[dir="ltr"] .notif-dropdown-menu {
     let AppState = {
       currentUser: null, // { role: 'MANAGER' | 'SUPERVISOR', id: 'MANAGER' | 1 | 2 | 3, name: string, title: string }
       areaManager: DEFAULT_MANAGER,
+      get manager() { return this.areaManager; },
+      set manager(val) { this.areaManager = val; },
       supervisors: [],
       branches: [],
       sales: [],
@@ -6743,43 +6907,46 @@ html[dir="ltr"] .notif-dropdown-menu {
         const storedActiveSup = localStorage.getItem('giza_saeed_active_sup');
         const storedUser = localStorage.getItem('giza_saeed_current_user');
         const storedLang = localStorage.getItem('giza_saeed_lang');
+        const isCustomArea = localStorage.getItem('giza_saeed_custom_area') === 'true';
 
         AppState.lang = (storedLang === 'en' || storedLang === 'ar') ? storedLang : 'ar';
 
-        const parsedMgr = storedMgr ? JSON.parse(storedMgr) : DEFAULT_MANAGER;
+        const parsedMgr = storedMgr ? JSON.parse(storedMgr) : (isCustomArea ? null : DEFAULT_MANAGER);
 
-        // Auto-migrate legacy placeholder manager data if present in localStorage
-        if (!parsedMgr.name || parsedMgr.name.includes("أحمد فؤاد") || parsedMgr.name.includes("Ahmed Fouad")) {
-          parsedMgr.name = DEFAULT_MANAGER.name;
-        }
-        if (!parsedMgr.phone || parsedMgr.phone === "01000000001" || parsedMgr.phone === "0100000001") {
-          parsedMgr.phone = DEFAULT_MANAGER.phone;
-        }
-        if (!parsedMgr.email || parsedMgr.email === "areamanager@company.com") {
-          parsedMgr.email = DEFAULT_MANAGER.email;
+        // Auto-migrate legacy placeholder manager data if present in localStorage only if NOT a custom area
+        if (!isCustomArea && parsedMgr) {
+          if (!parsedMgr.name || parsedMgr.name.includes("أحمد فؤاد") || parsedMgr.name.includes("Ahmed Fouad")) {
+            parsedMgr.name = DEFAULT_MANAGER.name;
+          }
+          if (!parsedMgr.phone || parsedMgr.phone === "01000000001" || parsedMgr.phone === "0100000001") {
+            parsedMgr.phone = DEFAULT_MANAGER.phone;
+          }
+          if (!parsedMgr.email || parsedMgr.email === "areamanager@company.com") {
+            parsedMgr.email = DEFAULT_MANAGER.email;
+          }
         }
 
         AppState.areaManager = {
-          ...DEFAULT_MANAGER,
-          ...parsedMgr,
-          name: parsedMgr.name || DEFAULT_MANAGER.name,
-          phone: parsedMgr.phone || DEFAULT_MANAGER.phone,
-          email: parsedMgr.email || DEFAULT_MANAGER.email,
+          areaName: (parsedMgr && parsedMgr.areaName) || (isCustomArea ? "المنطقة البيعية الجديدة" : DEFAULT_MANAGER.areaName),
+          name: (parsedMgr && parsedMgr.name) || (isCustomArea ? "مدير المنطقة" : DEFAULT_MANAGER.name),
+          title: (parsedMgr && parsedMgr.title) || (isCustomArea ? "مدير عام القطاع (Area Sales Manager)" : DEFAULT_MANAGER.title),
           target: (parsedMgr && parsedMgr.target !== undefined && parsedMgr.target !== null && !isNaN(parsedMgr.target))
             ? Number(parsedMgr.target)
-            : (DEFAULT_MANAGER.target || 2500000),
-          username: (parsedMgr && parsedMgr.username) || DEFAULT_MANAGER.username || "manager",
-          password: (parsedMgr && parsedMgr.password) || DEFAULT_MANAGER.password || "123"
+            : (isCustomArea ? 0 : DEFAULT_MANAGER.target),
+          phone: (parsedMgr && parsedMgr.phone) || "",
+          email: (parsedMgr && parsedMgr.email) || "",
+          username: (parsedMgr && parsedMgr.username) || "manager",
+          password: (parsedMgr && parsedMgr.password) || "123",
+          directives: (parsedMgr && parsedMgr.directives) || []
         };
         localStorage.setItem('giza_saeed_manager', JSON.stringify(AppState.areaManager));
 
-        const parsedSups = storedSups ? JSON.parse(storedSups) : DEFAULT_SUPERVISORS;
-        AppState.supervisors = parsedSups.map((s, idx) => {
-          const def = DEFAULT_SUPERVISORS.find(d => Number(d.id) === Number(s.id)) || DEFAULT_SUPERVISORS[idx] || DEFAULT_SUPERVISORS[0];
+        const parsedSups = storedSups !== null ? JSON.parse(storedSups) : (isCustomArea ? [] : DEFAULT_SUPERVISORS);
+        AppState.supervisors = Array.isArray(parsedSups) ? parsedSups.map((s, idx) => {
           return {
             ...s,
-            username: s.username || def.username,
-            password: s.password || def.password,
+            username: s.username || ('user' + (s.id || idx + 1)),
+            password: s.password || '123',
             permissions: {
               canAddSale: s.permissions?.canAddSale !== undefined ? s.permissions.canAddSale : true,
               canAddVisit: s.permissions?.canAddVisit !== undefined ? s.permissions.canAddVisit : true,
@@ -6790,15 +6957,15 @@ html[dir="ltr"] .notif-dropdown-menu {
               canEditProfile: s.permissions?.canEditProfile !== undefined ? s.permissions.canEditProfile : false
             }
           };
-        });
+        }) : [];
 
-        AppState.branches = (storedBranches ? JSON.parse(storedBranches) : DEFAULT_BRANCHES).map(b => ({
+        AppState.branches = (storedBranches !== null ? JSON.parse(storedBranches) : (isCustomArea ? [] : DEFAULT_BRANCHES)).map(b => ({
           ...b,
           target: Number(b.target) > 0 ? Number(b.target) : 100000
         }));
-        AppState.sales = storedSales ? JSON.parse(storedSales) : DEFAULT_SALES;
-        AppState.visits = storedVisits ? JSON.parse(storedVisits) : DEFAULT_VISITS;
-        AppState.tasks = (storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS).map(t => ({
+        AppState.sales = storedSales !== null ? JSON.parse(storedSales) : (isCustomArea ? [] : DEFAULT_SALES);
+        AppState.visits = storedVisits !== null ? JSON.parse(storedVisits) : (isCustomArea ? [] : DEFAULT_VISITS);
+        AppState.tasks = (storedTasks !== null ? JSON.parse(storedTasks) : (isCustomArea ? [] : DEFAULT_TASKS)).map(t => ({
           ...t,
           taskType: t.taskType || 'daily',
           salesTarget: Number(t.salesTarget) || 0
@@ -7608,40 +7775,259 @@ function doPost(e) {
 
     function openWipeConfirmationModal() {
       if (!isMasterAdmin()) {
-        alert("⛔ مسح جميع بيانات التطبيق وتصفير النظام متاح فقط لمدير الآريتين (Master Admin)!");
+        alert("⛔ مسح وتصفير بيانات المنظومة متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
-      document.getElementById('wipeModal').classList.add('open');
+      const m = document.getElementById('wipeModal');
+      if (m) m.classList.add('open');
     }
 
-    function executeFullWipe() {
+    function executeBlankSlateWipe() {
       if (!isMasterAdmin()) {
-        alert("⛔ مسح جميع بيانات التطبيق وتصفير النظام متاح فقط لمدير الآريتين (Master Admin)!");
+        alert("⛔ تصفير المنظومة متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
+      if (!confirm("⚠️ هل أنت متأكد تماماً من تفريغ ومسح جميع البيانات الأساسية بالكامل؟\n\nسيتم حذف:\n- جميع فواتير وحركات المبيعات المسجلة\n- جميع تقارير الزيارات الميدانية\n- جميع العملاء والتجار والفروع\n- جميع المشرفين المسجلين\n- تصفير التارجت والتوجيهات والمهام\n\nلتتمكن من بناء وتخصيص منظومتك الجديدة من الصفر لأي منطقة.")) {
+        return;
+      }
+
+      // Wipe transaction data
       AppState.sales = [];
       AppState.visits = [];
       AppState.branches = [];
-      AppState.areaManager.directives = [];
-      AppState.supervisors = DEFAULT_SUPERVISORS.map(s => ({
-        id: s.id,
-        name: s.name,
-        title: s.title,
-        zone: s.zone,
-        regionCategory: s.regionCategory,
-        tagClass: s.tagClass,
-        target: s.target,
-        phone: s.phone,
-        avatar: s.avatar,
-        username: s.username,
-        password: s.password,
-        permissions: JSON.parse(JSON.stringify(s.permissions))
-      }));
+      AppState.tasks = [];
+      AppState.dismissedNotifs = [];
+
+      // Wipe supervisors completely
+      AppState.supervisors = [];
+
+      // Reset Area Manager to clean customizable slate
+      AppState.areaManager = {
+        areaName: "المنطقة البيعية الجديدة",
+        name: "مدير المنطقة",
+        title: "مدير عام القطاع (Area Sales Manager)",
+        target: 0,
+        phone: "",
+        email: "",
+        username: "manager",
+        password: "123",
+        directives: []
+      };
+
+      if (!AppState.currentUser || AppState.currentUser.role === 'manager' || isMasterAdmin()) {
+        AppState.currentUser = {
+          role: 'manager',
+          username: 'manager',
+          name: 'مدير المنطقة',
+          title: 'مدير عام القطاع',
+          avatar: '👨‍💼'
+        };
+      }
+
       AppState.activeSupervisorId = 'MANAGER';
+      localStorage.setItem('giza_saeed_custom_area', 'true');
       saveState();
       closeModal('wipeModal');
+      populateSelectOptions();
+      updateSupervisorPortalSelectOptions();
       renderAll();
-      alert("تم مسح وتصفير جميع بيانات التطبيق بنجاح! يمكنك الآن إضافة البيانات الجديدة من الصفر.");
+
+      const successMsg = "تم تفريغ المنظومة ومسح كافة البيانات الأساسية بنجاح! 🚀 يمكنك الآن تعديل بيانات منطقتك وإضافة المشرفين الجدد لبدء العمل.";
+      if (window.showToast) showToast(successMsg, "success", 6000);
+      else alert(successMsg);
+    }
+
+    function executeFullWipe() {
+      executeBlankSlateWipe();
+    }
+
+    let _wizardSupCounter = 0;
+    function addWizardSupervisorRow(data = {}) {
+      const container = document.getElementById('wizardSupervisorsContainer');
+      if (!container) return;
+      _wizardSupCounter++;
+      const rowId = `wizardSupRow_${_wizardSupCounter}`;
+
+      const div = document.createElement('div');
+      div.id = rowId;
+      div.style.cssText = "background:var(--bg-subtle); border:1px solid var(--border-color); border-radius:10px; padding:12px; position:relative;";
+
+      div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-size:12px; font-weight:800; color:var(--primary);">👔 مشرف #${_wizardSupCounter}</span>
+          <button type="button" onclick="document.getElementById('${rowId}').remove()" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:12px; font-weight:700;">✕ حذف المشرف</button>
+        </div>
+        <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
+          <div class="form-group">
+            <label style="font-size:11px;">اسم المشرف *</label>
+            <input type="text" class="form-control wizard-sup-name" placeholder="مثال: مشرف المنتزه" value="${escapeHtml(data.name || '')}" required style="font-size:12px; padding:6px 10px;">
+          </div>
+          <div class="form-group">
+            <label style="font-size:11px;">النطاق / المحافظة *</label>
+            <input type="text" class="form-control wizard-sup-zone" placeholder="مثال: المنتزه، سيدي جابر" value="${escapeHtml(data.zone || '')}" required style="font-size:12px; padding:6px 10px;">
+          </div>
+          <div class="form-group">
+            <label style="font-size:11px;">تارجت المشرف (ج.م) *</label>
+            <input type="number" class="form-control wizard-sup-target" placeholder="500000" value="${data.target || ''}" required style="font-size:12px; padding:6px 10px;">
+          </div>
+          <div class="form-group">
+            <label style="font-size:11px;">رقم الهاتف</label>
+            <input type="text" class="form-control wizard-sup-phone" placeholder="01xxxxxxxxx" value="${escapeHtml(data.phone || '')}" style="font-size:12px; padding:6px 10px;">
+          </div>
+          <div class="form-group">
+            <label style="font-size:11px;">اسم المستخدم (User)</label>
+            <input type="text" class="form-control wizard-sup-user" placeholder="sup${_wizardSupCounter}" value="${escapeHtml(data.username || ('sup' + _wizardSupCounter))}" style="font-size:12px; padding:6px 10px;">
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    function openNewAreaWizardModal() {
+      if (!isMasterAdmin()) {
+        alert("⛔ تهيئة وتخصيص المنطقة متاح فقط لمدير الآريتين (Master Admin)!");
+        return;
+      }
+      const form = document.getElementById('newAreaWizardForm');
+      if (form) form.reset();
+
+      const curArea = (AppState.areaManager && AppState.areaManager.areaName && !AppState.areaManager.areaName.includes('الجيزة')) ? AppState.areaManager.areaName : '';
+      const curMgrName = (AppState.areaManager && AppState.areaManager.name && !AppState.areaManager.name.includes('عبدالله')) ? AppState.areaManager.name : '';
+      const curTitle = (AppState.areaManager && AppState.areaManager.title) || 'مدير عام القطاع (Area Sales Manager)';
+      const curPhone = (AppState.areaManager && AppState.areaManager.phone && AppState.areaManager.phone !== '01009939930') ? AppState.areaManager.phone : '';
+      const curEmail = (AppState.areaManager && AppState.areaManager.email && !AppState.areaManager.email.includes('2b.com.eg')) ? AppState.areaManager.email : '';
+      const curTarget = (AppState.areaManager && AppState.areaManager.target && AppState.areaManager.target !== 2500000) ? AppState.areaManager.target : '';
+      const curUser = (AppState.areaManager && AppState.areaManager.username) || 'manager';
+
+      if (document.getElementById('wizardAreaName')) document.getElementById('wizardAreaName').value = curArea;
+      if (document.getElementById('wizardMgrName')) document.getElementById('wizardMgrName').value = curMgrName;
+      if (document.getElementById('wizardMgrTitle')) document.getElementById('wizardMgrTitle').value = curTitle;
+      if (document.getElementById('wizardMgrPhone')) document.getElementById('wizardMgrPhone').value = curPhone;
+      if (document.getElementById('wizardMgrEmail')) document.getElementById('wizardMgrEmail').value = curEmail;
+      if (document.getElementById('wizardMgrTarget')) document.getElementById('wizardMgrTarget').value = curTarget;
+      if (document.getElementById('wizardMgrUsername')) document.getElementById('wizardMgrUsername').value = curUser;
+      if (document.getElementById('wizardMgrPassword')) document.getElementById('wizardMgrPassword').value = '123';
+
+      // Setup 1 initial supervisor row
+      const container = document.getElementById('wizardSupervisorsContainer');
+      if (container) {
+        container.innerHTML = '';
+        _wizardSupCounter = 0;
+        addWizardSupervisorRow();
+      }
+
+      const modal = document.getElementById('newAreaWizardModal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function handleSaveNewAreaWizard(e) {
+      e.preventDefault();
+      if (!isMasterAdmin()) {
+        alert("⛔ تهيئة وتخصيص المنطقة متاح فقط لمدير الآريتين (Master Admin)!");
+        return;
+      }
+
+      const areaName = document.getElementById('wizardAreaName')?.value.trim();
+      const mgrName = document.getElementById('wizardMgrName')?.value.trim();
+      const mgrTitle = document.getElementById('wizardMgrTitle')?.value.trim() || 'مدير عام القطاع (Area Sales Manager)';
+      const mgrPhone = document.getElementById('wizardMgrPhone')?.value.trim() || '';
+      const mgrEmail = document.getElementById('wizardMgrEmail')?.value.trim() || '';
+      const mgrTarget = parseFloat(document.getElementById('wizardMgrTarget')?.value) || 0;
+      const mgrUser = document.getElementById('wizardMgrUsername')?.value.trim() || 'manager';
+      const mgrPass = document.getElementById('wizardMgrPassword')?.value.trim() || '123';
+
+      if (!confirm(`⚠️ هل أنت متأكد من اعتماد تهيئة "${areaName}" وتصفير كافة البيانات القديمة؟`)) {
+        return;
+      }
+
+      // 1. Wipe old transactions, visits, branches, tasks
+      AppState.sales = [];
+      AppState.visits = [];
+      AppState.branches = [];
+      AppState.tasks = [];
+      AppState.dismissedNotifs = [];
+
+      // 2. Set new Area Manager
+      AppState.areaManager = {
+        areaName: areaName || 'المنطقة البيعية الجديدة',
+        name: mgrName || 'مدير المنطقة',
+        title: mgrTitle,
+        target: mgrTarget,
+        phone: mgrPhone,
+        email: mgrEmail,
+        username: mgrUser,
+        password: mgrPass,
+        directives: []
+      };
+
+      if (!AppState.currentUser || AppState.currentUser.role === 'manager' || isMasterAdmin()) {
+        AppState.currentUser = {
+          role: 'manager',
+          username: mgrUser,
+          name: mgrName,
+          title: mgrTitle,
+          avatar: '👨‍💼'
+        };
+      }
+
+      // 3. Collect wizard supervisors
+      const newSupervisors = [];
+      const rows = document.querySelectorAll('#wizardSupervisorsContainer > div');
+      const tagClasses = ['tag-giza', 'tag-october', 'tag-saeed', 'tag-primary', 'tag-success', 'tag-warning'];
+
+      rows.forEach((row, idx) => {
+        const sName = row.querySelector('.wizard-sup-name')?.value.trim();
+        const sZone = row.querySelector('.wizard-sup-zone')?.value.trim();
+        const sTarget = parseFloat(row.querySelector('.wizard-sup-target')?.value) || 0;
+        const sPhone = row.querySelector('.wizard-sup-phone')?.value.trim() || '';
+        const sUser = row.querySelector('.wizard-sup-user')?.value.trim().toLowerCase() || ('sup' + (idx + 1));
+
+        if (sName) {
+          const supId = idx + 1;
+          const avatarClean = sName.replace(/^(أ|م|مشرف|د|مهندس)\s*/, '').slice(0, 2) || ('م' + supId);
+          newSupervisors.push({
+            id: supId,
+            name: sName,
+            title: `مشرف ${sName}`,
+            zone: sZone || areaName,
+            regionCategory: 'CUSTOM',
+            tagClass: tagClasses[idx % tagClasses.length],
+            target: sTarget,
+            phone: sPhone,
+            avatar: avatarClean,
+            username: sUser,
+            password: '123',
+            permissions: {
+              canAddSale: true,
+              canAddVisit: true,
+              canAddBranch: true,
+              canEditTarget: true,
+              canDelete: false,
+              canExport: true,
+              canEditProfile: false
+            }
+          });
+        }
+      });
+
+      AppState.supervisors = newSupervisors;
+      AppState.activeSupervisorId = 'MANAGER';
+      localStorage.setItem('giza_saeed_custom_area', 'true');
+
+      saveState();
+      closeModal('newAreaWizardModal');
+      closeModal('wipeModal');
+      populateSelectOptions();
+      updateSupervisorPortalSelectOptions();
+      renderAll();
+
+      const isEn = AppState.lang === 'en';
+      const successMsg = isEn 
+        ? `System successfully configured for "${areaName}"! 🚀 Welcome, ${mgrName}.`
+        : `تم تهيئة وتخصيص المنظومة بالكامل لمنطقة "${areaName}" بنجاح! 🚀 أهلاً بك يا ${mgrName}.`;
+
+      if (window.showToast) showToast(successMsg, 'success', 5000);
+      else alert(successMsg);
     }
 
     function resetToSampleData() {
@@ -7649,16 +8035,21 @@ function doPost(e) {
         alert("⛔ استعادة البيانات النموذجية متاح فقط لمدير الآريتين (Master Admin)!");
         return;
       }
-      if (confirm("هل تريد بالتأكيد استعادة البيانات النموذجية الافتراضية؟")) {
+      if (confirm("هل تريد بالتأكيد استعادة البيانات النموذجية الافتراضية لمنطقة الجيزة والصعيد؟")) {
+        localStorage.removeItem('giza_saeed_custom_area');
         AppState.areaManager = JSON.parse(JSON.stringify(DEFAULT_MANAGER));
         AppState.supervisors = JSON.parse(JSON.stringify(DEFAULT_SUPERVISORS));
         AppState.branches = JSON.parse(JSON.stringify(DEFAULT_BRANCHES));
         AppState.sales = JSON.parse(JSON.stringify(DEFAULT_SALES));
         AppState.visits = JSON.parse(JSON.stringify(DEFAULT_VISITS));
+        AppState.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
         AppState.activeSupervisorId = 'MANAGER';
         saveState();
+        populateSelectOptions();
+        updateSupervisorPortalSelectOptions();
         renderAll();
-        alert("تم استعادة البيانات النموذجية بنجاح!");
+        if (window.showToast) showToast("تم استعادة البيانات النموذجية لمنطقة الجيزة والصعيد بنجاح! 🔄", "success", 4000);
+        else alert("تم استعادة البيانات النموذجية بنجاح!");
       }
     }
 
@@ -8740,6 +9131,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
 
     function openEditManagerModal() {
       const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      if (document.getElementById('modalMgrAreaName')) {
+        document.getElementById('modalMgrAreaName').value = mgr.areaName || '';
+      }
       document.getElementById('modalMgrName').value = mgr.name || '';
       document.getElementById('modalMgrTitle').value = mgr.title || '';
       const totalSupTargets = (AppState.supervisors || []).reduce((s, x) => s + (Number(x.target) || 0), 0);
@@ -8753,6 +9147,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
 
     function handleSaveManager(e) {
       e.preventDefault();
+      const newAreaName = document.getElementById('modalMgrAreaName')?.value.trim();
       const newName = document.getElementById('modalMgrName').value.trim();
       const newTitle = document.getElementById('modalMgrTitle').value.trim();
       const newTarget = parseFloat(document.getElementById('modalMgrTarget').value) || 0;
@@ -8761,6 +9156,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const newUsername = document.getElementById('modalMgrUsername').value.trim();
       const newPassword = document.getElementById('modalMgrPassword').value.trim();
 
+      if (newAreaName) AppState.areaManager.areaName = newAreaName;
       AppState.areaManager.name = newName;
       AppState.areaManager.title = newTitle;
       AppState.areaManager.target = newTarget;
@@ -9001,8 +9397,26 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const isEn = AppState.lang === 'en';
 
       const listToRender = (isManager || isAll)
-        ? AppState.supervisors 
-        : AppState.supervisors.filter(s => Number(s.id) === activeSupId);
+        ? (AppState.supervisors || []) 
+        : (AppState.supervisors || []).filter(s => Number(s.id) === activeSupId);
+
+      if (!listToRender || listToRender.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 36px 20px; background: var(--bg-card); border: 2px dashed var(--border-color); border-radius: 16px; margin: 10px 0;">
+            <div style="font-size: 38px; margin-bottom: 8px;">🏢</div>
+            <div style="font-size: 15.5px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">
+              ${isEn ? 'System Ready for Your New Area!' : 'المنظومة مجهزة وجاهزة لإعداد منطقتك البيعية! 🚀'}
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); max-width: 480px; margin: 0 auto 16px; line-height: 1.6;">
+              ${isEn ? 'All previous transactions and demo supervisors have been cleared. Click below to add supervisors and establish your sales territories.' : 'تم تفريغ كافة البيانات القديمة بنجاح. ابدأ الآن بإضافة المشرفين التابعين لقطاعك وتحديد مستهدفاتهم البيعية لبدء العمل فوراً.'}
+            </div>
+            <button type="button" class="btn btn-primary" onclick="openAddAreaModal()" style="border-radius: 9999px; padding: 8px 22px; font-weight: 800;">
+              ➕ ${isEn ? 'Add First Supervisor Now' : 'إضافة أول مشرف للمنطقة الآن'}
+            </button>
+          </div>
+        `;
+        return;
+      }
 
       listToRender.forEach(sup => {
         const m = getSupervisorMetrics(sup);
@@ -9302,6 +9716,14 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const supervisorsToShow = (isManager || isAll)
         ? AppState.supervisors 
         : AppState.supervisors.filter(s => Number(s.id) === activeSupId);
+
+      if (!supervisorsToShow || supervisorsToShow.length === 0) {
+        ctx.fillStyle = isDarkMode() ? '#94a3b8' : '#64748b';
+        ctx.font = '13px Tajawal, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(AppState.lang === 'en' ? 'No supervisors to display' : 'لا يوجد مشرفين مسجلين بعد', w / 2, h / 2);
+        return;
+      }
 
       const labels = supervisorsToShow.map(s => getSupervisorName(s).replace(/Supervisor |مشرف /, ''));
       const targets = supervisorsToShow.map(s => Number(s.target || 0));
@@ -10655,23 +11077,61 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     /* =========================================================================
        MODAL ACTIONS & FORM HANDLERS
        ========================================================================= */
+    function renderTerritoryFilterBar() {
+      const bar = document.getElementById('territoryFilterBar');
+      if (!bar) return;
+
+      const currentMode = String(AppState.activeSupervisorId || 'MANAGER');
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      const isEn = AppState.lang === 'en';
+
+      let html = `
+        <button type="button" class="territory-pill ${currentMode === 'MANAGER' ? 'active' : ''}" data-sup="MANAGER" onclick="switchSupervisorPortal('MANAGER')">
+          <span>👑</span> <span>${isEn ? 'Command: ' + (mgr.name || 'Area Manager') : 'القيادة: ' + (mgr.name || 'مدير المنطقة')}</span>
+        </button>
+      `;
+
+      if (AppState.supervisors && AppState.supervisors.length > 0) {
+        AppState.supervisors.forEach(s => {
+          const activeClass = currentMode === String(s.id) ? 'active' : '';
+          const zoneShort = s.zone ? s.zone.split(/[,،]/)[0] : (s.title || '');
+          html += `
+            <button type="button" class="territory-pill ${activeClass}" data-sup="${s.id}" onclick="switchSupervisorPortal('${s.id}')">
+              <span>📍</span> <span>${escapeHtml(s.name)} (${escapeHtml(zoneShort)})</span>
+            </button>
+          `;
+        });
+      }
+
+      if (isMasterAdmin()) {
+        html += `
+          <button type="button" class="territory-pill" onclick="openAddAreaModal()" style="border-style:dashed; border-color:var(--primary); color:var(--primary); background:rgba(79,70,229,0.06);" title="${isEn ? 'Add New Supervisor' : 'إضافة مشرف جديد'}">
+            <span>➕</span> <span>${isEn ? 'Add Supervisor' : 'إضافة مشرف'}</span>
+          </button>
+        `;
+      }
+
+      bar.innerHTML = html;
+    }
+
     function updateSupervisorPortalSelectOptions() {
       const sel = document.getElementById('supervisorPortalSelect');
       const isEn = AppState.lang === 'en';
+      const mgr = AppState.areaManager || DEFAULT_MANAGER;
+      const areaLabel = mgr.areaName || (isEn ? 'Area Sectors' : 'قطاع المنطقة');
+
+      renderTerritoryFilterBar();
 
       if (sel) {
         const currentVal = AppState.activeSupervisorId || 'MANAGER';
-        const mgr = AppState.areaManager || DEFAULT_MANAGER;
 
         sel.innerHTML = `
-          <option value="MANAGER">${isEn ? '🎖️ Area Manager (Giza & Upper Egypt Sectors)' : '🎖️ مدير الآريتين (' + mgr.name + ')'}</option>
-          <option value="ALL">${isEn ? '👑 Executive Overview (All Sectors)' : '👑 لوحة الإدارة العامة (الكل)'}</option>
+          <option value="MANAGER">${isEn ? '🎖️ Area Manager (' + (mgr.name || 'Admin') + ')' : '🎖️ مدير المنطقة (' + (mgr.name || 'المدير العام') + ')'}</option>
+          <option value="ALL">${isEn ? '👑 Executive Overview (' + areaLabel + ')' : '👑 لوحة الإدارة العامة (' + areaLabel + ')'}</option>
         `;
 
-        AppState.supervisors.forEach(s => {
-          const zoneShort = isEn 
-            ? (s.name.includes('1') ? 'Faisal & Haram' : s.name.includes('2') ? 'October & Zayed' : 'Upper Egypt')
-            : getSupervisorZone(s).split(/[,،]/)[0];
+        (AppState.supervisors || []).forEach(s => {
+          const zoneShort = s.zone ? s.zone.split(/[,،]/)[0] : (s.title || '');
           sel.innerHTML += `<option value="${s.id}">👔 ${getSupervisorName(s)} (${zoneShort})</option>`;
         });
 
@@ -10682,11 +11142,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const filterSup = document.getElementById('filterSupervisor');
       if (filterSup) {
         const cur = filterSup.value || 'ALL';
-        filterSup.innerHTML = `<option value="ALL">${isEn ? 'All Supervisors (Giza & Upper Egypt)' : 'جميع المشرفين (الجيزة والصعيد)'}</option>`;
-        AppState.supervisors.forEach(s => {
-          const zoneShort = isEn 
-            ? (s.name.includes('1') ? 'Faisal & Haram' : s.name.includes('2') ? 'October & Zayed' : 'Upper Egypt')
-            : getSupervisorZone(s).split(/[,،]/)[0];
+        filterSup.innerHTML = `<option value="ALL">${isEn ? 'All Supervisors (' + areaLabel + ')' : 'جميع المشرفين (' + areaLabel + ')'}</option>`;
+        (AppState.supervisors || []).forEach(s => {
+          const zoneShort = s.zone ? s.zone.split(/[,،]/)[0] : (s.title || '');
           filterSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${zoneShort})</option>`;
         });
         filterSup.value = cur;
@@ -10696,11 +11154,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const dirSup = document.getElementById('modalDirectiveSup');
       if (dirSup) {
         const cur = dirSup.value || 'ALL';
-        dirSup.innerHTML = `<option value="ALL">${isEn ? 'All Supervisors (Giza 1 + Giza 2 + Upper Egypt)' : 'جميع المشرفين (الجيزة 1 + الجيزة 2 + الصعيد)'}</option>`;
-        AppState.supervisors.forEach(s => {
-          const zoneShort = isEn 
-            ? (s.name.includes('1') ? 'Faisal & Haram' : s.name.includes('2') ? 'October & Zayed' : 'Upper Egypt')
-            : getSupervisorTitle(s);
+        dirSup.innerHTML = `<option value="ALL">${isEn ? 'All Supervisors (' + areaLabel + ')' : 'جميع المشرفين (' + areaLabel + ')'}</option>`;
+        (AppState.supervisors || []).forEach(s => {
+          const zoneShort = s.zone ? s.zone.split(/[,،]/)[0] : (s.title || '');
           dirSup.innerHTML += `<option value="${s.id}">${getSupervisorName(s)} (${zoneShort})</option>`;
         });
         dirSup.value = cur;
@@ -14072,7 +14528,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261013v2').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261014v1').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
