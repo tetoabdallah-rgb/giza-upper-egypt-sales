@@ -4556,10 +4556,13 @@ html[dir="ltr"] .notif-dropdown-menu {
               <span class="section-title-icon">🏬</span>
               <span id="branchesHeadingText">قائمة العملاء والموزعين والفروع</span>
             </div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
               <button class="btn btn-success btn-sm" id="btnBulkImportClients" onclick="openBulkImportClientsModal()">📥 استيراد عملاء وتارجت من إكسيل</button>
               <button class="btn btn-outline btn-sm" id="btnDownloadTemplate" onclick="downloadClientsTemplate()">📄 نموذج شيت إكسيل</button>
               <button class="btn btn-primary btn-sm" id="btnAddBranchBtn" onclick="openAddBranchModal()">➕ إضافة عميل / فرع جديد</button>
+              <button class="btn btn-danger btn-sm" id="btnClearAllBranchesBtn" onclick="openClearAllClientsModal()" style="background:rgba(239, 68, 68, 0.16); border:1px solid rgba(239, 68, 68, 0.45); color:#fca5a5; font-weight:700; display:inline-flex; align-items:center; gap:5px;" title="مسح العملاء دفعة واحدة">
+                <span>🗑️</span> <span id="textClearAllBranchesBtn">مسح العملاء مرة واحدة</span>
+              </button>
             </div>
           </div>
 
@@ -4754,6 +4757,17 @@ html[dir="ltr"] .notif-dropdown-menu {
               </p>
               <button class="btn btn-outline btn-sm" id="btnClearSalesNow" style="color:var(--warning); border-color:var(--warning);" onclick="confirmClearSalesOnly()">
                 🧹 مسح المبيعات والزيارات (تصفير الشهر)
+              </button>
+            </div>
+
+            <!-- Option: Clear Clients & Branches Only -->
+            <div class="kpi-card kpi-danger manager-only-wipe" style="border-color: rgba(239, 68, 68, 0.35);">
+              <div class="kpi-title" id="cardClearClientsTitle" style="color:var(--danger)">🗑️ مسح جميع العملاء والفروع دفعة واحدة</div>
+              <p id="cardClearClientsDesc" style="font-size:12px; color:var(--text-muted); margin: 6px 0 14px;">
+                يقوم بحذف وتفريغ قائمة العملاء والتجار وتارجت الفروع بالكامل، مع إمكانية استيراد قائمة جديدة فوراً عبر Excel.
+              </p>
+              <button class="btn btn-outline btn-sm" id="btnOpenClearClientsTab7" style="color:var(--danger); border-color:rgba(239, 68, 68, 0.5); font-weight:700;" onclick="openClearAllClientsModal()">
+                🗑️ مسح العملاء مرة واحدة
               </button>
             </div>
 
@@ -5476,10 +5490,101 @@ html[dir="ltr"] .notif-dropdown-menu {
               تصفير الشهر 🧹
             </button>
           </div>
+
+          <!-- Option D: Clear Clients Only -->
+          <div style="background:var(--bg-subtle); border:1px solid rgba(239,68,68,0.25); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--danger); margin-bottom:3px;">🗑️ مسح جميع العملاء والفروع دفعة واحدة</div>
+              <div style="font-size:11.5px; color:var(--text-muted); line-height:1.4;">
+                حذف وتفريغ قائمة العملاء والتجار بالكامل وإعادة تصفير تارجت الفروع مع الإبقاء على المشرفين.
+              </div>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('wipeModal'); openClearAllClientsModal();" style="white-space:nowrap; flex-shrink:0;">
+              مسح العملاء 🗑️
+            </button>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" onclick="closeModal('wipeModal')">إغلاق وتراجع</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Clear All Clients Confirmation Modal -->
+  <div class="modal-overlay" id="clearAllClientsModal">
+    <div class="modal-dialog" style="max-width: 530px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
+      <div class="modal-header" style="background: rgba(239,68,68,0.08); border-bottom: 1.5px solid rgba(239,68,68,0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:24px;">🗑️</span>
+          <div>
+            <div class="modal-title" style="color:var(--danger); font-weight:900;">مسح العملاء دفعة واحدة (Bulk Wipe)</div>
+            <div style="font-size:11px; color:var(--text-muted);">حذف قائمة العملاء والتجار وتارجت الفروع من المنظومة</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('clearAllClientsModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 18px; overflow-y: auto; flex: 1;">
+        <div class="danger-box" style="margin-bottom:14px;">
+          <div class="danger-box-title">⚠️ تحذير وإشعار أمان هام</div>
+          <div class="danger-box-text" style="font-size:12.5px; line-height:1.6;">
+            هذه العملية ستقوم بحذف بيانات العملاء والتجار وتارجت الفروع المحددة.
+            <br>
+            <strong>ملاحظة:</strong> حركات المبيعات السابقة تظل مسجلة في كشف العمليات التاريخي.
+          </div>
+        </div>
+
+        <div style="background:var(--bg-subtle); border:1px solid var(--border-color); border-radius:12px; padding:14px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:12.5px; color:var(--text-muted);">إجمالي العملاء المسجلين:</span>
+            <strong id="clearClientsTotalCountBadge" style="font-size:14px; color:var(--primary);">0 عميل</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12.5px; color:var(--text-muted);">إجمالي مستهدفاتهم (تارجت):</span>
+            <strong id="clearClientsTotalTargetBadge" style="font-size:14px; color:var(--text-main);">0 ج.م</strong>
+          </div>
+        </div>
+
+        <!-- Scope selection (if supervisor is filtered or manager) -->
+        <div id="clearClientsScopeBox" style="margin-bottom:14px;">
+          <div style="font-size:12.5px; font-weight:800; margin-bottom:8px;">نطاق المسح المطلوب:</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12.5px; background:var(--bg-card); padding:8px 12px; border-radius:8px; border:1px solid var(--border-color);">
+              <input type="radio" name="clearClientsScope" id="clearClientsScopeAll" value="ALL" checked>
+              <span><strong>مسح جميع العملاء والفروع بالكامل</strong> (جميع القطاعات والمشرفين)</span>
+            </label>
+            <label id="clearClientsScopeSupWrap" style="display:none; align-items:center; gap:8px; cursor:pointer; font-size:12.5px; background:var(--bg-card); padding:8px 12px; border-radius:8px; border:1px solid var(--border-color);">
+              <input type="radio" name="clearClientsScope" id="clearClientsScopeSup" value="ACTIVE_ONLY">
+              <span id="clearClientsScopeSupLabel">مسح عملاء المشرف المحدد فقط</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(79,70,229,0.06); border:1px dashed rgba(79,70,229,0.3); border-radius:10px; padding:10px 12px; margin-bottom:16px;">
+          <div style="font-size:12px; color:var(--text-muted);">
+            💡 هل ترغب بالاحتفاظ بنسخة احتياطية أولاً؟
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="exportBackupJSON()" style="padding:4px 9px; font-size:11px;">
+            💾 تحميل نسخة JSON
+          </button>
+        </div>
+
+        <div style="margin-top:10px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px; font-weight:700; color:var(--danger);">
+            <input type="checkbox" id="clearClientsConfirmCheckbox" onchange="toggleClearClientsBtnState()">
+            <span>نعم، أؤكد رغبتي في مسح بيانات هؤلاء العملاء نهائياً</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; flex-shrink: 0; background: var(--bg-card); border-top: 1px solid var(--border-color); padding: 12px 18px;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('clearAllClientsModal')">
+          إلغاء وتراجع
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" id="btnExecuteClearClients" onclick="executeClearAllClients()" disabled style="background:#ef4444; border-color:#dc2626; font-weight:800; opacity:0.5; cursor:not-allowed;">
+          🗑️ تأكيد مسح العملاء الآن
+        </button>
       </div>
     </div>
   </div>
@@ -6863,6 +6968,7 @@ html[dir="ltr"] .notif-dropdown-menu {
         cardBulkImportDesc: "أضف العشرات أو المئات من العملاء والتجار ومستهدفاتهم الشهرية مرة واحدة من شيت إكسيل أو عبر النسخ واللصق المباشر من Excel.",
         btnBulkImportClients: "📥 استيراد عملاء وتارجت من إكسيل",
         btnDownloadTemplate: "📄 نموذج شيت إكسيل",
+        btnClearAllBranches: "🗑️ مسح العملاء مرة واحدة",
         cardExportExcelTitle: "تصدير تقرير شامل إلى Excel (CSV)",
         cardExportExcelDesc: "ملف إكسيل منظم يضم ملخص المشرفين، سجل المبيعات، قائمة العملاء، وتقارير الزيارات الميدانية.",
         btnExportExcelNow: "📊 تنزيل ملف Excel الآن",
@@ -7044,6 +7150,7 @@ html[dir="ltr"] .notif-dropdown-menu {
         cardBulkImportDesc: "Add dozens or hundreds of clients, retailers, and their monthly targets all at once via Excel CSV or direct copy-paste from Excel.",
         btnBulkImportClients: "📥 Import Clients & Targets (Excel)",
         btnDownloadTemplate: "📄 Excel Template Sheet",
+        btnClearAllBranches: "🗑️ Clear All Clients",
         cardExportExcelTitle: "Export Comprehensive Excel Report (CSV)",
         cardExportExcelDesc: "Structured Excel spreadsheet including supervisors summary, sales log, client directory, and field visits.",
         btnExportExcelNow: "📊 Download Excel File Now",
@@ -7574,6 +7681,8 @@ html[dir="ltr"] .notif-dropdown-menu {
       if (btnBulkImp) btnBulkImp.textContent = t('btnBulkImportClients');
       const btnDnldTpl = document.getElementById('btnDownloadTemplate');
       if (btnDnldTpl) btnDnldTpl.textContent = t('btnDownloadTemplate');
+      const textClrAll = document.getElementById('textClearAllBranchesBtn');
+      if (textClrAll) textClrAll.textContent = isEn ? "Clear All Clients" : "مسح العملاء مرة واحدة";
 
       // Tab 6 Cards
       const rExpHead = document.getElementById('reportsExportHeading');
@@ -8118,7 +8227,7 @@ html[dir="ltr"] .notif-dropdown-menu {
             if (Array.isArray(data.supervisors) && data.supervisors.length > 0) AppState.supervisors = data.supervisors;
             if (Array.isArray(data.branches) && data.branches.length > 0) {
               AppState.branches = data.branches;
-            } else if ((!AppState.branches || AppState.branches.length === 0) && DEFAULT_BRANCHES.length > 0) {
+            } else if ((!AppState.branches || AppState.branches.length === 0) && DEFAULT_BRANCHES.length > 0 && localStorage.getItem('giza_saeed_branches_cleared') !== 'true' && localStorage.getItem('giza_saeed_branches') === null) {
               AppState.branches = DEFAULT_BRANCHES;
             }
             if (Array.isArray(data.directives) && data.directives.length > 0) AppState.directives = data.directives;
@@ -8913,6 +9022,7 @@ function doPost(e) {
       }
       if (confirm("هل تريد بالتأكيد استعادة البيانات النموذجية الافتراضية لمنطقة الجيزة والصعيد؟")) {
         localStorage.removeItem('giza_saeed_custom_area');
+        localStorage.removeItem('giza_saeed_branches_cleared');
         AppState.areaManager = JSON.parse(JSON.stringify(DEFAULT_MANAGER));
         AppState.supervisors = JSON.parse(JSON.stringify(DEFAULT_SUPERVISORS));
         AppState.branches = JSON.parse(JSON.stringify(DEFAULT_BRANCHES));
@@ -13745,6 +13855,110 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     }
 
     /* =========================================================================
+       BULK CLEAR CLIENTS LOGIC
+       ========================================================================= */
+    function openClearAllClientsModal() {
+      if (!checkPermissionOrAlert('canDelete', 'مسح جميع العملاء')) return;
+
+      const totalCount = AppState.branches ? AppState.branches.length : 0;
+      if (totalCount === 0) {
+        showToast(AppState.lang === 'en' ? 'Client directory is already empty!' : 'قائمة العملاء فارغة بالفعل ولا يوجد عملاء لمسحهم!', 'info');
+        return;
+      }
+
+      const totalTarget = (AppState.branches || []).reduce((acc, b) => acc + (Number(b.target) || 0), 0);
+      const countEl = document.getElementById('clearClientsTotalCountBadge');
+      const targetEl = document.getElementById('clearClientsTotalTargetBadge');
+      if (countEl) countEl.textContent = `${totalCount} ${AppState.lang === 'en' ? 'clients/branches' : 'عميل / فرع'}`;
+      if (targetEl) targetEl.textContent = formatCurrency(totalTarget);
+
+      const mode = AppState.activeSupervisorId;
+      const isSpecificSup = mode && mode !== 'MANAGER' && mode !== 'ALL';
+      const supWrap = document.getElementById('clearClientsScopeSupWrap');
+      const supLabel = document.getElementById('clearClientsScopeSupLabel');
+      const radioAll = document.getElementById('clearClientsScopeAll');
+      const radioSup = document.getElementById('clearClientsScopeSup');
+
+      if (isSpecificSup) {
+        const sup = AppState.supervisors.find(s => Number(s.id) === Number(mode));
+        const supBranches = (AppState.branches || []).filter(b => Number(b.supervisorId) === Number(mode));
+        if (supWrap && supLabel) {
+          supWrap.style.display = 'flex';
+          supLabel.innerHTML = `مسح عملاء <strong>${sup ? getSupervisorName(sup) : 'المشرف المحدد'}</strong> فقط (${supBranches.length} عميل)`;
+          if (supBranches.length > 0 && !isMasterAdmin()) {
+            if (radioSup) radioSup.checked = true;
+          } else {
+            if (radioAll) radioAll.checked = true;
+          }
+        }
+      } else {
+        if (supWrap) supWrap.style.display = 'none';
+        if (radioAll) radioAll.checked = true;
+      }
+
+      // Reset confirmation checkbox & execute button state
+      const chk = document.getElementById('clearClientsConfirmCheckbox');
+      const btn = document.getElementById('btnExecuteClearClients');
+      if (chk) chk.checked = false;
+      if (btn) {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+      }
+
+      const m = document.getElementById('clearAllClientsModal');
+      if (m) m.classList.add('open');
+    }
+
+    function toggleClearClientsBtnState() {
+      const chk = document.getElementById('clearClientsConfirmCheckbox');
+      const btn = document.getElementById('btnExecuteClearClients');
+      if (!btn) return;
+      if (chk && chk.checked) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+      }
+    }
+
+    function executeClearAllClients() {
+      if (!checkPermissionOrAlert('canDelete', 'مسح جميع العملاء')) return;
+
+      const mode = AppState.activeSupervisorId;
+      const isManager = mode === 'MANAGER' || mode === 'ALL' || !mode || isMasterAdmin();
+      const scopeEl = document.querySelector('input[name="clearClientsScope"]:checked');
+      const scope = scopeEl ? scopeEl.value : 'ALL';
+      const isEn = AppState.lang === 'en';
+
+      let deletedCount = 0;
+      if (!isManager || scope === 'ACTIVE_ONLY') {
+        const activeSupId = Number(mode);
+        const sup = AppState.supervisors.find(s => Number(s.id) === activeSupId);
+        const initialLen = AppState.branches.length;
+        AppState.branches = AppState.branches.filter(b => Number(b.supervisorId) !== activeSupId);
+        deletedCount = initialLen - AppState.branches.length;
+        logAuditAction('مسح عملاء المشرف', `تم مسح عدد ${deletedCount} عميل تابعين لـ ${sup ? sup.name : activeSupId}`, 'TARGETS');
+      } else {
+        deletedCount = AppState.branches.length;
+        AppState.branches = [];
+        localStorage.setItem('giza_saeed_branches_cleared', 'true');
+        logAuditAction('مسح شامل للعملاء', `تم مسح جميع العملاء والفروع بالكامل (${deletedCount} عميل)`, 'TARGETS');
+      }
+
+      saveState();
+      renderAll();
+      closeModal('clearAllClientsModal');
+
+      showToast(isEn 
+        ? `Successfully cleared ${deletedCount} clients! 🗑️` 
+        : `تم مسح ${deletedCount} عميل بنجاح! 🗑️`, 'success', 3500);
+    }
+
+    /* =========================================================================
        TAB & NAVIGATION SYSTEM
        ========================================================================= */
     function switchTab(tabName) {
@@ -16484,7 +16698,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261015v4').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261015v5').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
