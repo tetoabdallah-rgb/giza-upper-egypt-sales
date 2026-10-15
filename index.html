@@ -5550,6 +5550,10 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div id="clearClientsScopeBox" style="margin-bottom:14px;">
           <div style="font-size:12.5px; font-weight:800; margin-bottom:8px;">نطاق المسح المطلوب:</div>
           <div style="display:flex; flex-direction:column; gap:8px;">
+            <label id="clearClientsScopeChurnWrap" style="display:none; align-items:center; gap:8px; cursor:pointer; font-size:12.5px; background:rgba(239,68,68,0.06); padding:8px 12px; border-radius:8px; border:1px solid rgba(239,68,68,0.3);">
+              <input type="radio" name="clearClientsScope" id="clearClientsScopeChurn" value="CHURN_ONLY">
+              <span id="clearClientsScopeChurnLabel" style="color:var(--danger); font-weight:700;">مسح الفروع الراكدة فقط (المتوقفة عن الشراء)</span>
+            </label>
             <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12.5px; background:var(--bg-card); padding:8px 12px; border-radius:8px; border:1px solid var(--border-color);">
               <input type="radio" name="clearClientsScope" id="clearClientsScopeAll" value="ALL" checked>
               <span><strong>مسح جميع العملاء والفروع بالكامل</strong> (جميع القطاعات والمشرفين)</span>
@@ -10457,6 +10461,11 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         return;
       }
 
+      if (AppState.churnDismissed) {
+        card.style.display = 'none';
+        return;
+      }
+
       card.style.display = 'block';
       const isEn = AppState.lang === 'en';
 
@@ -10465,39 +10474,53 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
           <div class="churn-title-block">
             <span style="font-size:22px;">⚠️</span>
             <div>
-              <strong style="color:var(--danger); font-size:14px;">رادار كشف العملاء في خطر التسرب والركود (Churn Risk Alert)</strong>
+              <strong style="color:var(--danger); font-size:14px;">${isEn ? 'Churn & Inactivity Risk Alert' : 'رادار كشف العملاء في خطر التسرب والركود (Churn Risk Alert)'}</strong>
               <div style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">
-                تم رصد <strong style="color:var(--danger);">${inactives.length}</strong> فروع لم تسجل أي حركة مشتريات منذ أكثر من 7 أيام. موصى بزيارات تنشيطية فورية.
+                ${isEn 
+                  ? `Detected <strong style="color:var(--danger);">${inactives.length}</strong> branches with no sales for >7 days. Immediate visits recommended.` 
+                  : `تم رصد <strong style="color:var(--danger);">${inactives.length}</strong> فروع لم تسجل أي حركة مشتريات منذ أكثر من 7 أيام. موصى بزيارات تنشيطية فورية.`}
               </div>
             </div>
           </div>
-          <button type="button" class="btn btn-outline btn-xs" onclick="openDailyBeatModal()" style="color:var(--danger); border-color:rgba(239,68,68,0.4); font-weight:800;">
-            📍 إضافة الفروع لخط السير اليومي
-          </button>
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+            <button type="button" class="btn btn-outline btn-xs" onclick="openDailyBeatModal()" style="color:var(--danger); border-color:rgba(239,68,68,0.4); font-weight:800;">
+              📍 ${isEn ? 'Beat Route' : 'إضافة الفروع لخط السير'}
+            </button>
+            <button type="button" class="btn btn-danger btn-xs" id="btnClearChurnBranchesBtn" onclick="openClearAllClientsModal('CHURN')" style="background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#fca5a5; font-weight:800; display:inline-flex; align-items:center; gap:4px;" title="${isEn ? 'Clear Inactive Branches' : 'مسح الفروع الراكدة دفعة واحدة'}">
+              <span>🗑️</span> ${isEn ? 'Clear Inactive Branches' : 'مسح الفروع الراكدة مرة واحدة'}
+            </button>
+            <button type="button" class="btn btn-outline btn-xs" onclick="dismissChurnAlert()" style="color:var(--text-muted); border-color:rgba(255,255,255,0.18); font-weight:700; padding:2px 8px;" title="${isEn ? 'Dismiss Alert' : 'إخفاء التنبيه مؤقتاً'}">
+              ✕
+            </button>
+          </div>
         </div>
         <div class="churn-list">
           ${inactives.slice(0, 6).map(item => {
             const sup = AppState.supervisors.find(s => Number(s.id) === Number(item.supervisorId));
             const supName = sup ? sup.name : 'غير محدد';
-            const daysText = item.daysInactive >= 999 ? 'لم يطلب أي حركة حتى الآن' : `متوقف منذ ${item.daysInactive} يوم`;
+            const daysText = item.daysInactive >= 999 ? (isEn ? 'No sales recorded yet' : 'لم يطلب أي حركة حتى الآن') : (isEn ? `Inactive for ${item.daysInactive}d` : `متوقف منذ ${item.daysInactive} يوم`);
+            const safeBranch = (item.branch || '').replace(/'/g, "\\'");
             return `
               <div class="churn-row">
                 <div>
                   <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="font-weight:900; font-size:13px; color:var(--text-main); cursor:pointer;" onclick="openCustomer360Modal('${escapeHtml(item.branch)}')">${escapeHtml(item.branch)}</span>
+                    <span style="font-weight:900; font-size:13px; color:var(--text-main); cursor:pointer;" onclick="openCustomer360Modal('${safeBranch}')">${escapeHtml(item.branch)}</span>
                     <span class="badge badge-danger" style="font-size:10.5px;">${daysText}</span>
                   </div>
                   <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">
-                    المشرف: <strong style="color:var(--text-main);">${escapeHtml(supName)}</strong> • آخر طلب: ${item.lastDate} (${formatCurrency(item.lastAmount)})
+                    ${isEn ? 'Supervisor:' : 'المشرف:'} <strong style="color:var(--text-main);">${escapeHtml(supName)}</strong> • ${isEn ? 'Last Order:' : 'آخر طلب:'} ${item.lastDate} (${formatCurrency(item.lastAmount)})
                   </div>
                 </div>
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
                   ${item.phone ? `<a href="https://wa.me/${item.phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent('مرحباً من إدارة مبيعات 2B، نود الاطمئنان على سير العمل واحتياجاتكم من الإكسسوارات هذا الأسبوع')}" target="_blank" class="btn btn-success btn-xs" style="background:#25d366; color:#fff; font-weight:700;">💬 واتساب</a>` : ''}
-                  <button type="button" class="btn btn-primary btn-xs" onclick="quickScheduleVisitForBranch('${escapeHtml(item.branch)}', ${item.supervisorId})" style="font-weight:700;">
-                    📍 زيارة عاجلة
+                  <button type="button" class="btn btn-primary btn-xs" onclick="quickScheduleVisitForBranch('${safeBranch}', ${item.supervisorId})" style="font-weight:700;">
+                    📍 ${isEn ? 'Urgent Visit' : 'زيارة عاجلة'}
                   </button>
-                  <button type="button" class="btn btn-outline btn-xs" onclick="openCustomer360Modal('${escapeHtml(item.branch)}')">
+                  <button type="button" class="btn btn-outline btn-xs" onclick="openCustomer360Modal('${safeBranch}')">
                     🏬 360°
+                  </button>
+                  <button type="button" class="btn btn-outline btn-xs" style="color:var(--danger); border-color:rgba(239,68,68,0.3); padding:2px 7px;" onclick="deleteSingleChurnBranch('${safeBranch}')" title="${isEn ? 'Delete Branch' : 'مسح هذا الفرع نهائياً'}">
+                    🗑️
                   </button>
                 </div>
               </div>
@@ -13857,7 +13880,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
     /* =========================================================================
        BULK CLEAR CLIENTS LOGIC
        ========================================================================= */
-    function openClearAllClientsModal() {
+    function openClearAllClientsModal(source) {
       if (!checkPermissionOrAlert('canDelete', 'مسح جميع العملاء')) return;
 
       const totalCount = AppState.branches ? AppState.branches.length : 0;
@@ -13866,34 +13889,51 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         return;
       }
 
+      const isEn = AppState.lang === 'en';
+      const inactives = typeof detectInactiveBranches === 'function' ? detectInactiveBranches(7) : [];
       const totalTarget = (AppState.branches || []).reduce((acc, b) => acc + (Number(b.target) || 0), 0);
       const countEl = document.getElementById('clearClientsTotalCountBadge');
       const targetEl = document.getElementById('clearClientsTotalTargetBadge');
-      if (countEl) countEl.textContent = `${totalCount} ${AppState.lang === 'en' ? 'clients/branches' : 'عميل / فرع'}`;
+      if (countEl) countEl.textContent = `${totalCount} ${isEn ? 'clients/branches' : 'عميل / فرع'}`;
       if (targetEl) targetEl.textContent = formatCurrency(totalTarget);
 
       const mode = AppState.activeSupervisorId;
       const isSpecificSup = mode && mode !== 'MANAGER' && mode !== 'ALL';
       const supWrap = document.getElementById('clearClientsScopeSupWrap');
       const supLabel = document.getElementById('clearClientsScopeSupLabel');
+      const churnWrap = document.getElementById('clearClientsScopeChurnWrap');
+      const churnLabel = document.getElementById('clearClientsScopeChurnLabel');
       const radioAll = document.getElementById('clearClientsScopeAll');
       const radioSup = document.getElementById('clearClientsScopeSup');
+      const radioChurn = document.getElementById('clearClientsScopeChurn');
 
-      if (isSpecificSup) {
-        const sup = AppState.supervisors.find(s => Number(s.id) === Number(mode));
-        const supBranches = (AppState.branches || []).filter(b => Number(b.supervisorId) === Number(mode));
-        if (supWrap && supLabel) {
-          supWrap.style.display = 'flex';
-          supLabel.innerHTML = `مسح عملاء <strong>${sup ? getSupervisorName(sup) : 'المشرف المحدد'}</strong> فقط (${supBranches.length} عميل)`;
-          if (supBranches.length > 0 && !isMasterAdmin()) {
-            if (radioSup) radioSup.checked = true;
-          } else {
-            if (radioAll) radioAll.checked = true;
-          }
-        }
+      if (source === 'CHURN' && inactives.length > 0) {
+        if (churnWrap) churnWrap.style.display = 'flex';
+        if (churnLabel) churnLabel.innerHTML = isEn 
+          ? `<strong>Clear Inactive Branches Only</strong> (${inactives.length} branches at risk of churn)` 
+          : `<strong>مسح الفروع الراكدة فقط</strong> (${inactives.length} فرع في خطر التسرب)`;
+        if (radioChurn) radioChurn.checked = true;
+        if (countEl) countEl.textContent = `${inactives.length} ${isEn ? 'inactive branches' : 'فرع راكد'}`;
       } else {
-        if (supWrap) supWrap.style.display = 'none';
-        if (radioAll) radioAll.checked = true;
+        if (churnWrap) churnWrap.style.display = 'none';
+        if (isSpecificSup) {
+          const sup = AppState.supervisors.find(s => Number(s.id) === Number(mode));
+          const supBranches = (AppState.branches || []).filter(b => Number(b.supervisorId) === Number(mode));
+          if (supWrap && supLabel) {
+            supWrap.style.display = 'flex';
+            supLabel.innerHTML = isEn 
+              ? `Clear clients for <strong>${sup ? getSupervisorName(sup) : 'selected supervisor'}</strong> only (${supBranches.length} clients)`
+              : `مسح عملاء <strong>${sup ? getSupervisorName(sup) : 'المشرف المحدد'}</strong> فقط (${supBranches.length} عميل)`;
+            if (supBranches.length > 0 && !isMasterAdmin()) {
+              if (radioSup) radioSup.checked = true;
+            } else {
+              if (radioAll) radioAll.checked = true;
+            }
+          }
+        } else {
+          if (supWrap) supWrap.style.display = 'none';
+          if (radioAll) radioAll.checked = true;
+        }
       }
 
       // Reset confirmation checkbox & execute button state
@@ -13935,11 +13975,18 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const isEn = AppState.lang === 'en';
 
       let deletedCount = 0;
-      if (!isManager || scope === 'ACTIVE_ONLY') {
+      if (scope === 'CHURN_ONLY') {
+        const inactives = detectInactiveBranches(7);
+        const inactiveSet = new Set(inactives.map(x => (x.branch || '').trim().toLowerCase()));
+        const initialLen = AppState.branches.length;
+        AppState.branches = (AppState.branches || []).filter(b => !inactiveSet.has((b.name || '').trim().toLowerCase()));
+        deletedCount = initialLen - AppState.branches.length;
+        logAuditAction('مسح الفروع الراكدة', `تم مسح عدد ${deletedCount} فرع راكد من المنظومة بنجاح`, 'TARGETS');
+      } else if (!isManager || scope === 'ACTIVE_ONLY') {
         const activeSupId = Number(mode);
         const sup = AppState.supervisors.find(s => Number(s.id) === activeSupId);
         const initialLen = AppState.branches.length;
-        AppState.branches = AppState.branches.filter(b => Number(b.supervisorId) !== activeSupId);
+        AppState.branches = (AppState.branches || []).filter(b => Number(b.supervisorId) !== activeSupId);
         deletedCount = initialLen - AppState.branches.length;
         logAuditAction('مسح عملاء المشرف', `تم مسح عدد ${deletedCount} عميل تابعين لـ ${sup ? sup.name : activeSupId}`, 'TARGETS');
       } else {
@@ -13956,6 +14003,25 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       showToast(isEn 
         ? `Successfully cleared ${deletedCount} clients! 🗑️` 
         : `تم مسح ${deletedCount} عميل بنجاح! 🗑️`, 'success', 3500);
+    }
+
+    function dismissChurnAlert() {
+      const card = document.getElementById('churnRiskAlertCard');
+      if (card) card.style.display = 'none';
+      AppState.churnDismissed = true;
+      showToast(AppState.lang === 'en' ? 'Churn alert dismissed' : 'تم إخفاء تنبيه الركود مؤقتاً', 'info', 2000);
+    }
+
+    function deleteSingleChurnBranch(branchName) {
+      if (!checkPermissionOrAlert('canDelete', 'حذف عميل')) return;
+      const isEn = AppState.lang === 'en';
+      if (confirm(isEn ? `Are you sure you want to delete branch "${branchName}"?` : `هل تريد بالتأكيد حذف الفرع "${branchName}" من قائمة العملاء نهائياً؟`)) {
+        AppState.branches = (AppState.branches || []).filter(b => (b.name || '').trim().toLowerCase() !== (branchName || '').trim().toLowerCase());
+        logAuditAction('حذف فرع راكد', `تم حذف الفرع ${branchName} من قائمة العملاء`, 'TARGETS');
+        saveState();
+        renderAll();
+        showToast(isEn ? `Deleted ${branchName}` : `تم حذف الفرع ${branchName} بنجاح ✅`, 'success', 2500);
+      }
     }
 
     /* =========================================================================
@@ -16698,7 +16764,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261015v5').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261015v6').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }
