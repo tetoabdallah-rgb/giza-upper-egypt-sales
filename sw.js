@@ -1,4 +1,4 @@
-const CACHE_NAME = 'giza-sales-v2026-10-18-v5-enterprise-pro';
+const CACHE_NAME = 'giza-sales-v2026-10-18-v6-supreme-enterprise';
 const ASSETS = [
   './',
   './index.html',
