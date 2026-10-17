@@ -1877,6 +1877,16 @@ html[dir="ltr"] .fab-speed-dial {
   #btnHeaderInstallAppMobile {
     display: inline-flex !important;
   }
+  #btnHeaderPrivacyMode {
+    display: inline-flex !important;
+  }
+  #btnHeaderOmniSearch {
+    padding: 6px 9px !important;
+  }
+  #btnHeaderOmniSearch .omni-kbd-badge,
+  #btnHeaderOmniSearchText {
+    display: none !important;
+  }
   #floatingPwaInstallBanner {
     left: 12px !important;
     right: 12px !important;
@@ -3443,6 +3453,297 @@ html[dir="ltr"] .notif-dropdown-menu {
     background: #10b981;
     color: #fff;
   }
+
+  /* ==========================================================================
+     ENTERPRISE V5.0 PROFESSIONAL SUITE STYLES
+     ========================================================================== */
+
+  /* 1. Header Pro Action Buttons */
+  #btnHeaderOmniSearch {
+    background: rgba(79, 70, 229, 0.08);
+    border: 1px solid rgba(79, 70, 229, 0.28);
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  #btnHeaderOmniSearch:hover {
+    background: rgba(79, 70, 229, 0.16);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+  .omni-kbd-badge {
+    background: rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    border-radius: 6px;
+    font-size: 10px;
+    padding: 1px 6px;
+    font-family: inherit;
+    font-weight: 800;
+    color: var(--text-muted);
+  }
+  body.dark-mode .omni-kbd-badge {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #cbd5e1;
+  }
+
+  #btnHeaderPrivacyMode {
+    transition: all 0.25s ease;
+  }
+  #btnHeaderPrivacyMode.active {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+  }
+
+  /* 2. Stealth / Meeting Privacy Mode Blurring */
+  body.privacy-mode .kpi-value,
+  body.privacy-mode .gap-metric-box div:nth-child(2),
+  body.privacy-mode #valActualSalesSoFar,
+  body.privacy-mode #valGapRemaining,
+  body.privacy-mode #valRequiredDailyPace,
+  body.privacy-mode #valProjectedSales,
+  body.privacy-mode .money-sensitive,
+  body.privacy-mode .money-cell,
+  body.privacy-mode .sup-target-number,
+  body.privacy-mode .client-target-col,
+  body.privacy-mode .client-actual-col {
+    filter: blur(8px) !important;
+    user-select: none !important;
+    transition: filter 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body.privacy-mode .kpi-value:hover,
+  body.privacy-mode .gap-metric-box div:nth-child(2):hover,
+  body.privacy-mode .money-sensitive:hover,
+  body.privacy-mode .money-cell:hover {
+    filter: blur(0px) !important;
+  }
+
+  /* 3. Omni Command Palette Modal */
+  #omniCommandModal .modal-dialog {
+    max-width: 620px;
+    margin-top: 10vh;
+    border-radius: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+  }
+  .omni-search-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-subtle);
+  }
+  .omni-input-field {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    font-family: inherit;
+  }
+  .omni-results-list {
+    max-height: 52vh;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  .omni-group-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding: 8px 12px 4px;
+    letter-spacing: 0.5px;
+  }
+  .omni-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 3px;
+  }
+  .omni-item:hover,
+  .omni-item.selected {
+    background: rgba(79, 70, 229, 0.12);
+    color: var(--primary);
+  }
+  body.dark-mode .omni-item:hover,
+  body.dark-mode .omni-item.selected {
+    background: rgba(99, 102, 241, 0.22);
+  }
+  .omni-item-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* 4. RFM Customer Loyalty Tiers */
+  .rfm-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .rfm-chip {
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid var(--border-color);
+    background: var(--bg-subtle);
+    color: var(--text-main);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .rfm-chip:hover {
+    border-color: var(--primary);
+  }
+  .rfm-chip.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 3px 10px rgba(79, 70, 229, 0.35);
+  }
+  .rfm-count-badge {
+    background: rgba(0, 0, 0, 0.12);
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 10.5px;
+  }
+  .rfm-chip.active .rfm-count-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+  .rfm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .rfm-badge-vip {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.25));
+    border: 1px solid rgba(245, 158, 11, 0.5);
+    color: #b45309;
+  }
+  body.dark-mode .rfm-badge-vip {
+    color: #fbbf24;
+  }
+  .rfm-badge-active {
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #059669;
+  }
+  body.dark-mode .rfm-badge-active {
+    color: #34d399;
+  }
+  .rfm-badge-at-risk {
+    background: rgba(249, 115, 22, 0.14);
+    border: 1px solid rgba(249, 115, 22, 0.4);
+    color: #c2410c;
+  }
+  body.dark-mode .rfm-badge-at-risk {
+    color: #fb923c;
+  }
+  .rfm-badge-churned {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+  }
+  body.dark-mode .rfm-badge-churned {
+    color: #f87171;
+  }
+
+  /* 5. Incentive Calculator Cards */
+  .incentive-bracket-card {
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 14px;
+    background: var(--bg-subtle);
+    transition: all 0.2s ease;
+  }
+  .incentive-bracket-card.current {
+    border-color: #10b981;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.04));
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+  }
+
+  /* 6. Milestone Celebration Canvas */
+  #celebrationCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100000;
+    display: none;
+  }
+
+  /* 7. Print Letterhead Styles */
+  @media print {
+    body {
+      background: #fff !important;
+      color: #000 !important;
+      font-size: 11pt !important;
+    }
+    .sidebar,
+    .header,
+    .bottom-nav,
+    .offline-network-badge,
+    #floatingPwaInstallBanner,
+    .exec-hero-card,
+    .btn,
+    .header-actions {
+      display: none !important;
+    }
+    .main-content {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+    .print-letterhead {
+      display: block !important;
+      border-bottom: 2px solid #1e1b4b;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .card-section, .kpi-card {
+      border: 1px solid #ccc !important;
+      box-shadow: none !important;
+      break-inside: avoid;
+    }
+  }
 </style>
 </head>
 <body>
@@ -3570,7 +3871,7 @@ html[dir="ltr"] .notif-dropdown-menu {
 
     <!-- Version Update Alert Bar (Appears when new version is detected or cache cleared) -->
     <div id="appVersionUpdateBar" style="display:none; background:linear-gradient(135deg, #4f46e5, #0284c7); color:#fff; padding:8px 14px; text-align:center; font-size:12px; font-weight:800; z-index:999999; box-shadow:0 4px 15px rgba(0,0,0,0.2); position:relative;">
-      <span>🚀 إصدار المنظومة المحدث (v4.0 Multi-National) جاهز — </span>
+      <span>🚀 إصدار المنظومة الاحترافي المحدث (v5.0 Enterprise Pro) جاهز — </span>
       <button type="button" onclick="forceAppUpdateAndClearCache()" style="background:#fff; color:#4338ca; border:none; padding:4px 12px; border-radius:9999px; font-weight:900; font-size:11.5px; cursor:pointer; margin-inline-start:6px; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
         تحديث الشاشة الآن 🔄
       </button>
@@ -3600,6 +3901,18 @@ html[dir="ltr"] .notif-dropdown-menu {
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
           <span id="cloudSyncText">سحابي متصل</span>
         </div>
+
+        <!-- Omni-Search Command Palette Button (Ctrl+K) -->
+        <button type="button" id="btnHeaderOmniSearch" onclick="openOmniCommandModal()" title="البحث الشامل وموجه الأوامر السريع (Ctrl + K)">
+          <span>🔍</span>
+          <span id="btnHeaderOmniSearchText">بحث سريع</span>
+          <span class="omni-kbd-badge">Ctrl K</span>
+        </button>
+
+        <!-- Meeting Privacy Mode Toggle Button -->
+        <button class="header-icon-btn" id="btnHeaderPrivacyMode" onclick="togglePrivacyMode()" title="وضع خصوصية الاجتماعات (إخفاء المبالغ المالية)" style="color:var(--text-muted); background:rgba(100,116,139,0.1); border-color:rgba(100,116,139,0.3);">
+          <span style="font-size:14px;" id="iconPrivacyMode">👁️</span>
+        </button>
 
         <!-- Primary CTA: Quick Sale Entry -->
         <button class="btn btn-primary" id="btnHeaderAddSale" onclick="openSaleModal()">
@@ -3640,6 +3953,14 @@ html[dir="ltr"] .notif-dropdown-menu {
               <span style="font-size:15px;">🔗</span>
               <span id="btnHeaderShareLinksText">روابط المشرفين بالواتساب</span>
             </button>
+            <button type="button" class="header-action-menu-item" onclick="openVisualWhatsAppCardModal()">
+              <span style="font-size:15px;">🖼️</span>
+              <span>صانع كروت الواتساب الرسومية</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="openIncentiveCalculatorModal()">
+              <span style="font-size:15px;">💰</span>
+              <span>حاسبة حوافز وعمولات المشرفين</span>
+            </button>
             <button type="button" class="header-action-menu-item" id="btnHeaderExport" onclick="exportMasterDataCSV()">
               <span style="font-size:15px;">📊</span>
               <span id="btnHeaderExportText">تصدير إكسيل شامل (CSV)</span>
@@ -3655,6 +3976,14 @@ html[dir="ltr"] .notif-dropdown-menu {
             <button type="button" class="header-action-menu-item" onclick="openDailyBeatModal()">
               <span style="font-size:15px;">📍</span>
               <span>خط السير اليومي للمشرفين</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="openDataSnapshotsModal()">
+              <span style="font-size:15px;">⏱️</span>
+              <span>آلة الزمن للنسخ الاحتياطي (Snapshots)</span>
+            </button>
+            <button type="button" class="header-action-menu-item" onclick="window.print()">
+              <span style="font-size:15px;">🖨️</span>
+              <span>طباعة تقرير معتمد (Official Letterhead)</span>
             </button>
             <button type="button" class="header-action-menu-item" onclick="document.getElementById('auditTrailModal').classList.add('open'); renderAuditTrail();">
               <span style="font-size:15px;">🔐</span>
@@ -3812,7 +4141,7 @@ html[dir="ltr"] .notif-dropdown-menu {
         <div class="exec-hero-card" id="executiveCommandHero">
           <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px;">
             <span>⚡ الميزات التنفيذية والذكاء الاصطناعي (Enterprise AI & Ops Deck)</span>
-            <span style="font-size:10px; background:rgba(79,70,229,0.15); color:var(--primary); padding:2px 8px; border-radius:9999px; font-weight:800;">إصدار الشركات v4.5 Enterprise</span>
+            <span style="font-size:10px; background:linear-gradient(135deg, rgba(79,70,229,0.2), rgba(245,158,11,0.2)); color:var(--primary); border:1px solid rgba(245,158,11,0.3); padding:2px 8px; border-radius:9999px; font-weight:800;">إصدار الشركات v5.0 Enterprise Pro 🚀</span>
           </div>
           <div class="exec-hero-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <!-- Feature 1: AI Conversational Copilot -->
@@ -3867,6 +4196,39 @@ html[dir="ltr"] .notif-dropdown-menu {
               <div class="exec-hero-text">
                 <div class="exec-hero-title">تقرير الإغلاق الرسمي والمختوم</div>
                 <div class="exec-hero-sub">وثيقة PDF معتمدة وواتساب الإدارة</div>
+              </div>
+            </button>
+
+            <!-- Feature 6: Supervisors Incentive & Commission Tier Engine -->
+            <button type="button" class="exec-hero-btn" onclick="openIncentiveCalculatorModal()">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #d97706, #f59e0b); color:#fff; box-shadow:0 3px 10px rgba(245,158,11,0.35);">
+                💰
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">حاسبة حوافز المشرفين والعمولات</div>
+                <div class="exec-hero-sub">شرائح المكافآت والبونص الفوري</div>
+              </div>
+            </button>
+
+            <!-- Feature 7: Graphical WhatsApp Card Generator -->
+            <button type="button" class="exec-hero-btn" onclick="openVisualWhatsAppCardModal()">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #0d9488, #14b8a6); color:#fff; box-shadow:0 3px 10px rgba(20,184,166,0.35);">
+                🖼️
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">كروت الواتساب الرسومية</div>
+                <div class="exec-hero-sub">توليد بطاقة رقمية معتمدة بصيغة صورة</div>
+              </div>
+            </button>
+
+            <!-- Feature 8: Time-Machine Data Snapshots -->
+            <button type="button" class="exec-hero-btn" onclick="openDataSnapshotsModal()">
+              <div class="exec-hero-icon" style="background:linear-gradient(135deg, #475569, #64748b); color:#fff; box-shadow:0 3px 10px rgba(100,116,139,0.35);">
+                ⏱️
+              </div>
+              <div class="exec-hero-text">
+                <div class="exec-hero-title">آلة الزمن للنسخ الاحتياطي</div>
+                <div class="exec-hero-sub">استرجاع أي لحظة سابقة بضغطة زر</div>
               </div>
             </button>
           </div>
@@ -4597,11 +4959,36 @@ html[dir="ltr"] .notif-dropdown-menu {
             </div>
           </div>
 
+          <!-- RFM Customer Loyalty Tiers & Segment Analysis Filter Bar -->
+          <div class="rfm-bar" id="rfmFiltersContainer" style="margin-top:12px; margin-bottom:14px;">
+            <button type="button" class="rfm-chip active" data-rfm="ALL" onclick="filterClientsByRfm('ALL')">
+              <span>🌐 جميع العملاء</span>
+              <span class="rfm-count-badge" id="rfmCountAll">0</span>
+            </button>
+            <button type="button" class="rfm-chip" data-rfm="VIP" onclick="filterClientsByRfm('VIP')">
+              <span>👑 كبار العملاء VIP Platinum</span>
+              <span class="rfm-count-badge" id="rfmCountVip" style="background:#f59e0b; color:#fff;">0</span>
+            </button>
+            <button type="button" class="rfm-chip" data-rfm="ACTIVE" onclick="filterClientsByRfm('ACTIVE')">
+              <span>🟢 منتظم ونشط (Active)</span>
+              <span class="rfm-count-badge" id="rfmCountActive" style="background:#10b981; color:#fff;">0</span>
+            </button>
+            <button type="button" class="rfm-chip" data-rfm="AT_RISK" onclick="filterClientsByRfm('AT_RISK')">
+              <span>⚠️ مهدد بالتسرب (At Risk)</span>
+              <span class="rfm-count-badge" id="rfmCountAtRisk" style="background:#f97316; color:#fff;">0</span>
+            </button>
+            <button type="button" class="rfm-chip" data-rfm="DORMANT" onclick="filterClientsByRfm('DORMANT')">
+              <span>🔴 متوقف / خامل (Churned)</span>
+              <span class="rfm-count-badge" id="rfmCountDormant" style="background:#ef4444; color:#fff;">0</span>
+            </button>
+          </div>
+
           <div class="table-container">
             <table>
               <thead id="branchesTableHead">
                 <tr>
                   <th>اسم التاجر / العميل</th>
+                  <th>تصنيف الولاء</th>
                   <th>نوع العميل</th>
                   <th>المنطقة / المحافظة</th>
                   <th>المشرف المسؤول</th>
@@ -6810,6 +7197,224 @@ html[dir="ltr"] .notif-dropdown-menu {
       </div>
     </div>
   </div>
+
+  <!-- =========================================================================
+       ENTERPRISE V5.0 MODALS
+       ========================================================================= -->
+
+  <!-- Modal 1: Omni-Search Command Palette (Ctrl + K) -->
+  <div class="modal-overlay" id="omniCommandModal" onclick="if(event.target===this)closeModal('omniCommandModal')">
+    <div class="modal-dialog">
+      <div class="omni-search-header">
+        <span style="font-size: 20px; color: var(--primary);">🔍</span>
+        <input type="text" id="omniSearchInput" class="omni-input-field" placeholder="ابحث عن عميل، فرع، مشرف، رقم فاتورة، أو اكتب أمراً سريعاً..." oninput="handleOmniSearchInput()" onkeydown="handleOmniKeyNav(event)" autocomplete="off">
+        <span class="omni-kbd-badge" style="cursor:pointer;" onclick="closeModal('omniCommandModal')">ESC</span>
+      </div>
+      <div class="omni-results-list" id="omniResultsContainer">
+        <!-- Dynamically populated by renderOmniSearchResults() -->
+      </div>
+      <div class="modal-footer" style="padding: 10px 18px; background: var(--bg-card); display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-color);">
+        <div style="display:flex; gap:12px; align-items:center;">
+          <span><kbd class="omni-kbd-badge">↑</kbd> <kbd class="omni-kbd-badge">↓</kbd> للتنقل</span>
+          <span><kbd class="omni-kbd-badge">Enter ↵</kbd> للفتح</span>
+          <span><kbd class="omni-kbd-badge">ESC</kbd> للإغلاق</span>
+        </div>
+        <span style="font-weight:700; color:var(--primary);">موجه الأوامر الذكي v5.0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Supervisors Incentive & Commission Tier Calculator -->
+  <div class="modal-overlay" id="incentiveCalculatorModal">
+    <div class="modal-dialog" style="max-width: 780px; max-height: 90vh; display:flex; flex-direction:column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(217, 119, 6, 0.08)); border-bottom: 1.5px solid rgba(245, 158, 11, 0.3);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; box-shadow:0 3px 10px rgba(245, 158, 11, 0.35);">
+            💰
+          </div>
+          <div>
+            <div class="modal-title" style="font-size:16px; font-weight:900;">حاسبة عمولات وحوافز المشرفين (Incentive & Bonus Engine)</div>
+            <div style="font-size:11px; color:var(--text-muted);">محاكاة فورية لشرائح المكافآت والبونص التقديري بناءً على نسب تحقيق التارجت</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('incentiveCalculatorModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 18px; overflow-y:auto; flex:1;">
+        <!-- Live Supervisor Performance Breakdown -->
+        <div style="margin-bottom:16px;">
+          <div style="font-weight:900; font-size:13px; color:var(--text-main); margin-bottom:10px;">
+            📊 استحقاق حوافز المشرفين للشهر الحالي (مباشر من المبيعات الفعلية):
+          </div>
+          <div id="incentiveSupervisorsLiveGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+            <!-- Dynamically populated by renderIncentiveCalculator() -->
+          </div>
+        </div>
+
+        <!-- 4 Incentive Tiers Matrix -->
+        <div style="margin-bottom:16px;">
+          <div style="font-weight:900; font-size:13px; color:var(--text-main); margin-bottom:10px;">
+            🏆 سلم شرائح الحوافز والعمولات المعتمد للقطاع:
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px;">
+            <div class="incentive-bracket-card">
+              <div style="font-weight:900; color:#b45309; font-size:12.5px;">🥉 الشريحة البرونزية</div>
+              <div style="font-size:11px; color:var(--text-muted); margin:4px 0;">تحقيق 85% إلى 99%</div>
+              <div style="font-weight:900; font-size:14px; color:var(--text-main);">3,000 ج.م</div>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">بونص أساسي تشجيعي</div>
+            </div>
+            <div class="incentive-bracket-card">
+              <div style="font-weight:900; color:#0284c7; font-size:12.5px;">🥈 الشريحة الفضية</div>
+              <div style="font-size:11px; color:var(--text-muted); margin:4px 0;">تحقيق 100% إلى 109%</div>
+              <div style="font-weight:900; font-size:14px; color:#0284c7;">7,500 ج.م</div>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">إغلاق التارجت بنجاح 🎯</div>
+            </div>
+            <div class="incentive-bracket-card">
+              <div style="font-weight:900; color:#10b981; font-size:12.5px;">🥇 الشريحة الذهبية</div>
+              <div style="font-size:11px; color:var(--text-muted); margin:4px 0;">تحقيق 110% إلى 124%</div>
+              <div style="font-weight:900; font-size:14px; color:#10b981;">12,000 ج.م</div>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">بونص التفوق البيعي 🚀</div>
+            </div>
+            <div class="incentive-bracket-card">
+              <div style="font-weight:900; color:#7c3aed; font-size:12.5px;">👑 بلاتينيوم النخبة</div>
+              <div style="font-size:11px; color:var(--text-muted); margin:4px 0;">تحقيق 125% فأكثر</div>
+              <div style="font-weight:900; font-size:14px; color:#7c3aed;">18,000 ج.م + 1%</div>
+              <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">درع قطاع الجيزة والصعيد 🌟</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Simulator Box -->
+        <div style="background:var(--bg-subtle); border:1px solid var(--border-color); border-radius:12px; padding:14px;">
+          <div style="font-weight:900; font-size:12.5px; color:var(--primary); margin-bottom:10px;">
+            🧪 محاكي حساب الحافز التقديري لأي رقم مبيعات:
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div>
+              <label style="font-size:11.5px; font-weight:700; color:var(--text-muted);">التارجت المطلوب (ج.م):</label>
+              <input type="number" id="simIncentiveTarget" class="form-control" value="800000" oninput="calculateIncentiveSimulation()" style="font-weight:800;">
+            </div>
+            <div>
+              <label style="font-size:11.5px; font-weight:700; color:var(--text-muted);">المبيعات المحققة (ج.م):</label>
+              <input type="number" id="simIncentiveActual" class="form-control" value="850000" oninput="calculateIncentiveSimulation()" style="font-weight:800;">
+            </div>
+          </div>
+          <div id="simIncentiveResult" style="margin-top:12px; background:var(--bg-card); border:1.5px solid #10b981; border-radius:10px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <!-- Rendered by calculateIncentiveSimulation() -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="sendIncentivesSummaryWhatsApp()">📲 مشاركة تقرير الحوافز بالواتساب</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('incentiveCalculatorModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Graphical WhatsApp Card Generator -->
+  <div class="modal-overlay" id="visualWhatsAppCardModal">
+    <div class="modal-dialog" style="max-width: 660px; max-height: 92vh; display:flex; flex-direction:column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(13, 148, 136, 0.12), rgba(20, 184, 166, 0.08)); border-bottom: 1.5px solid rgba(20, 184, 166, 0.3);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg, #0d9488, #14b8a6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; box-shadow:0 3px 10px rgba(20, 184, 166, 0.35);">
+            🖼️
+          </div>
+          <div>
+            <div class="modal-title" style="font-size:16px; font-weight:900;">كروت الواتساب الرسومية الرقمية (Visual WhatsApp Card)</div>
+            <div style="font-size:11px; color:var(--text-muted);">توليد بطاقة إغلاق معتمدة بتصميم فاخر بصيغة صورة عالية الدقة للمشاركة الفورية</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('visualWhatsAppCardModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y:auto; flex:1; text-align:center;">
+        <!-- Canvas is hidden, preview image is displayed -->
+        <canvas id="whatsappCardCanvas" width="900" height="1100" style="display:none;"></canvas>
+        <div style="position:relative; display:inline-block; max-width:100%;">
+          <img id="whatsappCardPreviewImg" alt="معاينة كارت الواتساب" style="max-width:100%; border-radius:14px; box-shadow:0 12px 35px rgba(0,0,0,0.35); border:1px solid rgba(245,158,11,0.3); max-height:480px; object-fit:contain; background:#0f172a;">
+        </div>
+        <div style="font-size:11.5px; color:var(--text-muted); margin-top:10px;">
+          ✨ كارت رقمي عالي الدقة يتضمن أداء المشرفين الثلاثة، نسبة الإنجاز العامة، والفجوة المتبقية بتوقيع الإدارة.
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="copyWhatsAppCardImage()">
+          📋 نسخ الصورة للحافظة
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadWhatsAppCardImage()">
+          💾 تحميل كصورة PNG
+        </button>
+        <button type="button" class="btn btn-success btn-sm" onclick="shareWhatsAppCardDirect()" style="background:#25d366; border-color:#128c7e; font-weight:800;">
+          📲 إرسال مع النص للواتساب
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Milestone Target Celebration Dialog -->
+  <div class="modal-overlay" id="targetCelebrationModal">
+    <div class="modal-dialog" style="max-width: 480px; text-align:center; padding:24px 20px; border-radius:20px; background:radial-gradient(circle at top, rgba(79,70,229,0.15), var(--bg-card)); border:2px solid #f59e0b; box-shadow:0 25px 60px rgba(245,158,11,0.35);">
+      <div style="font-size:52px; animation:bounce 1.2s infinite; margin-bottom:8px;">🏆</div>
+      <h2 style="font-size:22px; font-weight:900; color:var(--text-main); margin-bottom:6px;" id="celebrationTitle">مبروك! إنجاز استثنائي في القطاع</h2>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:18px;" id="celebrationSubtext">
+        تم تحقيق التارجت بنجاح وتخطي حاجز الـ 100% بعزيمة وإصرار فريق عمل الجيزة والصعيد!
+      </p>
+      <div style="background:linear-gradient(135deg, rgba(245,158,11,0.15), rgba(16,185,129,0.15)); border:1px solid #10b981; border-radius:14px; padding:14px; margin-bottom:20px;">
+        <div style="font-size:12px; color:var(--text-muted); font-weight:700;">نسبة التحقيق الإجمالية</div>
+        <div style="font-size:28px; font-weight:900; color:#10b981; margin:4px 0;" id="celebrationPctValue">100%</div>
+        <div style="font-size:11.5px; color:var(--primary); font-weight:800;">قطاع الجيزة الكبرى والصعيد - القيادة التنفيذية</div>
+      </div>
+      <div style="display:flex; justify-content:center; gap:10px;">
+        <button type="button" class="btn btn-warning btn-sm" onclick="playTargetCelebrationChime(); launchConfettiAnimation();" style="font-weight:900;">
+          🎺 إعادة تشغيل الفانفار
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('targetCelebrationModal')">
+          شكراً، استمرار العمل 🚀
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Time-Machine Data Snapshots & Recovery -->
+  <div class="modal-overlay" id="dataSnapshotsModal">
+    <div class="modal-dialog" style="max-width: 720px; max-height: 90vh; display:flex; flex-direction:column;">
+      <div class="modal-header" style="background: linear-gradient(135deg, rgba(71, 85, 105, 0.12), rgba(100, 116, 139, 0.08)); border-bottom: 1.5px solid rgba(100, 116, 139, 0.3);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg, #475569, #64748b); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px;">
+            ⏱️
+          </div>
+          <div>
+            <div class="modal-title" style="font-size:16px; font-weight:900;">آلة الزمن للنسخ الاحتياطي (Data Snapshots & Recovery)</div>
+            <div style="font-size:11px; color:var(--text-muted);">نقاط استعادة تلقائية ومستمرة لقاعدة البيانات مع إمكانية التراجع عن أي تعديل أو مسح في ثوانٍ</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('dataSnapshotsModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px; overflow-y:auto; flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+          <button type="button" class="btn btn-success btn-sm" onclick="takeManualDataSnapshot()" style="font-weight:800;">
+            📸 حفظ نقطة استعادة جديدة الآن
+          </button>
+          <span style="font-size:11.5px; color:var(--text-muted);" id="snapshotsCountLabel">النسخ المحفوظة: 0</span>
+        </div>
+
+        <div id="snapshotsListContainer" style="display:flex; flex-direction:column; gap:8px;">
+          <!-- Dynamically populated by renderDataSnapshots() -->
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="exportDataBackupJSON()">💾 تصدير ملف النسخة الكاملة (JSON)</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('dataSnapshotsModal')">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Milestone Celebration Canvas -->
+  <canvas id="celebrationCanvas"></canvas>
 
   <!-- Offline Status Floating Notification Badge -->
   <div class="offline-network-badge" id="offlineFloatingBadge">
@@ -13056,19 +13661,30 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
       const activeSupId = Number(mode);
       const isEn = AppState.lang === 'en';
 
+      // Update RFM counts badge in filter bar
+      if (typeof updateRfmFilterCounts === 'function') {
+        updateRfmFilterCounts();
+      }
+
       let branchesPool = AppState.branches;
       if (!isManager && !isAll) {
         branchesPool = branchesPool.filter(b => Number(b.supervisorId) === activeSupId);
       }
 
+      // Apply RFM Tier Filter if selected
+      if (window.currentRfmFilter && window.currentRfmFilter !== 'ALL' && typeof getClientRfmTier === 'function') {
+        branchesPool = branchesPool.filter(b => getClientRfmTier(b).tier === window.currentRfmFilter);
+      }
+
       if (branchesPool.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:25px; color:var(--text-muted);">${isEn ? 'No clients or branches recorded yet' : 'لا توجد بيانات عملاء أو تجار مسجلين بعد'}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:25px; color:var(--text-muted);">${isEn ? 'No clients match the selected filter' : 'لا توجد بيانات عملاء مطابقة للفئة أو الفلتر المحدد'}</td></tr>`;
         return;
       }
 
       branchesPool.forEach(b => {
         const sup = AppState.supervisors.find(x => Number(x.id) === Number(b.supervisorId));
         const m = getClientMetrics(b);
+        const rfm = typeof getClientRfmTier === 'function' ? getClientRfmTier(b) : { label: 'نشط', badgeClass: 'rfm-badge-active' };
         let barClass = '';
         if (m.pct >= 100) barClass = 'fill-green';
         else if (m.pct >= 50) barClass = 'fill-amber';
@@ -13079,6 +13695,7 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
         tbody.innerHTML += `
           <tr>
             <td><strong>${b.name}</strong></td>
+            <td><span class="rfm-badge ${rfm.badgeClass}">${rfm.label}</span></td>
             <td><span class="badge badge-primary">${b.clientType || (isEn ? 'Client' : 'تاجر')}</span></td>
             <td>${iconSVG('pin', 11)} ${b.city}</td>
             <td><strong>${sup ? getSupervisorName(sup) : '-'}</strong></td>
@@ -13089,9 +13706,9 @@ ${baseUrl}?user=${encodeURIComponent(mgr.username || 'manager')}${sheetsParam}
               </div>
             </td>
             <td>${iconSVG('user', 11)} ${b.promoter || (isEn ? 'Unassigned' : 'غير محدد')}</td>
-            <td><strong style="font-size:13px;">${formatCurrency(m.target)}</strong></td>
-            <td><strong style="color:var(--primary); font-size:13px;">${formatCurrency(m.actual)}</strong></td>
-            <td><span style="color:var(--text-muted); font-size:13px;">${formatCurrency(m.remaining)}</span></td>
+            <td class="money-cell client-target-col"><strong style="font-size:13px;">${formatCurrency(m.target)}</strong></td>
+            <td class="money-cell client-actual-col"><strong style="color:var(--primary); font-size:13px;">${formatCurrency(m.actual)}</strong></td>
+            <td class="money-cell"><span style="color:var(--text-muted); font-size:13px;">${formatCurrency(m.remaining)}</span></td>
             <td style="min-width:110px;">
               <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
                 <strong style="color:${m.pct >= 100 ? 'var(--success)' : (m.pct >= 50 ? 'var(--warning)' : 'var(--danger)')}">${m.pct}%</strong>
@@ -16836,6 +17453,788 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
     });
 
     /* =========================================================================
+       ENTERPRISE V5.0 PROFESSIONAL SUITE LOGIC
+       ========================================================================= */
+
+    // --- 1. STEALTH & MEETING PRIVACY MODE ---
+    function initPrivacyMode() {
+      const isPrivacy = localStorage.getItem('giza_privacy_mode') === 'true';
+      if (isPrivacy) {
+        document.body.classList.add('privacy-mode');
+        const btn = document.getElementById('btnHeaderPrivacyMode');
+        if (btn) btn.classList.add('active');
+      }
+    }
+
+    function togglePrivacyMode() {
+      const isNowPrivacy = document.body.classList.toggle('privacy-mode');
+      localStorage.setItem('giza_privacy_mode', isNowPrivacy ? 'true' : 'false');
+      const btn = document.getElementById('btnHeaderPrivacyMode');
+      if (btn) btn.classList.toggle('active', isNowPrivacy);
+      const isEn = AppState.lang === 'en';
+      showToast(
+        isNowPrivacy 
+          ? (isEn ? 'Meeting Privacy Mode Enabled 👁️ (Sensitive numbers blurred)' : 'تم تفعيل وضع الخصوصية للاجتماعات 👁️ (تم تمويه الأرقام الحساسة)')
+          : (isEn ? 'Meeting Privacy Mode Disabled 👁️' : 'تم إيقاف وضع الخصوصية وإظهار الأرقام 👁️'),
+        'info',
+        3000
+      );
+    }
+
+    // --- 2. OMNI-SEARCH COMMAND PALETTE (CTRL + K) ---
+    let omniSelectedIndex = 0;
+    let omniFilteredItems = [];
+
+    function openOmniCommandModal() {
+      const m = document.getElementById('omniCommandModal');
+      if (!m) return;
+      m.classList.add('open');
+      const inp = document.getElementById('omniSearchInput');
+      if (inp) {
+        inp.value = '';
+        setTimeout(() => inp.focus(), 60);
+      }
+      handleOmniSearchInput();
+    }
+
+    function handleOmniSearchInput() {
+      const query = (document.getElementById('omniSearchInput')?.value || '').trim().toLowerCase();
+      const isEn = AppState.lang === 'en';
+      const container = document.getElementById('omniResultsContainer');
+      if (!container) return;
+
+      const defaultActions = [
+        { type: 'action', title: isEn ? 'Quick Sale Entry' : 'تسجيل عملية بيع جديدة', sub: isEn ? 'Add new sales transaction' : 'تسجيل فاتورة بيع جديدة لأي تاجر', icon: '➕', action: () => openSaleModal() },
+        { type: 'action', title: isEn ? 'Add Visit Report' : 'تسجيل تقرير زيارة ميدانية', sub: isEn ? 'Log client visit report' : 'توثيق زيارة وملاحظات تاجر', icon: '📋', action: () => openVisitModal() },
+        { type: 'action', title: isEn ? 'Boardroom TV Mode' : 'شاشة قاعات الاجتماعات (TV)', sub: isEn ? 'Live fullscreen executive dashboard' : 'عرض مباشر كامل للشركات والشاشات الكبيرة', icon: '📺', action: () => openBoardroomTvMode() },
+        { type: 'action', title: isEn ? 'WhatsApp Visual Summary Card' : 'كروت الواتساب الرسومية الرقمية', sub: isEn ? 'Generate high-res graphical summary' : 'توليد بطاقة رقمية معتمدة للمشاركة الفورية', icon: '🖼️', action: () => openVisualWhatsAppCardModal() },
+        { type: 'action', title: isEn ? 'Incentive & Commission Calculator' : 'حاسبة حوافز وعمولات المشرفين', sub: isEn ? 'Simulate tiered bonuses & earnings' : 'محاكاة فورية لشرائح المكافآت', icon: '💰', action: () => openIncentiveCalculatorModal() },
+        { type: 'action', title: isEn ? 'Daily Route / Beat Planner' : 'خط السير اليومي الذكي للمشرفين', sub: isEn ? 'Smart priority route planning' : 'جدول زيارات الفروع حسب الأولوية', icon: '📍', action: () => openDailyBeatModal() },
+        { type: 'action', title: isEn ? 'Audit Trail Log' : 'سجل تدقيق العمليات (Audit Trail)', sub: isEn ? 'Security operations log' : 'سجل الرقابة لجميع حركات النظام', icon: '🔐', action: () => { document.getElementById('auditTrailModal')?.classList.add('open'); renderAuditTrail(); } },
+        { type: 'action', title: isEn ? 'Time-Machine Snapshots' : 'آلة الزمن للنسخ الاحتياطي (Snapshots)', sub: isEn ? 'Restore previous data states' : 'استرجاع النسخ السابقة في ثوانٍ', icon: '⏱️', action: () => openDataSnapshotsModal() },
+        { type: 'action', title: isEn ? 'Toggle Dark / Light Theme' : 'تبديل الوضع الليلي / النهاري', sub: isEn ? 'Switch visual theme' : 'تغيير سمة الألوان', icon: '🌙', action: () => toggleTheme() },
+        { type: 'action', title: isEn ? 'Toggle Meeting Privacy Mode' : 'تبديل وضع خصوصية الاجتماعات', sub: isEn ? 'Blur sensitive financial figures' : 'تمويه الأرقام الحساسة بنقرة واحدة', icon: '👁️', action: () => togglePrivacyMode() }
+      ];
+
+      const tabNavigations = [
+        { type: 'nav', title: isEn ? 'Go to: Dashboard' : 'الانتقال إلى: لوحة مدير الآريتين', sub: isEn ? 'Main Dashboard' : 'لوحة القيادة والمتابعة الرئيسية', icon: '🏠', tab: 'dashboard' },
+        { type: 'nav', title: isEn ? 'Go to: Targets Overview' : 'الانتقال إلى: التارجت العام للآريات', sub: isEn ? 'Targets & Quotas' : 'مستهدفات القطاع المالي', icon: '🎯', tab: 'targets' },
+        { type: 'nav', title: isEn ? 'Go to: Supervisors' : 'الانتقال إلى: المشرفين والتارجت', sub: isEn ? 'Supervisor Management' : 'أداء المشرفين الثلاثة والعمولات', icon: '👔', tab: 'supervisors' },
+        { type: 'nav', title: isEn ? 'Go to: Sales Ledger' : 'الانتقال إلى: سجل المبيعات', sub: isEn ? 'All Sales Transactions' : 'جدول كل فواتير البيع المسجلة', icon: '📊', tab: 'sales' },
+        { type: 'nav', title: isEn ? 'Go to: Clients & Branches' : 'الانتقال إلى: العملاء والفروع', sub: isEn ? 'Client Database & RFM' : 'قاعدة بيانات التجار وتصنيفات الولاء', icon: '🏬', tab: 'branches' },
+        { type: 'nav', title: isEn ? 'Go to: Field Visits' : 'الانتقال إلى: الزيارات الميدانية', sub: isEn ? 'Field Visits Log' : 'سجل تقارير الزيارات', icon: '📝', tab: 'visits' },
+        { type: 'nav', title: isEn ? 'Go to: Reports & Exports' : 'الانتقال إلى: تصدير الداتا والتقارير', sub: isEn ? 'CSV & Data Reports' : 'مركز تصدير التقارير والإكسيل', icon: '📑', tab: 'reports' }
+      ];
+
+      let items = [];
+
+      if (!query) {
+        items = [...defaultActions.slice(0, 6), ...tabNavigations.slice(0, 4)];
+      } else {
+        // 1. Actions match
+        const matchedActions = defaultActions.filter(a => a.title.toLowerCase().includes(query) || a.sub.toLowerCase().includes(query));
+        // 2. Nav match
+        const matchedNav = tabNavigations.filter(n => n.title.toLowerCase().includes(query) || n.sub.toLowerCase().includes(query));
+        // 3. Branches / Clients match
+        const matchedBranches = (AppState.branches || [])
+          .filter(b => (b.name && b.name.toLowerCase().includes(query)) || (b.city && b.city.toLowerCase().includes(query)) || (b.phone && b.phone.includes(query)))
+          .slice(0, 8)
+          .map(b => ({
+            type: 'branch',
+            title: b.name,
+            sub: `${b.city || ''} • ${isEn ? 'Target' : 'التارجت'}: ${formatCurrency(b.target || 0)}`,
+            icon: '🏬',
+            action: () => {
+              switchTab('branches');
+              setTimeout(() => {
+                const row = Array.from(document.querySelectorAll('#branchesTableBody tr')).find(r => r.innerText.includes(b.name));
+                if (row) {
+                  row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  row.style.background = 'rgba(79,70,229,0.2)';
+                  setTimeout(() => row.style.background = '', 2000);
+                }
+              }, 250);
+            }
+          }));
+        // 4. Supervisors match
+        const matchedSups = (AppState.supervisors || [])
+          .filter(s => (s.name && s.name.toLowerCase().includes(query)) || (s.zone && s.zone.toLowerCase().includes(query)))
+          .map(s => ({
+            type: 'supervisor',
+            title: getSupervisorName(s),
+            sub: `${getSupervisorZone(s)} • ${isEn ? 'Target' : 'المستهدف'}: ${formatCurrency(s.target || 0)}`,
+            icon: '👔',
+            action: () => {
+              switchSupervisorPortal(s.id);
+              switchTab('dashboard');
+            }
+          }));
+
+        items = [...matchedActions, ...matchedBranches, ...matchedSups, ...matchedNav];
+      }
+
+      omniFilteredItems = items;
+      omniSelectedIndex = 0;
+
+      if (items.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:13px;">${isEn ? 'No results found for your search' : 'لا توجد نتائج مطابقة لبحثك 🔍'}</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((it, idx) => `
+        <div class="omni-item ${idx === 0 ? 'selected' : ''}" data-index="${idx}" onclick="executeOmniItem(${idx})">
+          <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+            <div class="omni-item-icon">${it.icon}</div>
+            <div style="min-width:0; flex:1;">
+              <div style="font-weight:800; font-size:13px; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${it.title}</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${it.sub}</div>
+            </div>
+          </div>
+          <span style="font-size:10.5px; color:var(--primary); font-weight:700; opacity:0.8;">${it.type === 'action' ? 'إجراء' : (it.type === 'branch' ? 'عميل' : (it.type === 'supervisor' ? 'مشرف' : 'تنقل'))} ↵</span>
+        </div>
+      `).join('');
+    }
+
+    function handleOmniKeyNav(e) {
+      if (!omniFilteredItems || omniFilteredItems.length === 0) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        omniSelectedIndex = (omniSelectedIndex + 1) % omniFilteredItems.length;
+        updateOmniSelectionUI();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        omniSelectedIndex = (omniSelectedIndex - 1 + omniFilteredItems.length) % omniFilteredItems.length;
+        updateOmniSelectionUI();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        executeOmniItem(omniSelectedIndex);
+      } else if (e.key === 'Escape') {
+        closeModal('omniCommandModal');
+      }
+    }
+
+    function updateOmniSelectionUI() {
+      document.querySelectorAll('.omni-item').forEach((el, idx) => {
+        el.classList.toggle('selected', idx === omniSelectedIndex);
+        if (idx === omniSelectedIndex) {
+          el.scrollIntoView({ block: 'nearest' });
+        }
+      });
+    }
+
+    function executeOmniItem(idx) {
+      const item = omniFilteredItems[idx];
+      if (!item) return;
+      closeModal('omniCommandModal');
+      if (item.action) {
+        item.action();
+      } else if (item.tab) {
+        switchTab(item.tab);
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openOmniCommandModal();
+      }
+    });
+
+    // --- 3. RFM CUSTOMER LOYALTY TIERS ---
+    window.currentRfmFilter = 'ALL';
+
+    function getClientRfmTier(b) {
+      const isEn = AppState.lang === 'en';
+      const branchName = (b.name || '').trim().toLowerCase();
+      const sales = (AppState.sales || []).filter(s => (s.branch || '').trim().toLowerCase() === branchName);
+      const totalAmount = sales.reduce((sum, s) => sum + Number(s.amount || 0), 0);
+      const orderCount = sales.length;
+
+      let daysAgo = 999;
+      if (sales.length > 0) {
+        const dates = sales.map(s => new Date(s.date)).filter(d => !isNaN(d));
+        if (dates.length > 0) {
+          const maxDate = new Date(Math.max(...dates));
+          const diffMs = new Date() - maxDate;
+          daysAgo = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+        }
+      }
+
+      if (totalAmount >= 60000 || orderCount >= 4) {
+        return { tier: 'VIP', label: isEn ? '👑 VIP Platinum' : '👑 VIP بلاتينيوم', badgeClass: 'rfm-badge-vip' };
+      } else if (daysAgo <= 20 && orderCount >= 1) {
+        return { tier: 'ACTIVE', label: isEn ? '🟢 Steady Active' : '🟢 منتظم ونشط', badgeClass: 'rfm-badge-active' };
+      } else if (daysAgo > 20 && daysAgo <= 45 && orderCount >= 1) {
+        return { tier: 'AT_RISK', label: isEn ? '⚠️ At Risk' : '⚠️ مهدد بالتسرب', badgeClass: 'rfm-badge-at-risk' };
+      } else {
+        return { tier: 'DORMANT', label: isEn ? '🔴 Churned/Dormant' : '🔴 متوقف / خامل', badgeClass: 'rfm-badge-churned' };
+      }
+    }
+
+    function updateRfmFilterCounts() {
+      const branches = AppState.branches || [];
+      let vip = 0, active = 0, atRisk = 0, dormant = 0;
+      branches.forEach(b => {
+        const t = getClientRfmTier(b).tier;
+        if (t === 'VIP') vip++;
+        else if (t === 'ACTIVE') active++;
+        else if (t === 'AT_RISK') atRisk++;
+        else dormant++;
+      });
+
+      const setT = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      setT('rfmCountAll', branches.length);
+      setT('rfmCountVip', vip);
+      setT('rfmCountActive', active);
+      setT('rfmCountAtRisk', atRisk);
+      setT('rfmCountDormant', dormant);
+    }
+
+    function filterClientsByRfm(tier) {
+      window.currentRfmFilter = tier;
+      document.querySelectorAll('#rfmFiltersContainer .rfm-chip').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.rfm === tier);
+      });
+      renderBranchesTable();
+    }
+
+    // --- 4. SUPERVISORS INCENTIVE & COMMISSION TIER ENGINE ---
+    function openIncentiveCalculatorModal() {
+      const m = document.getElementById('incentiveCalculatorModal');
+      if (!m) return;
+      m.classList.add('open');
+      renderIncentiveCalculator();
+      calculateIncentiveSimulation();
+    }
+
+    function getIncentiveBracket(pct) {
+      if (pct >= 125) {
+        return { tier: 'PLATINUM', name: '👑 بلاتينيوم النخبة', bonus: 18000, extraPct: 1, color: '#7c3aed', desc: 'تحقيق 125%+ (درع القطاع)' };
+      } else if (pct >= 110) {
+        return { tier: 'GOLD', name: '🥇 الشريحة الذهبية', bonus: 12000, extraPct: 0, color: '#10b981', desc: 'تحقيق 110% - 124% (بونص التفوق)' };
+      } else if (pct >= 100) {
+        return { tier: 'SILVER', name: '🥈 الشريحة الفضية', bonus: 7500, extraPct: 0, color: '#0284c7', desc: 'تحقيق 100% - 109% (إغلاق التارجت)' };
+      } else if (pct >= 85) {
+        return { tier: 'BRONZE', name: '🥉 الشريحة البرونزية', bonus: 3000, extraPct: 0, color: '#b45309', desc: 'تحقيق 85% - 99% (بونص تشجيعي)' };
+      } else {
+        return { tier: 'NONE', name: '⚪ دون الحد الأدنى', bonus: 0, extraPct: 0, color: '#ef4444', desc: 'أقل من 85% (لا يوجد بونص)' };
+      }
+    }
+
+    function renderIncentiveCalculator() {
+      const grid = document.getElementById('incentiveSupervisorsLiveGrid');
+      if (!grid) return;
+      grid.innerHTML = (AppState.supervisors || []).map(s => {
+        const actual = (AppState.sales || [])
+          .filter(x => Number(x.supervisorId) === Number(s.id))
+          .reduce((sum, x) => sum + Number(x.amount || 0), 0);
+        const target = Number(s.target || 0);
+        const pct = target > 0 ? ((actual / target) * 100).toFixed(1) : 0;
+        const bracket = getIncentiveBracket(Number(pct));
+        return `
+          <div style="background:var(--bg-card); border:1.5px solid ${bracket.color}; border-radius:12px; padding:12px; box-shadow:0 3px 10px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:12.5px; color:var(--text-main);">${getSupervisorName(s)}</strong>
+              <span style="font-size:10.5px; font-weight:800; color:${bracket.color};">${bracket.name}</span>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+              المحقق: <strong>${formatCurrency(actual)}</strong> من <strong>${formatCurrency(target)}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; border-top:1px dashed rgba(0,0,0,0.1); padding-top:6px;">
+              <span style="font-size:11.5px; font-weight:800; color:var(--primary);">نسبة التحقيق: ${pct}%</span>
+              <span style="font-size:13px; font-weight:900; color:${bracket.color};">${formatCurrency(bracket.bonus)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function calculateIncentiveSimulation() {
+      const target = Number(document.getElementById('simIncentiveTarget')?.value || 0);
+      const actual = Number(document.getElementById('simIncentiveActual')?.value || 0);
+      const resBox = document.getElementById('simIncentiveResult');
+      if (!resBox) return;
+
+      const pct = target > 0 ? ((actual / target) * 100).toFixed(1) : 0;
+      const bracket = getIncentiveBracket(Number(pct));
+      
+      let nextBracketText = '';
+      if (pct < 85) nextBracketText = `متبقي ${formatCurrency(target * 0.85 - actual)} للبرونزي (3,000 ج.م)`;
+      else if (pct < 100) nextBracketText = `متبقي ${formatCurrency(target - actual)} للفضي (7,500 ج.م)`;
+      else if (pct < 110) nextBracketText = `متبقي ${formatCurrency(target * 1.1 - actual)} للذهبي (12,000 ج.م)`;
+      else if (pct < 125) nextBracketText = `متبقي ${formatCurrency(target * 1.25 - actual)} للبلاتينيوم (18,000 ج.م)`;
+      else nextBracketText = '🌟 تم الوصول لأعلى شريحة في القطاع!';
+
+      resBox.innerHTML = `
+        <div>
+          <div style="font-size:11.5px; color:var(--text-muted);">الشريحة المستحقة: <strong style="color:${bracket.color};">${bracket.name}</strong> (${pct}%)</div>
+          <div style="font-size:10.5px; color:var(--primary); font-weight:700; margin-top:2px;">${nextBracketText}</div>
+        </div>
+        <div style="text-align:end;">
+          <div style="font-size:10.5px; color:var(--text-muted);">قيمة المكافأة التقديرية</div>
+          <div style="font-size:18px; font-weight:900; color:${bracket.color};">${formatCurrency(bracket.bonus)}</div>
+        </div>
+      `;
+    }
+
+    function sendIncentivesSummaryWhatsApp() {
+      let text = `💰 *تقرير استحقاق حوافز وبونص المشرفين - قطاع الجيزة والصعيد*\n` +
+                 `📅 التاريخ: ${new Date().toLocaleDateString('ar-EG')}\n` +
+                 `--------------------------------\n`;
+
+      (AppState.supervisors || []).forEach(s => {
+        const actual = (AppState.sales || []).filter(x => Number(x.supervisorId) === Number(s.id)).reduce((sum, x) => sum + Number(x.amount || 0), 0);
+        const target = Number(s.target || 0);
+        const pct = target > 0 ? ((actual / target) * 100).toFixed(1) : 0;
+        const bracket = getIncentiveBracket(Number(pct));
+        text += `👔 *${getSupervisorName(s)}*\n` +
+                `• المحقق: ${formatCurrency(actual)} (${pct}%)\n` +
+                `• الشريحة: ${bracket.name}\n` +
+                `• المكافأة المستحقة: ${formatCurrency(bracket.bonus)}\n\n`;
+      });
+
+      text += `🌟 معتمد من إدارة قطاع الجيزة الكبرى والصعيد\n` +
+              `أ / عبدالله أحمد إبراهيم - مدير عام القطاع`;
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // --- 5. GRAPHICAL WHATSAPP CARD CANVAS GENERATOR ---
+    function openVisualWhatsAppCardModal() {
+      const m = document.getElementById('visualWhatsAppCardModal');
+      if (!m) return;
+      m.classList.add('open');
+      drawWhatsAppCardCanvas();
+    }
+
+    function drawWhatsAppCardCanvas() {
+      const canvas = document.getElementById('whatsappCardCanvas');
+      const img = document.getElementById('whatsappCardPreviewImg');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const w = 900;
+      const h = 1150;
+      canvas.width = w;
+      canvas.height = h;
+
+      // Background Gradient
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#090d16');
+      grad.addColorStop(0.5, '#1e1b4b');
+      grad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Outer Luxury Border
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(20, 20, w - 40, h - 40);
+
+      // Inner Accent Border
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(30, 30, w - 60, h - 60);
+
+      // Header Company Title
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('2B EGYPT • RETAIL & DISTRIBUTION', w / 2, 75);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 32px system-ui, sans-serif';
+      ctx.fillText('قطاع مبيعات الجيزة الكبرى والصعيد', w / 2, 120);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 18px system-ui, sans-serif';
+      const todayStr = new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      ctx.fillText(`التقرير التنفيذي اليومي للمبيعات • ${todayStr}`, w / 2, 155);
+
+      // Divider
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(60, 180);
+      ctx.lineTo(w - 60, 180);
+      ctx.stroke();
+
+      // Metrics Box
+      const totalSales = (AppState.sales || []).reduce((sum, s) => sum + Number(s.amount || 0), 0);
+      const totalTarget = Number(AppState.areaManager?.target || 2500000);
+      const totalPct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : 0;
+
+      function drawMetricBox(x, y, bw, bh, title, val, color) {
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, bw, bh, 14);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 15px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, x + bw / 2, y + 32);
+
+        ctx.fillStyle = color;
+        ctx.font = '900 24px system-ui, sans-serif';
+        ctx.fillText(val, x + bw / 2, y + 70);
+      }
+
+      drawMetricBox(60, 210, 240, 95, 'المبيعات المحققة', formatCurrency(totalSales), '#10b981');
+      drawMetricBox(330, 210, 240, 95, 'التارجت المطلوب', formatCurrency(totalTarget), '#38bdf8');
+      drawMetricBox(600, 210, 240, 95, 'نسبة الإنجاز %', `${totalPct}%`, Number(totalPct) >= 100 ? '#10b981' : '#f59e0b');
+
+      // Supervisor Section Header
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 22px system-ui, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('📊 موقف المشرفين ومستهدفات الأريات:', w - 60, 360);
+
+      // Supervisors Breakdown
+      let curY = 400;
+      (AppState.supervisors || []).forEach(s => {
+        const sActual = (AppState.sales || []).filter(x => Number(x.supervisorId) === Number(s.id)).reduce((sum, x) => sum + Number(x.amount || 0), 0);
+        const sTarget = Number(s.target || 0);
+        const sPct = sTarget > 0 ? ((sActual / sTarget) * 100).toFixed(1) : 0;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(60, curY, w - 120, 110, 12);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 20px system-ui, sans-serif';
+        ctx.fillText(getSupervisorName(s), w - 85, curY + 35);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = 'bold 14px system-ui, sans-serif';
+        ctx.fillText(getSupervisorZone(s), w - 85, curY + 62);
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = Number(sPct) >= 100 ? '#10b981' : '#fbbf24';
+        ctx.font = '900 24px system-ui, sans-serif';
+        ctx.fillText(`${sPct}%`, 85, curY + 38);
+
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = 'bold 15px system-ui, sans-serif';
+        ctx.fillText(`${formatCurrency(sActual)} / ${formatCurrency(sTarget)}`, 85, curY + 68);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        ctx.beginPath();
+        ctx.roundRect(85, curY + 85, w - 170, 8, 4);
+        ctx.fill();
+
+        ctx.fillStyle = Number(sPct) >= 100 ? '#10b981' : (Number(sPct) >= 50 ? '#f59e0b' : '#ef4444');
+        ctx.beginPath();
+        ctx.roundRect(85, curY + 85, (w - 170) * Math.min(1, Number(sPct) / 100), 8, 4);
+        ctx.fill();
+
+        curY += 135;
+      });
+
+      // Footer Seal & Signature
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(60, 990);
+      ctx.lineTo(w - 60, 990);
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 17px system-ui, sans-serif';
+      ctx.fillText('🌟 معتمد من إدارة قطاع الجيزة الكبرى والصعيد 🌟', w / 2, 1030);
+
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '900 20px system-ui, sans-serif';
+      ctx.fillText('أ / عبدالله أحمد إبراهيم - مدير عام القطاع', w / 2, 1065);
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '13px system-ui, sans-serif';
+      ctx.fillText('تم الإنشاء تلقائياً عبر منظومة الجيزة والصعيد الرقمية v5.0 Enterprise Pro', w / 2, 1095);
+
+      if (img) {
+        img.src = canvas.toDataURL('image/png');
+      }
+    }
+
+    function copyWhatsAppCardImage() {
+      const canvas = document.getElementById('whatsappCardCanvas');
+      if (!canvas) return;
+      canvas.toBlob(blob => {
+        if (navigator.clipboard && window.ClipboardItem) {
+          navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+            .then(() => showToast('تم نسخ كارت الواتساب كصورة للحافظة بنجاح! 📋 والصقها في المحادثة', 'success', 3500))
+            .catch(() => downloadWhatsAppCardImage());
+        } else {
+          downloadWhatsAppCardImage();
+        }
+      });
+    }
+
+    function downloadWhatsAppCardImage() {
+      const canvas = document.getElementById('whatsappCardCanvas');
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = `giza_sales_card_${new Date().toISOString().slice(0,10)}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('تم تحميل صورة كارت الواتساب بنجاح! 💾', 'success', 3000);
+    }
+
+    function shareWhatsAppCardDirect() {
+      copyWhatsAppCardImage();
+      setTimeout(() => {
+        openDailyWhatsAppModal();
+      }, 400);
+    }
+
+    // --- 6. TARGET CELEBRATION & WEB AUDIO FANFARE ---
+    function playTargetCelebrationChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.12);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + idx * 0.12 + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.12 + 0.45);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.12);
+          osc.stop(ctx.currentTime + idx * 0.12 + 0.5);
+        });
+      } catch (e) {
+        console.log('Chime note:', e);
+      }
+    }
+
+    function launchConfettiAnimation() {
+      const canvas = document.getElementById('celebrationCanvas');
+      if (!canvas) return;
+      canvas.style.display = 'block';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+
+      const particles = [];
+      const colors = ['#f59e0b', '#10b981', '#7c3aed', '#ec4899', '#38bdf8', '#fbbf24'];
+
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * -canvas.height * 0.5,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedY: Math.random() * 3 + 2,
+          speedX: (Math.random() - 0.5) * 3,
+          rotation: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 6,
+          opacity: 1
+        });
+      }
+
+      let startTime = Date.now();
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const elapsed = Date.now() - startTime;
+
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.rotSpeed;
+          if (elapsed > 2500) p.opacity -= 0.015;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          ctx.restore();
+        });
+
+        if (elapsed < 4000) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          canvas.style.display = 'none';
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function triggerTargetCelebration(title, subtext) {
+      playTargetCelebrationChime();
+      launchConfettiAnimation();
+      const m = document.getElementById('targetCelebrationModal');
+      if (m) {
+        if (title) document.getElementById('celebrationTitle').innerText = title;
+        if (subtext) document.getElementById('celebrationSubtext').innerText = subtext;
+        const totalSales = (AppState.sales || []).reduce((sum, s) => sum + Number(s.amount || 0), 0);
+        const totalTarget = Number(AppState.areaManager?.target || 2500000);
+        const pct = totalTarget > 0 ? ((totalSales / totalTarget) * 100).toFixed(1) : 100;
+        const pctEl = document.getElementById('celebrationPctValue');
+        if (pctEl) pctEl.innerText = `${pct}%`;
+        m.classList.add('open');
+      }
+    }
+
+    // --- 7. TIME-MACHINE DATA SNAPSHOTS & RECOVERY ---
+    function createDataSnapshot(label = 'نقطة استعادة يدوية', isAuto = false) {
+      try {
+        const snapshots = JSON.parse(localStorage.getItem('giza_saeed_snapshots') || '[]');
+        const newSnapshot = {
+          id: Date.now(),
+          timestamp: new Date().toISOString(),
+          label,
+          isAuto,
+          counts: {
+            sales: (AppState.sales || []).length,
+            branches: (AppState.branches || []).length,
+            visits: (AppState.visits || []).length
+          },
+          data: {
+            manager: AppState.areaManager,
+            supervisors: AppState.supervisors,
+            branches: AppState.branches,
+            sales: AppState.sales,
+            visits: AppState.visits,
+            tasks: AppState.tasks
+          }
+        };
+
+        snapshots.unshift(newSnapshot);
+        if (snapshots.length > 12) snapshots.pop();
+        localStorage.setItem('giza_saeed_snapshots', JSON.stringify(snapshots));
+        return newSnapshot;
+      } catch (e) {
+        console.error('Snapshot note:', e);
+        return null;
+      }
+    }
+
+    function openDataSnapshotsModal() {
+      const m = document.getElementById('dataSnapshotsModal');
+      if (!m) return;
+      m.classList.add('open');
+      renderDataSnapshots();
+    }
+
+    function renderDataSnapshots() {
+      const container = document.getElementById('snapshotsListContainer');
+      const countLabel = document.getElementById('snapshotsCountLabel');
+      if (!container) return;
+
+      const snapshots = JSON.parse(localStorage.getItem('giza_saeed_snapshots') || '[]');
+      if (countLabel) countLabel.innerText = `النسخ المحفوظة: ${snapshots.length}`;
+
+      if (snapshots.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:25px; color:var(--text-muted); font-size:12.5px;">لا توجد نقاط استعادة محفوظة حتى الآن. اضغط على الزر بالأعلى لحفظ نسخة فورية 📸</div>`;
+        return;
+      }
+
+      container.innerHTML = snapshots.map(s => {
+        const d = new Date(s.timestamp);
+        const dateStr = d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        return `
+          <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <strong style="font-size:13px; color:var(--text-main);">${s.label}</strong>
+                <span class="badge ${s.isAuto ? 'badge-primary' : 'badge-success'}" style="font-size:10px;">${s.isAuto ? 'تلقائي' : 'يدوي'}</span>
+              </div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">
+                📅 ${dateStr} • ${s.counts.sales} مبيعات • ${s.counts.branches} عملاء • ${s.counts.visits} زيارات
+              </div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="restoreDataSnapshot(${s.id})" style="font-size:11.5px; padding:4px 10px;">
+                🔄 استرجاع
+              </button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="deleteDataSnapshot(${s.id})" style="color:var(--danger); border-color:rgba(239,68,68,0.3); font-size:11.5px; padding:4px 8px;">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function takeManualDataSnapshot() {
+      const name = prompt('أدخل وصفاً أو اسماً لنقطة الاستعادة:', `نسخة يدوية ${new Date().toLocaleTimeString('ar-EG')}`);
+      if (name === null) return;
+      createDataSnapshot(name || 'نسخة يدوية');
+      renderDataSnapshots();
+      showToast('تم حفظ نقطة الاستعادة بنجاح! 📸', 'success', 3000);
+    }
+
+    function restoreDataSnapshot(id) {
+      const snapshots = JSON.parse(localStorage.getItem('giza_saeed_snapshots') || '[]');
+      const s = snapshots.find(x => x.id === id);
+      if (!s || !s.data) return;
+
+      if (!confirm(`هل أنت متأكد من استرجاع النسخة المحفوظة: "${s.label}"؟\nسيتم تحديث كافة بيانات المبيعات والعملاء لتطابق هذه اللحظة.`)) {
+        return;
+      }
+
+      createDataSnapshot('نسخة أمان قبل الاسترجاع', true);
+
+      if (s.data.manager) AppState.areaManager = s.data.manager;
+      if (s.data.supervisors) AppState.supervisors = s.data.supervisors;
+      if (s.data.branches) AppState.branches = s.data.branches;
+      if (s.data.sales) AppState.sales = s.data.sales;
+      if (s.data.visits) AppState.visits = s.data.visits;
+      if (s.data.tasks) AppState.tasks = s.data.tasks;
+
+      saveState();
+      renderAll();
+      closeModal('dataSnapshotsModal');
+      showToast('تم استرجاع نقطة البيانات السابقة بنجاح تام! ⏱️', 'success', 3500);
+    }
+
+    function deleteDataSnapshot(id) {
+      let snapshots = JSON.parse(localStorage.getItem('giza_saeed_snapshots') || '[]');
+      snapshots = snapshots.filter(x => x.id !== id);
+      localStorage.setItem('giza_saeed_snapshots', JSON.stringify(snapshots));
+      renderDataSnapshots();
+      showToast('تم حذف نقطة الاستعادة', 'info', 2000);
+    }
+
+    function exportDataBackupJSON() {
+      const data = {
+        exportDate: new Date().toISOString(),
+        version: 'v5.0-enterprise',
+        areaManager: AppState.areaManager,
+        supervisors: AppState.supervisors,
+        branches: AppState.branches,
+        sales: AppState.sales,
+        visits: AppState.visits,
+        tasks: AppState.tasks
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `giza_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('تم تصدير ملف النسخة الاحتياطية الكامل (JSON) بنجاح! 💾', 'success', 3000);
+    }
+
+    /* =========================================================================
        INITIALIZATION
        ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
@@ -16844,14 +18243,26 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
       checkUrlAutoLogin();
       applyLanguage();
       applySupervisorPortalMode();
+      initPrivacyMode();
       try {
         renderAll();
+        updateRfmFilterCounts();
       } catch(e) {
         console.error('Initial renderAll note:', e);
       }
       initCloudSync();
       initOfflineAutoSync();
       initPwaInstallUI();
+
+      // Safe Initial Checkpoint Snapshot
+      setTimeout(() => {
+        try {
+          const snapshots = JSON.parse(localStorage.getItem('giza_saeed_snapshots') || '[]');
+          if (snapshots.length === 0) {
+            createDataSnapshot('نقطة الاستعادة الأولية للمنظومة', true);
+          }
+        } catch(e) {}
+      }, 1000);
 
       if (!AppState.currentUser) {
         showLoginModal();
@@ -16882,7 +18293,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }, 200);
       }, { passive: true });
 
-    const CURRENT_APP_VERSION = 'v4.0.20261013.2';
+    const CURRENT_APP_VERSION = 'v5.0.20261018.1';
     try {
       const storedVer = localStorage.getItem('giza_app_version');
       if (storedVer !== CURRENT_APP_VERSION) {
@@ -16927,7 +18338,7 @@ ${tasksListText}بالتوفيق للجميع في تحقيق التارجت ا�
         }
       });
 
-      navigator.serviceWorker.register('./sw.js?v=20261015v7').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=20261018v5').then(reg => {
         reg.update();
       }).catch(err => console.log('SW note:', err));
     }

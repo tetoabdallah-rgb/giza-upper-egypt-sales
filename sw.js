@@ -1,4 +1,4 @@
-const CACHE_NAME = 'giza-sales-v2026-10-15-v7-pwa-install';
+const CACHE_NAME = 'giza-sales-v2026-10-18-v5-enterprise-pro';
 const ASSETS = [
   './',
   './index.html',
